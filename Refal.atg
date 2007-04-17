@@ -71,6 +71,7 @@ TOKENS
 	False      = "False" .
 	Else       = "else" .
 	EntryPoint = "$ENTRY" .
+	External   = "$EXTRN" .
 	Semicolon  = ";" .
 	LBracket   = "[" .
 	LParen     = "(" .
@@ -93,7 +94,12 @@ PRODUCTIONS
 
 Refal = Function { Function } .
 
-Function =
+Function = NormalFunction | ExternalFunction .
+
+ExternalFunction =
+	External Identifier { "," Identifier } ";" .
+
+NormalFunction =
 	[ EntryPoint ] Identifier 
 	"{" Pattern { IF (IsPattern()) ";" Pattern } [ ";" ] "}" .
 
@@ -106,7 +112,7 @@ RExpression = { Call | Element | Literal | "(" RExpression ")" } .
 
 Element = ( "e." | "s." ) ( Integer | Identifier ) .
 
-Literal = String | Character | Integer | True | False .
+Literal = String | Character | Integer | True | False | Identifier .
 
 Call = "<" Identifier RExpression ">" .
 

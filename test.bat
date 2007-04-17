@@ -6,4 +6,8 @@ refal.exe test05.ref >>tests.log
 refal.exe test06.ref >>tests.log
 refal.exe test07.ref >>tests.log
 refal.exe test08.ref >>tests.log
+refal.exe test09.ref >>tests.log
+refal.exe test10.ref >>tests.log
+refal.exe test11.ref >>tests.log
+refal.exe test12.ref >>tests.log
 start .\tests.log
