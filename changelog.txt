@@ -1,4 +1,11 @@
 
+ 11-Jun-2006 01:47:22 yallie
+  Refal.atg
+   Improved identifiers, had to add LL(1) conflict resolver
+
+  test13.ref, test.bat
+   Test program from refal5 book: translation from Italian into English
+
  11-Jun-2006 01:44:18 yallie
   Refal.atg
    Added external functions syntax

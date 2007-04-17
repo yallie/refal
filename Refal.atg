@@ -39,7 +39,7 @@ CHARACTERS
 
 TOKENS
 	
-	Identifier = ['@'] Letter { Letter | Digit }.
+	Identifier = ['@'] Letter { Letter | Digit | "-" }.
 	String     = '"' { StringChar | '\\' Printable { HexDigit } } '"'.
 	Character  = '\'' { CharChar | '\\' Printable { HexDigit } } '\''.
 	
@@ -101,7 +101,7 @@ ExternalFunction =
 
 NormalFunction =
 	[ EntryPoint ] Identifier 
-	"{" Pattern { IF (IsPattern()) ";" Pattern } [ ";" ] "}" .
+	"{" Pattern { IF (IsPattern()) ";" Pattern } [ ";" ] "}" [ ";" ] .
 
 Pattern =
 	LExpression "=" RExpression .
