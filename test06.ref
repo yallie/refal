@@ -1,0 +1,22 @@
+
+/* test06 */
+
+* Recursive arithmetic:
+* Natural numbers = 0, 0', O'', 0'''...
+* x + 0 = x
+* x + y' = (x + y)'
+* Written by Y [14-06-03]
+
+$ENTRY Go { = 
+	<Prout "0 + 0 = "      <RAdd ('0') ('0')>>
+	<Prout "0' + 0 = "     <RAdd ('0\'') ('0')>>
+	<Prout "0 + 0' = "     <RAdd ('0') ('0\'')>>
+	<Prout "0' + 0' = "    <RAdd ('0\'') ('0\'')>>
+	<Prout "0'' + 0''' = " <RAdd ('0\'\'') ('0\'\'\'')>>
+}
+
+RAdd {
+   (e.1) ('0') = e.1;
+   (e.1) (e.2 '\'') = <RAdd (e.1) (e.2)> '\'';
+	e.1 = ; /* handle bad input */
+}

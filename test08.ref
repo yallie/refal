@@ -1,0 +1,15 @@
+
+/* test08 */
+
+* Outputs lines read from input
+* Written by Y [14-06-03]
+
+$ENTRY Go { = 
+	<Output>;
+}
+
+Output {
+   = <Output <Card>>;
+	0 = ; /* stop */
+	e.1 = <Prout e.1> <Output <Card>>;
+}
