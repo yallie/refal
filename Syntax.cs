@@ -3,6 +3,8 @@ using System.Collections;
 
 namespace Refal
 {
+	// syntax summary taken from: http://shura.botik.ru/refal/book/html/ref_b.html
+
 	public class Program
 	{
 		IDictionary functions = new Hashtable();

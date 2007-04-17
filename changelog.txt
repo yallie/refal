@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 11:34:38 yallie
+  Syntax.cs
+   Added comment about syntax summary
+
  11-Jun-2006 03:35:24 yallie
   Syntax.cs
    Started working on the abstract syntax tree (AST)
