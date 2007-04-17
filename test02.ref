@@ -1,0 +1,6 @@
+
+/* test02 */
+
+Go {
+	= <Prout 'Hello'>;
+}
