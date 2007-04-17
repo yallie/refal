@@ -3,17 +3,38 @@ using System;
 using System.Text;
 using System.Collections;
 
-namespace Refal
+namespace Refal.Runtime
 {
 	public class RefalBase
 	{
-		public static bool Match(PassiveExpression expression, object pattern)
+		public static bool Match(PassiveExpression expression, Pattern pattern)
 		{
-			if (expression == pattern)
-				return true;
+			if (expression == null || expression.IsEmpty)
+			{
+				// empty expression matches empty pattern
+				if (pattern == null || pattern.IsEmpty)
+					return true;
+
+				// any expression matches the pattern consisting of a
+				// single expression variable (like e.1)
+				if (pattern.Count == 1 && pattern[0] is ExpressionVariable)
+				{
+					// bind free variable to an expression
+					ExpressionVariable var = (ExpressionVariable)pattern[0];
+					var.Expression = expression;
+					return true;
+				}
+
+				return false;
+			}
+
+			// both pattern and expression are not empty, perform matching
+			// TODO
 
 			return false;
 		}
+
+		// Standard RTL routines
 
 		public static PassiveExpression Prout(PassiveExpression expression)
 		{

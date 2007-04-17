@@ -36,7 +36,7 @@ namespace Refal
 using System;
 using System.Collections;
 
-namespace Refal
+namespace Refal.Runtime
 {{
 	public class Program : RefalBase
 	{{

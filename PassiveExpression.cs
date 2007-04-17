@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Refal
+namespace Refal.Runtime
 {
 	/* Passive expression is expression that don't contain
 	   execution braces: <>
@@ -44,6 +44,11 @@ namespace Refal
 				return List.Add(symbol);
 
 			return -1;
+		}
+
+		public bool IsEmpty
+		{
+			get { return List.Count == 0; }
 		}
 
 /*		public void Print()
