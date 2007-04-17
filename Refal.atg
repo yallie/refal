@@ -126,34 +126,57 @@ Block<out Block block> =                        (. block = cb.BeginBlock(); .)
 	"}"                                          (. cb.EndBlock(); .)
 	.
 
-Sentence =                                      (. cb.BeginSentence(); .)
-	Pattern
+Sentence =                                      (. cb.BeginSentence();
+                                                   Pattern pattern; .)
+	Pattern<out pattern>
 	( "=" Expression
 	| WhereOrWithClause
 	)                                            (. cb.EndSentence(); .)
 	.
 
-Pattern =                                       (. cb.BeginPattern(); .)
-	{ Variable
-	| Literal
-	| "(" Pattern ")"
+Pattern<out Pattern pattern> =                  (. pattern = cb.BeginPattern(); 
+                                                   Variable variable;
+                                                   Symbol symbol;
+                                                   Pattern innerPattern; .)
+	{ Variable<out variable>                     (. pattern.Terms.Add(variable); .)
+	| Symbol<out symbol>
+	| "(" Pattern<out innerPattern> ")"          (. pattern.Terms.Add(new PatternInParentheses(innerPattern)); .)
 	}                                            (. cb.EndPattern(); .)
 	.
 
-WhereOrWithClause =                             (. Block block; .)
+WhereOrWithClause =                             (. Block block; Pattern pattern; .)
 	( "," | "&" ) Expression ":"
 	( Block<out block> /* with-clause */
-	| Pattern /* where-clause */
+	| Pattern<out pattern> /* where-clause */
 		( "=" Expression
 		| WhereOrWithClause
 		)
 	) .
 
-Expression = { Call | Variable | Literal | "(" Expression ")" } .
+Expression =                                    (. Variable variable; 
+                                                   Symbol symbol; .)
+	{ Call
+	| Variable<out variable>
+	| Symbol<out symbol>
+	| "(" Expression ")" 
+	} .
 
-Variable = ( "e." | "s." | "t." ) ( Integer | Identifier ) .
+Variable<out Variable variable> =               (. variable = new UnknownVariable(); .)
+	( "e."                                       (. variable = new ExpressionVariable(); .)
+	| "s."                                       (. variable = new SymbolVariable(); .)
+	| "t."                                       (. variable = new TermVariable(); .)
+	)
+	( Integer | Identifier )                     (. variable.Index = t.val; .)
+	.
 
-Literal = String | Character | Integer | True | False | Identifier .
+Symbol<out Symbol symbol> =                     (. symbol = null; .)
+	( String                                     (. symbol = new CompoundSymbol(t.val); .)
+	| Character                                  (. symbol = new Character(t.val); .)
+	| Integer                                    (. symbol = new Macrodigit(Convert.ToInt32(t.val)); .)
+	| True                                       (. symbol = new TrueIdentifier(t.val); .)
+	| False                                      (. symbol = new FalseIdentifier(t.val); .)
+	| Identifier                                 (. symbol = new Identifier(t.val); .)
+	) .
 
 Call = "<" Identifier Expression ">" .
 

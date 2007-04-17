@@ -235,6 +235,23 @@ namespace Refal
 
 	public class Identifier : CompoundSymbol
 	{
+		public Identifier(string value) : base(value)
+		{
+		}
+	}
+
+	public class TrueIdentifier : Identifier
+	{
+		public TrueIdentifier(string value) : base(value)
+		{
+		}
+	}
+
+	public class FalseIdentifier : Identifier
+	{
+		public FalseIdentifier(string value) : base(value)
+		{
+		}
 	}
 
 	public class Macrodigit : Symbol
@@ -269,6 +286,16 @@ namespace Refal
 		{
 			this.index = index;
 		}
+
+		public string Index
+		{
+			get { return index; }
+			set { index = value; }
+		}
+	}
+
+	public class UnknownVariable : Variable
+	{
 	}
 
 	public class SymbolVariable : Variable
@@ -326,6 +353,11 @@ namespace Refal
 
 		public PatternInParentheses()
 		{
+		}
+
+		public PatternInParentheses(Pattern pattern)
+		{
+			this.pattern = pattern;
 		}
 
 		public Pattern Pattern

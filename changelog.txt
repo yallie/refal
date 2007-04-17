@@ -1,4 +1,14 @@
 
+ 11-Jun-2006 13:31:08 yallie
+  Refal.atg
+   Added actions to symbols, variables, sentences, patterns
+
+  Syntax.cs
+   Added literals True and False, and PatternInParentheses
+
+  CodeBuilder.cs
+   BeginPattern() now returns the created pattern
+
  11-Jun-2006 13:10:20 yallie
   CodeBuilder.cs
    Added a few comments

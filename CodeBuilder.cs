@@ -83,9 +83,10 @@ namespace Refal
 			currentSentence = null;
 		}
 
-		public void BeginPattern()
+		public Pattern BeginPattern()
 		{
 			currentPattern = new Pattern();
+			return currentPattern;
 		}
 
 		public void EndPattern()
