@@ -1,0 +1,15 @@
+
+/* test09 */
+
+* Displays lines read from file 08_inout.ref
+* Written by Y [14-06-03]
+
+$ENTRY Go { = 
+	<Open 'r' File "08_inout.ref"> <Output () (File)>;
+}
+
+Output {
+   () (s.D) = <Output (<Get s.D>) (s.D)>;
+	(0) (s.D) = ; /* stop: end of file */
+	(e.1) (s.D) = <Prout e.1> <Output (<Get s.D>) (s.D)>;
+}

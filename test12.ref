@@ -1,0 +1,12 @@
+
+/* test12*/
+
+* Reads expression from "09_inout.ex1" via <Input>
+* and saves it to "09_inout.ex2" via <Xxout>.
+* Written by Y [16-06-03]
+
+$ENTRY Go { = 
+	<Prout <Xxin '10_inout.ex'>>
+}               
+
+$EXTRN Xxin;
