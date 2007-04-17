@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 13:55:36 yallie
+  Refal.atg, Syntax.cs, CodeBuilder.cs
+   Added terms, blocks and sentences semantics
+  
  11-Jun-2006 13:41:10 yallie
   Refal.atg, Syntax.cs, CodeBuilder.cs
    Added expressions and function calls semantics

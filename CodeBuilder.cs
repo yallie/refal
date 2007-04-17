@@ -10,8 +10,6 @@ namespace Refal
 		Block currentBlock = null;
 		Stack blocks = new Stack();
 		Sentence currentSentence = null;
-		Pattern currentPattern = null;
-		Expression currentExpression = null;
 
 		public CodeBuilder()
 		{
@@ -82,28 +80,6 @@ namespace Refal
 		public void EndSentence()
 		{
 			currentSentence = null;
-		}
-
-		public Pattern BeginPattern()
-		{
-			currentPattern = new Pattern();
-			return currentPattern;
-		}
-
-		public void EndPattern()
-		{
-			currentPattern = null;
-		}
-
-		public Expression BeginExpression()
-		{
-			currentExpression = new Expression();
-			return currentExpression;
-		}
-
-		public void EndExpression()
-		{
-			currentExpression = null;
 		}
 	}
 }

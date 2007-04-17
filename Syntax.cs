@@ -294,10 +294,6 @@ namespace Refal
 		}
 	}
 
-	public class UnknownVariable : Variable
-	{
-	}
-
 	public class SymbolVariable : Variable
 	{
 	}

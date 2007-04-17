@@ -118,32 +118,32 @@ Function =                                      (. cb.BeginFunction(); Block blo
 	Block<out block> [ ";" ]                     (. cb.EndFunction(block); .)
 	.
 
-Block<out Block block> =                        (. block = cb.BeginBlock(); .)
+Block<out Block block> =                        (. block = cb.BeginBlock(); 
+                                                   Sentence sentence; .)
 	"{"
-		Sentence
-		{ IF (IsSentence()) ";" Sentence }
-		[ ";" ]
+		Sentence<out sentence>                    (. block.Sentences.Add(sentence); .)
+		{ IF (IsSentence()) ";"
+		  Sentence<out sentence>                  (. block.Sentences.Add(sentence); .)
+		} [ ";" ]
 	"}"                                          (. cb.EndBlock(); .)
 	.
 
-Sentence =                                      (. cb.BeginSentence();
+Sentence<out Sentence sentence> =               (. sentence = new Sentence();
                                                    Pattern pattern;
                                                    Expression expression; .)
-	Pattern<out pattern>
-	( "=" Expression<out expression>
+	Pattern<out pattern>                         (. sentence.Pattern = pattern; .)
+	( "=" Expression<out expression>             (. sentence.Expression = expression; .)
 	| WhereOrWithClause
-	)                                            (. cb.EndSentence(); .)
-	.
+	) .
 
-Pattern<out Pattern pattern> =                  (. pattern = cb.BeginPattern(); 
+Pattern<out Pattern pattern> =                  (. pattern = new Pattern(); 
                                                    Variable variable;
                                                    Symbol symbol;
                                                    Pattern innerPattern; .)
 	{ Variable<out variable>                     (. pattern.Terms.Add(variable); .)
-	| Symbol<out symbol>
+	| Symbol<out symbol>                         (. pattern.Terms.Add(symbol); .)
 	| "(" Pattern<out innerPattern> ")"          (. pattern.Terms.Add(new PatternInParentheses(innerPattern)); .)
-	}                                            (. cb.EndPattern(); .)
-	.
+	} .
 
 WhereOrWithClause =                             (. Block block; Pattern pattern; Expression expression; .)
 	( "," | "&" )
@@ -155,7 +155,7 @@ WhereOrWithClause =                             (. Block block; Pattern pattern;
 		)
 	) .
 
-Expression<out Expression expression> =         (. expression = cb.BeginExpression();
+Expression<out Expression expression> =         (. expression = new Expression();
                                                    Variable variable; 
                                                    Symbol symbol; 
                                                    FunctionCall call; 
@@ -164,15 +164,14 @@ Expression<out Expression expression> =         (. expression = cb.BeginExpressi
 	| Variable<out variable>                     (. expression.Terms.Add(variable); .)
 	| Symbol<out symbol>                         (. expression.Terms.Add(symbol); .)
 	| "(" Expression<out innerExpression> ")"    (. expression.Terms.Add(new ExpressionInParentheses(innerExpression)); .)
-	}                                            (. cb.EndExpression(); .)
-	.
+	} .
 
-Variable<out Variable variable> =               (. variable = new UnknownVariable(); .)
+Variable<out Variable variable> =               (. variable = null; .)
 	( "e."                                       (. variable = new ExpressionVariable(); .)
 	| "s."                                       (. variable = new SymbolVariable(); .)
 	| "t."                                       (. variable = new TermVariable(); .)
 	)
-	( Integer | Identifier )                     (. variable.Index = t.val; .)
+	( Integer | Identifier )                     (. if (variable != null) variable.Index = t.val; .)
 	.
 
 Symbol<out Symbol symbol> =                     (. symbol = null; .)
