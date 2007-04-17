@@ -1,0 +1,104 @@
+
+/*-------------------------------------------------------------------------*/
+/*	Trying to create LL(1) parser for Refal ;)                              */
+/*	Y [11-06-06]                                                            */
+/*-------------------------------------------------------------------------*/
+
+using System.Collections;
+using System.CodeDom;
+
+COMPILER Refal
+
+/*-------------------------------------------------------------------------*/
+/*	LL(1) conflict resolvers                                                */
+/*-------------------------------------------------------------------------*/
+
+	static bool IsPattern()
+	{
+		Scanner.ResetPeek();
+		Token tok = Scanner.Peek();
+		return la.kind == _Semicolon && tok.kind != _RBrace;
+	}
+
+/*-------------------------------------------------------------------------*/
+/* scanner and parser                                                      */
+/*-------------------------------------------------------------------------*/
+
+CHARACTERS
+	
+	Letter     = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
+	Digit      = "0123456789".
+	Cr         = '\r'.
+	Lf         = '\n'.
+	Tab        = '\t'.
+	Space      = ' '.
+	StringChar = ANY - '"' - '\\'.
+	CharChar   = ANY - '\'' - '\\' - Cr - Lf.
+	Printable  = '\u0020' .. '\u007e'.
+	HexDigit   = "0123456789abcdefABCDEF".
+
+TOKENS
+	
+	Identifier = ['@'] Letter { Letter | Digit }.
+	String     = '"' { StringChar | '\\' Printable { HexDigit } } '"'.
+	Character  = '\'' ( CharChar | '\\' Printable { HexDigit } ) '\''.
+	
+	Integer    = ( Digit { Digit } | ("0x" | "0X") HexDigit { HexDigit } )
+		[ ( "U" | "u" [ "L" | "l" ] ) | ("L" | "l" [ "U" | "u" ] ) ] .
+	
+	Real      =
+		"." Digit { Digit }
+		[ ( "E" | "e" ) [ "+" | "-" ] Digit { Digit } ]
+		[ "F" | "f" | "D" | "d" | "M" | "m" ]
+		| Digit { Digit }
+		  ( "." Digit { Digit }
+		    [ ( "E" | "e" ) [ "+" | "-" ] Digit { Digit } ]
+		    [ "F" | "f" | "D" | "d" | "M" | "m" ]
+		  | ( "E" | "e" ) [ "+" | "-" ] Digit { Digit }
+		    [ "F" | "f" | "D" | "d" | "M" | "m" ]
+		  | "F" | "f" | "D" | "d" | "M" | "m" ) .
+		
+	Equal = "=" .
+
+	Bool       = "bool" .
+	Char       = "char" .
+	Float      = "float" .
+	Int        = "int" .
+	Null       = "null" .
+	Object     = "object" .
+	Str        = "str" .
+	Else       = "else" .
+	Semicolon  = ";" .
+	LBracket   = "[" .
+	LParen     = "(" .
+	LBrace     = "{" .
+	RBracket   = "]" .
+	RParen     = ")" .
+	RBrace     = "}" .
+
+COMMENTS FROM "/*" TO "*/" NESTED
+COMMENTS FROM "*" TO Cr 
+COMMENTS FROM "*" TO Lf
+
+IGNORE Cr + Lf + Tab
+
+PRODUCTIONS
+
+/*-------------------------------------------------------------------------*/
+
+Refal = Function { Function } .
+
+Function =
+	Identifier 
+	"{" Pattern { IF (IsPattern()) ";" Pattern } [ ";" ] "}" .
+
+Pattern =
+	[ LExpression ] "=" [ RExpression ] .
+
+LExpression = "e.1" .
+
+RExpression = "<>" .
+
+/*-------------------------------------------------------------------------*/
+
+END Refal.
