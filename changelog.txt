@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 03:35:24 yallie
+  Syntax.cs
+   Started working on the abstract syntax tree (AST)
+
  11-Jun-2006 02:47:16 yallie
   Refal.atg
    Removed LExpression and RExpression, renamed Element to Variable, etc
