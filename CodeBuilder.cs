@@ -8,6 +8,7 @@ namespace Refal
 		Program program = new Program();
 		DefinedFunction currentFunction = null;
 		Block currentBlock = null;
+		Stack blocks = new Stack();
 		Sentence currentSentence = null;
 		Pattern currentPattern = null;
 
@@ -54,13 +55,20 @@ namespace Refal
 
 		public Block BeginBlock()
 		{
+			// if block is nested, save parent block
+			if (currentBlock != null)
+				blocks.Push(currentBlock);
+
 			currentBlock = new Block();
 			return currentBlock;
 		}
 
 		public void EndBlock()
 		{
-			currentBlock = null;
+			if (blocks.Count == 0)
+				currentBlock = null;
+			else
+				currentBlock = (Block)blocks.Pop();
 		}
 
 		public void BeginSentence()
