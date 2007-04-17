@@ -1,0 +1,10 @@
+
+/* test20 - error */
+
+$ENTRY Test1 {
+	= ;
+}
+
+$ENTRY Test2 {
+	= ;
+}
