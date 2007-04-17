@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 15:07:40 yallie
+  Refal.atg, Syntax.cs, CodeBuilder.cs, test20.ref, tests.bat, tests.log
+   Added check for duplicate function definition
+  
  11-Jun-2006 14:59:50 yallie
   Refal.atg, Syntax.cs, CodeBuilder.cs, test2*.ref
    Added check for duplicate entry point definition

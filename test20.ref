@@ -1,10 +1,10 @@
 
-/* test20 - error */
+/* test20 - error: duplicate definition */
 
 $ENTRY Test1 {
 	= ;
 }
 
-$ENTRY Test2 {
+$ENTRY Test1 {
 	= ;
 }

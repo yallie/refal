@@ -114,7 +114,7 @@ External =
 
 Function =                                      (. cb.BeginFunction(); 
                                                    Block block; .)
-	[ Entry                                      (. cb.SetFunctionAsEntryPoint(); .)
+	[ Entry                                      (. cb.MarkFunctionAsPublic(); .)
 	] Identifier                                 (. cb.SetFunctionName(t.val); .)
 	Block<out block> [ ";" ]                     (. cb.EndFunction(block); .)
 	.

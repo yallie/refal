@@ -8,7 +8,6 @@ namespace Refal
 	public class Program
 	{
 		IDictionary functions = new Hashtable();
-		Function entryPoint = null;
 
 		public Program()
 		{
@@ -17,12 +16,6 @@ namespace Refal
 		public IDictionary Functions
 		{
 			get { return functions; }
-		}
-
-		public Function EntryPoint
-		{
-			get { return entryPoint; }
-			set { entryPoint = value; }
 		}
 	}
 
@@ -56,6 +49,7 @@ namespace Refal
 	public class DefinedFunction : Function
 	{
 		Block block;
+		bool isPublic = false;
 
 		public DefinedFunction() : base()
 		{
@@ -69,6 +63,12 @@ namespace Refal
 		{
 			get { return block; }
 			set { block = value; }
+		}
+
+		public bool IsPublic
+		{
+			get { return isPublic; }
+			set { isPublic = value; }
 		}
 	}
 

@@ -29,14 +29,10 @@ namespace Refal
 			currentFunction = new DefinedFunction();
 		}
 
-		// mark current function as program entry point
-		public void SetFunctionAsEntryPoint()
+		// mark current function as public
+		public void MarkFunctionAsPublic()
 		{
-			// check for duplicate entry point definition
-			if (program.EntryPoint != null)
-				SemErr("Only one entry point allowed, current entry point is " + program.EntryPoint.Name);
-
-			program.EntryPoint = currentFunction;
+			currentFunction.IsPublic = true;
 		}
 
 		public void SetFunctionName(string name)
@@ -45,7 +41,7 @@ namespace Refal
 
 			// check for duplicate function definition
 			if (program.Functions.Contains(name))
-				SemErr("Duplicate function definition: " + name);
+				SemErr("Duplicate definition of function " + name);
 
 			program.Functions[name] = currentFunction;
 		}
