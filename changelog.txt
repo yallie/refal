@@ -1,4 +1,12 @@
 
+ 11-Jun-2006 01:36:38 yallie
+  Refal.atg
+   Added literals "True" and "False", entry point "$ENTRY",
+   changes in elements and expressions
+
+  test03.ref, test.bat
+   Test program: palyndrome
+
  11-Jun-2006 01:29:50 yallie
   Refal.atg
    Added new non-terminals (Element, Literal, Call),

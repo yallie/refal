@@ -67,7 +67,10 @@ TOKENS
 	Null       = "null" .
 	Object     = "object" .
 	Str        = "str" .
+	True       = "True" .
+	False      = "False" .
 	Else       = "else" .
+	EntryPoint = "$ENTRY" .
 	Semicolon  = ";" .
 	LBracket   = "[" .
 	LParen     = "(" .
@@ -91,7 +94,7 @@ PRODUCTIONS
 Refal = Function { Function } .
 
 Function =
-	Identifier 
+	[ EntryPoint ] Identifier 
 	"{" Pattern { IF (IsPattern()) ";" Pattern } [ ";" ] "}" .
 
 Pattern =
@@ -99,11 +102,11 @@ Pattern =
 
 LExpression = { Element | Literal | "(" LExpression ")" } .
 
-RExpression = { Call | Element | Literal | "(" LExpression ")" } .
+RExpression = { Call | Element | Literal | "(" RExpression ")" } .
 
-Element = ( "e" | "s" ) "." ( Integer | Identifier ) .
+Element = ( "e." | "s." ) ( Integer | Identifier ) .
 
-Literal = String | Character | Integer .
+Literal = String | Character | Integer | True | False .
 
 Call = "<" Identifier RExpression ">" .
 
