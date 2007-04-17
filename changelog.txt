@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 02:21:38 yallie
+  test16.ref - test19.ref, test.bat
+   New samples: refal5 Test, refal5 Expression Evaluator, Quick Sort, Up
+
  11-Jun-2006 02:15:16 yallie
   Refal.atg
    Further where- and with-clauses improvements
