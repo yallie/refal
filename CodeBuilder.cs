@@ -30,7 +30,7 @@ namespace Refal
 		}
 
 		// mark current function as program entry point
-		public void SetEntryPoint()
+		public void SetFunctionEntryPoint()
 		{
 			// TODO: add check: if entryPoint != null, then more than one entry point found
 			program.EntryPoint = currentFunction;

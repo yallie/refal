@@ -1,6 +1,10 @@
 
+ 11-Jun-2006 14:02:58 yallie
+  Refal.atg, CodeBuilder.cs
+   Minor changes
+  
  11-Jun-2006 13:58:12 yallie
-  Refal.atg, Syntax.cs, CodeBuilder.cs
+  Refal.atg, CodeBuilder.cs
    Restructured a bit, removed unused blocks handling
   
  11-Jun-2006 13:55:36 yallie
