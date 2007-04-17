@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 13:58:12 yallie
+  Refal.atg, Syntax.cs, CodeBuilder.cs
+   Restructured a bit, removed unused blocks handling
+  
  11-Jun-2006 13:55:36 yallie
   Refal.atg, Syntax.cs, CodeBuilder.cs
    Added terms, blocks and sentences semantics

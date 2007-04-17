@@ -7,9 +7,6 @@ namespace Refal
 	{
 		Program program = new Program();
 		DefinedFunction currentFunction = null;
-		Block currentBlock = null;
-		Stack blocks = new Stack();
-		Sentence currentSentence = null;
 
 		public CodeBuilder()
 		{
@@ -50,36 +47,6 @@ namespace Refal
 		{
 			currentFunction.Block = block;
 			currentFunction = null;
-		}
-
-		public Block BeginBlock()
-		{
-			// if block is nested, save parent block
-			if (currentBlock != null)
-				blocks.Push(currentBlock);
-
-			currentBlock = new Block();
-			return currentBlock;
-		}
-
-		public void EndBlock()
-		{
-			// if block is nested, restore parent block
-			if (blocks.Count == 0)
-				currentBlock = null;
-			else
-				currentBlock = (Block)blocks.Pop();
-		}
-
-		public void BeginSentence()
-		{
-			currentSentence = new Sentence();
-			currentBlock.Sentences.Add(currentSentence);
-		}
-
-		public void EndSentence()
-		{
-			currentSentence = null;
 		}
 	}
 }

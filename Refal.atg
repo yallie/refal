@@ -112,21 +112,21 @@ External =
 	{ "," Identifier                             (. cb.AddExternalFunction(t.val); .)
 	} ";" .
 
-Function =                                      (. cb.BeginFunction(); Block block; .)
+Function =                                      (. cb.BeginFunction(); 
+                                                   Block block; .)
 	[ Entry                                      (. cb.SetEntryPoint(); .)
 	] Identifier                                 (. cb.SetFunctionName(t.val); .)
 	Block<out block> [ ";" ]                     (. cb.EndFunction(block); .)
 	.
 
-Block<out Block block> =                        (. block = cb.BeginBlock(); 
+Block<out Block block> =                        (. block = new Block();
                                                    Sentence sentence; .)
 	"{"
 		Sentence<out sentence>                    (. block.Sentences.Add(sentence); .)
 		{ IF (IsSentence()) ";"
 		  Sentence<out sentence>                  (. block.Sentences.Add(sentence); .)
 		} [ ";" ]
-	"}"                                          (. cb.EndBlock(); .)
-	.
+	"}" .
 
 Sentence<out Sentence sentence> =               (. sentence = new Sentence();
                                                    Pattern pattern;
