@@ -340,6 +340,11 @@ namespace Refal
 		{
 		}
 
+		public ExpressionInParentheses(Expression expression)
+		{
+			this.expression = expression;
+		}
+
 		public Expression Expression
 		{
 			get { return expression; }

@@ -127,9 +127,10 @@ Block<out Block block> =                        (. block = cb.BeginBlock(); .)
 	.
 
 Sentence =                                      (. cb.BeginSentence();
-                                                   Pattern pattern; .)
+                                                   Pattern pattern;
+                                                   Expression expression; .)
 	Pattern<out pattern>
-	( "=" Expression
+	( "=" Expression<out expression>
 	| WhereOrWithClause
 	)                                            (. cb.EndSentence(); .)
 	.
@@ -144,22 +145,27 @@ Pattern<out Pattern pattern> =                  (. pattern = cb.BeginPattern();
 	}                                            (. cb.EndPattern(); .)
 	.
 
-WhereOrWithClause =                             (. Block block; Pattern pattern; .)
-	( "," | "&" ) Expression ":"
+WhereOrWithClause =                             (. Block block; Pattern pattern; Expression expression; .)
+	( "," | "&" )
+	Expression<out expression> ":"
 	( Block<out block> /* with-clause */
 	| Pattern<out pattern> /* where-clause */
-		( "=" Expression
+		( "=" Expression<out expression>
 		| WhereOrWithClause
 		)
 	) .
 
-Expression =                                    (. Variable variable; 
-                                                   Symbol symbol; .)
-	{ Call
-	| Variable<out variable>
-	| Symbol<out symbol>
-	| "(" Expression ")" 
-	} .
+Expression<out Expression expression> =         (. expression = cb.BeginExpression();
+                                                   Variable variable; 
+                                                   Symbol symbol; 
+                                                   FunctionCall call; 
+                                                   Expression innerExpression; .)
+	{ Call<out call>                             (. expression.Terms.Add(call); .)
+	| Variable<out variable>                     (. expression.Terms.Add(variable); .)
+	| Symbol<out symbol>                         (. expression.Terms.Add(symbol); .)
+	| "(" Expression<out innerExpression> ")"    (. expression.Terms.Add(new ExpressionInParentheses(innerExpression)); .)
+	}                                            (. cb.EndExpression(); .)
+	.
 
 Variable<out Variable variable> =               (. variable = new UnknownVariable(); .)
 	( "e."                                       (. variable = new ExpressionVariable(); .)
@@ -178,7 +184,11 @@ Symbol<out Symbol symbol> =                     (. symbol = null; .)
 	| Identifier                                 (. symbol = new Identifier(t.val); .)
 	) .
 
-Call = "<" Identifier Expression ">" .
+Call<out FunctionCall call> =                   (. call = new FunctionCall(); 
+                                                   Expression expression; .)
+	"<" Identifier                               (. call.FunctionName = t.val; .)
+	Expression<out expression> ">"               (. call.Expression = expression; .)
+	.
 
 /*-------------------------------------------------------------------------*/
 

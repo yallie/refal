@@ -11,6 +11,7 @@ namespace Refal
 		Stack blocks = new Stack();
 		Sentence currentSentence = null;
 		Pattern currentPattern = null;
+		Expression currentExpression = null;
 
 		public CodeBuilder()
 		{
@@ -92,6 +93,17 @@ namespace Refal
 		public void EndPattern()
 		{
 			currentPattern = null;
+		}
+
+		public Expression BeginExpression()
+		{
+			currentExpression = new Expression();
+			return currentExpression;
+		}
+
+		public void EndExpression()
+		{
+			currentExpression = null;
 		}
 	}
 }
