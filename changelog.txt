@@ -1,4 +1,11 @@
 
+ 11-Jun-2006 02:15:16 yallie
+  Refal.atg
+   Further where- and with-clauses improvements
+
+  test15.ref, test.bat
+   Standard refal5 library, reflib.ref
+
  11-Jun-2006 02:11:50 yallie
   Refal.atg
    Where- and with-clauses improvements

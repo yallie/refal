@@ -12,4 +12,5 @@ refal.exe test11.ref >>tests.log
 refal.exe test12.ref >>tests.log
 refal.exe test13.ref >>tests.log
 refal.exe test14.ref >>tests.log
+refal.exe test15.ref >>tests.log
 start .\tests.log
