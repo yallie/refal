@@ -65,6 +65,7 @@ namespace Refal
 
 		public void EndBlock()
 		{
+			// if block is nested, restore parent block
 			if (blocks.Count == 0)
 				currentBlock = null;
 			else
