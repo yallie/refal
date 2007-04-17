@@ -5,9 +5,19 @@ namespace Refal
 {
 	// syntax summary taken from: http://shura.botik.ru/refal/book/html/ref_b.html
 
-	public class Program
+	public abstract class SyntaxNode
+	{
+		public SyntaxNode()
+		{
+		}
+
+		public abstract void Accept(CodeVisitor visitor);
+	}
+
+	public class Program : SyntaxNode
 	{
 		IDictionary functions = new Hashtable();
+		ArrayList functionList = new ArrayList();
 
 		public Program()
 		{
@@ -17,9 +27,25 @@ namespace Refal
 		{
 			get { return functions; }
 		}
+
+		public ArrayList FunctionList
+		{
+			get { return functionList; }
+		}
+
+		public void AddFunction(Function function)
+		{
+			functions[function.Name] = function;
+			functionList.Add(function);
+		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitProgram(this);
+		}
 	}
 
-	public abstract class Function
+	public abstract class Function : SyntaxNode
 	{
 		protected string name = "";
 
@@ -37,12 +63,22 @@ namespace Refal
 			get { return name; }
 			set { name = value; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitFunction(this);
+		}
 	}
 
 	public class ExternalFunction : Function
 	{
 		public ExternalFunction(string name) : base(name)
 		{
+		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitExternalFunction(this);
 		}
 	}
 
@@ -70,9 +106,14 @@ namespace Refal
 			get { return isPublic; }
 			set { isPublic = value; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitDefinedFunction(this);
+		}
 	}
 
-	public class Block
+	public class Block : SyntaxNode
 	{
 		ArrayList sentences = new ArrayList();
 
@@ -84,9 +125,14 @@ namespace Refal
 		{
 			get { return sentences; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitBlock(this);
+		}
 	}
 
-	public class Sentence
+	public class Sentence : SyntaxNode
 	{
 		// pattern { conditions } = expression;
 		// or pattern conditions block;
@@ -115,9 +161,14 @@ namespace Refal
 			get { return expression; }
 			set { expression = value; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitSentence(this);
+		}
 	}
 
-   public class Conditions
+   public class Conditions : SyntaxNode
 	{
 		Expression expression;
 		Pattern pattern;
@@ -151,9 +202,14 @@ namespace Refal
 			get { return block; }
 			set { block = value; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitConditions(this);
+		}
 	}
 
-   public class Pattern
+   public class Pattern : SyntaxNode
 	{
 		ArrayList terms = new ArrayList();
 
@@ -165,9 +221,14 @@ namespace Refal
 		{
 			get { return terms; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitPattern(this);
+		}
 	}
 
-	public class Expression
+	public class Expression : SyntaxNode
 	{
 		ArrayList terms = new ArrayList();
 
@@ -179,14 +240,27 @@ namespace Refal
 		{
 			get { return terms; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitExpression(this);
+		}
 	}
 
-	public abstract class Term
+	public abstract class Term : SyntaxNode
 	{
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitTerm(this);
+		}
 	}
 
 	public abstract class Symbol : Term
 	{
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitSymbol(this);
+		}
 	}
 
 	public class Character : Symbol
@@ -208,6 +282,11 @@ namespace Refal
 		{
 			get { return charValue; }
 			set { charValue = value; }
+		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitCharacter(this);
 		}
 	}
 
@@ -231,12 +310,22 @@ namespace Refal
 			get { return symValue; }
 			set { symValue = value; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitCompoundSymbol(this);
+		}
 	}
 
 	public class Identifier : CompoundSymbol
 	{
 		public Identifier(string value) : base(value)
 		{
+		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitIdentifier(this);
 		}
 	}
 
@@ -245,12 +334,22 @@ namespace Refal
 		public TrueIdentifier(string value) : base(value)
 		{
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitTrueIdentifier(this);
+		}
 	}
 
 	public class FalseIdentifier : Identifier
 	{
 		public FalseIdentifier(string value) : base(value)
 		{
+		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitFalseIdentifier(this);
 		}
 	}
 
@@ -272,6 +371,11 @@ namespace Refal
 			get { return digitValue; }
 			set { digitValue = value; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitMacrodigit(this);
+		}
 	}
 
 	public abstract class Variable : Term
@@ -292,18 +396,35 @@ namespace Refal
 			get { return index; }
 			set { index = value; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitVariable(this);
+		}
 	}
 
 	public class SymbolVariable : Variable
 	{
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitSymbolVariable(this);
+		}
 	}
 
 	public class TermVariable : Variable
 	{
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitTermVariable(this);
+		}
 	}
 
 	public class ExpressionVariable : Variable
 	{
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitExpressionVariable(this);
+		}
 	}
 
 	public class FunctionCall : Term
@@ -326,6 +447,11 @@ namespace Refal
 			get { return expression; }
 			set { expression = value; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitFunctionCall(this);
+		}
 	}
 
 	public class ExpressionInParentheses : Term
@@ -346,6 +472,11 @@ namespace Refal
 			get { return expression; }
 			set { expression = value; }
 		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitExpressionInParentheses(this);
+		}
 	}
 
 	public class PatternInParentheses : Term
@@ -365,6 +496,11 @@ namespace Refal
 		{
 			get { return pattern; }
 			set { pattern = value; }
+		}
+
+		public override void Accept(CodeVisitor visitor)
+		{
+			visitor.VisitPatternInParentheses(this);
 		}
 	}
 }

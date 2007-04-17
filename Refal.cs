@@ -18,7 +18,11 @@ namespace Refal
 				{
 					Scanner.Init(args[0]);
 					Parser.Parse();
-//					GenerateCode(Parser.Code);
+
+					if (Errors.count == 0)
+					{
+						GenerateCode(Parser.Program);
+					}
 				}
 				catch (Exception ex)
 				{
@@ -29,8 +33,12 @@ namespace Refal
 			}
 		}
 
-		static void GenerateCode(CodeCompileUnit code)
+		static void GenerateCode(Program program)
 		{
+			FormatCodeVisitor visitor = new FormatCodeVisitor();
+			program.Accept(visitor);
+			Console.WriteLine(visitor.Text);
+
 			/*/ Framework 1.1 version
 			CodeDomProvider provider = new CSharpCodeProvider();
 			ICodeGenerator gen = provider.CreateGenerator();

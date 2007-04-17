@@ -1,4 +1,14 @@
 
+ 11-Jun-2006 16:46:40 yallie
+  CodeVisitor.cs, FormatVisitor.cs, Refal.cs, Syntax.cs, b.bat
+   Started working on a code generator: wrote refal code formatter
+
+  test21.ref, test22.ref
+   External and internal function definition samples
+
+  CodeBuilder.cs, test.bat, tests.log
+   Minor changes
+
  11-Jun-2006 15:07:40 yallie
   Refal.atg, Syntax.cs, CodeBuilder.cs, test20.ref, tests.bat, tests.log
    Added check for duplicate function definition

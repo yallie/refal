@@ -1,3 +1,4 @@
+@echo off
 echo This section should be empty: >tests.log
 echo ---------------------------------------- >>tests.log
 refal.exe test01.ref >>tests.log
@@ -19,6 +20,7 @@ refal.exe test16.ref >>tests.log
 refal.exe test17.ref >>tests.log
 refal.exe test18.ref >>tests.log
 refal.exe test19.ref >>tests.log
+echo This section should contain errors: >>tests.log
 echo ---------------------------------------- >>tests.log
 echo *** Duplicate definition of Test1 >>tests.log
 refal.exe test20.ref >>tests.log

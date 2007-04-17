@@ -1,10 +1,4 @@
 
-/* test20 - error */
+/* test21 */
 
-$ENTRY Test1 {
-	= ;
-}
-
-$ENTRY Test2 {
-	= ;
-}
+$EXTRN Main, Go, Run;

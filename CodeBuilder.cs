@@ -20,7 +20,7 @@ namespace Refal
 		public void AddExternalFunction(string name)
 		{
 			Function fun = new ExternalFunction(name);
-			program.Functions[name] = fun;
+			program.AddFunction(fun);
 		}
 
 		// start new function definition
@@ -43,7 +43,7 @@ namespace Refal
 			if (program.Functions.Contains(name))
 				SemErr("Duplicate definition of function " + name);
 
-			program.Functions[name] = currentFunction;
+			program.AddFunction(currentFunction);
 		}
 
 		public void EndFunction(Block block)
