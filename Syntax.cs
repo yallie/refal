@@ -8,7 +8,7 @@ namespace Refal
 	public class Program
 	{
 		IDictionary functions = new Hashtable();
-		Function entryPoint;
+		Function entryPoint = null;
 
 		public Program()
 		{

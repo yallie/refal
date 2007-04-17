@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 14:59:50 yallie
+  Refal.atg, Syntax.cs, CodeBuilder.cs, test2*.ref
+   Added check for duplicate entry point definition
+  
  11-Jun-2006 14:22:00 yallie
   Refal.atg, Syntax.cs
    Added some where- and with- clauses semantics

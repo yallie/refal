@@ -30,16 +30,23 @@ namespace Refal
 		}
 
 		// mark current function as program entry point
-		public void SetFunctionEntryPoint()
+		public void SetFunctionAsEntryPoint()
 		{
-			// TODO: add check: if entryPoint != null, then more than one entry point found
+			// check for duplicate entry point definition
+			if (program.EntryPoint != null)
+				SemErr("Only one entry point allowed, current entry point is " + program.EntryPoint.Name);
+
 			program.EntryPoint = currentFunction;
 		}
 
 		public void SetFunctionName(string name)
 		{
 			currentFunction.Name = name;
-			// TODO: add check: if program.Function.Contains(name) then duplicate definition of name
+
+			// check for duplicate function definition
+			if (program.Functions.Contains(name))
+				SemErr("Duplicate function definition: " + name);
+
 			program.Functions[name] = currentFunction;
 		}
 
@@ -47,6 +54,11 @@ namespace Refal
 		{
 			currentFunction.Block = block;
 			currentFunction = null;
+		}
+
+		public void SemErr(string msg)
+		{
+			Parser.SemErr(msg);
 		}
 	}
 }
