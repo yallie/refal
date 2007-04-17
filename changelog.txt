@@ -1,7 +1,11 @@
 
- 12-Jun-2006 01:27:44 yallie
+ 12-Jun-2006 01:55:44 yallie
   Pattern.cs
-   Added pattern AST node representation
+   Finished the first version of pattern class
+
+ 12-Jun-2006 01:27:01 yallie
+  Pattern.cs
+   Added incomplete pattern class (pattern is an expression with free variables)
 
   CSharpVisitor.cs, PassiveExpression.cs, RefalBase.cs
    Changed namespace to Refal.Runtime

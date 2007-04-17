@@ -3,38 +3,18 @@ using System.Collections;
 
 namespace Refal.Runtime
 {
-	public class Pattern : CollectionBase
+	/* Pattern is much like expression, but it can include free variables.
+	   Patterns containing parentheses () presented via nested patterns.
+	*/
+
+	public class Pattern : PassiveExpression
 	{
 		public Pattern()
 		{
 		}
 
-		public Pattern(params object[] terms)
+		public Pattern(params object[] terms) : base(terms)
 		{
-			foreach (object term in terms)
-				Add(term);
-		}
-
-		public object this[int index]
-		{
-			get { return List[index]; }
-		}
-
-		public int Add(object term)
-		{
-			if (term is char[])
-			{
-				int index = -1;
-
-				foreach (char c in (char[])term)
-					index = List.Add(c);
-
-				return index;
-			}
-			else if (symbol != null)
-				return List.Add(symbol);
-
-			return -1;
 		}
 	}
 
@@ -54,14 +34,42 @@ namespace Refal.Runtime
 
 	public class SymbolVariable : Variable
 	{
-		object 
+		object symbol = null;
+
+		public object Symbol
+		{
+			get { return symbol; }
+			set { symbol = value; }
+		}
 	}
 
 	public class TermVariable : Variable
 	{
+		// term is either a symbol or an expression in structure brackets
+		object symbol = null;
+		PassiveExpression expression;
+
+		public object Symbol
+		{
+			get { return symbol; }
+			set { symbol = value; }
+		}
+
+		public PassiveExpression ExpressionInBrackets
+		{
+			get { return expression; }
+			set { expression = value; }
+		}
 	}
 
 	public class ExpressionVariable : Variable
 	{
+		PassiveExpression expression;
+
+		public PassiveExpression Expression
+		{
+			get { return expression; }
+			set { expression = value; }
+		}
 	}
 }
