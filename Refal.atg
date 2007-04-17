@@ -13,7 +13,7 @@ COMPILER Refal
 /*	LL(1) conflict resolvers                                                */
 /*-------------------------------------------------------------------------*/
 
-	static bool IsPattern()
+	static bool IsSentence()
 	{
 		Scanner.ResetPeek();
 		Token tok = Scanner.Peek();
@@ -70,17 +70,17 @@ TOKENS
 	True       = "True" .
 	False      = "False" .
 	Else       = "else" .
-	EntryPoint = "$ENTRY" .
-	External   = "$EXTRN" .
+	Entry      = "$ENTRY" .
+	Extern     = "$EXTRN" | "$EXTERN" | "$EXTERNAL" .
 	Semicolon  = ";" .
 	LBracket   = "[" .
 	LParen     = "(" .
 	LBrace     = "{" .
-	LCorner    = "<" .
+	LEval      = "<" .
 	RBracket   = "]" .
 	RParen     = ")" .
 	RBrace     = "}" .
-	RCorner    = ">" .
+	REval      = ">" .
 
 COMMENTS FROM "/*" TO "*/" NESTED
 COMMENTS FROM "*" TO Cr 
@@ -92,47 +92,47 @@ PRODUCTIONS
 
 /*-------------------------------------------------------------------------*/
 
-Refal = Function { Function } .
+Refal = Definition { Definition } .
 
-Function = NormalFunction | ExternalFunction .
+Definition = Function | External .
 
-ExternalFunction =
-	External Identifier { "," Identifier } ";" .
+External =
+	Extern Identifier { "," Identifier } ";" .
 
-NormalFunction =
-	[ EntryPoint ] Identifier
+Function =
+	[ Entry ] Identifier
 	Block [ ";" ] .
 
 Block =	
 	"{"
-		Pattern { IF (IsPattern()) ";" Pattern } [ ";" ]
+		Sentence { IF (IsSentence()) ";" Sentence } [ ";" ]
 	"}" .
 
-Pattern =
-	LExpression
-	( "=" RExpression
+Sentence =
+	Pattern
+	( "=" Expression
 	| WhereOrWithClause
 	) .
 
-LExpression =
-	{ Element | Literal | "(" LExpression ")" } .
+Pattern =
+	{ Variable | Literal | "(" Pattern ")" } .
 
 WhereOrWithClause =
-	( "," | "&" ) RExpression ":"
-	( Block
-	| LExpression
-		( "=" RExpression
+	( "," | "&" ) Expression ":"
+	( Block /* with-clause */
+	| Pattern /* where-clause */
+		( "=" Expression
 		| WhereOrWithClause
 		)
 	) .
 
-RExpression = { Call | Element | Literal | "(" RExpression ")" } .
+Expression = { Call | Variable | Literal | "(" Expression ")" } .
 
-Element = ( "e." | "s." | "t." ) ( Integer | Identifier ) .
+Variable = ( "e." | "s." | "t." ) ( Integer | Identifier ) .
 
 Literal = String | Character | Integer | True | False | Identifier .
 
-Call = "<" Identifier RExpression ">" .
+Call = "<" Identifier Expression ">" .
 
 /*-------------------------------------------------------------------------*/
 

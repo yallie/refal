@@ -1,6 +1,6 @@
 
 /* test02 */
 
-Go {
+$ENTRY Go {
 	= <Prout 'Hello'>;
 }

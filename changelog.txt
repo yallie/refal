@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 02:47:16 yallie
+  Refal.atg
+   Removed LExpression and RExpression, renamed Element to Variable, etc
+
  11-Jun-2006 02:21:38 yallie
   test16.ref - test19.ref, test.bat
    New samples: refal5 Test, refal5 Expression Evaluator, Quick Sort, Up
