@@ -1,4 +1,11 @@
 
+ 11-Jun-2006 02:08:50 yallie
+  Refal.atg
+   Where- and with-clauses continued
+
+  test14.ref, test.bat
+   Standard refal5 utility: multi-bracket preprocessor
+
  11-Jun-2006 02:01:50 yallie
   Refal.atg
    Started working on where- and with-clauses

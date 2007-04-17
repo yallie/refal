@@ -109,18 +109,23 @@ Block =
 	"}" .
 
 Pattern =
-	LExpression "=" RExpression .
+	LExpression
+	( "=" RExpression
+	| WhereOrWithClause
+	) .
 
 LExpression =
-	{ Element | Literal | "(" LExpression ")" }
-	[ WhereOrWithClause ] .
+	{ Element | Literal | "(" LExpression ")" } .
 
 WhereOrWithClause =
-	( "," | "&" ) Call ":" ( Block | LExpression ) .
+	( "," | "&" ) Call ":"
+	( Block
+	| LExpression "=" RExpression
+	) .
 
 RExpression = { Call | Element | Literal | "(" RExpression ")" } .
 
-Element = ( "e." | "s." ) ( Integer | Identifier ) .
+Element = ( "e." | "s." | "t." ) ( Integer | Identifier ) .
 
 Literal = String | Character | Integer | True | False | Identifier .
 
