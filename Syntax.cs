@@ -18,6 +18,7 @@ namespace Refal
 	{
 		IDictionary functions = new Hashtable();
 		ArrayList functionList = new ArrayList();
+		Function entryPoint = null;
 
 		public Program()
 		{
@@ -31,6 +32,12 @@ namespace Refal
 		public ArrayList FunctionList
 		{
 			get { return functionList; }
+		}
+
+		public Function EntryPoint
+		{
+			get { return entryPoint; }
+			set { entryPoint = value; }
 		}
 
 		public void AddFunction(Function function)

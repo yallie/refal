@@ -1,4 +1,20 @@
 
+ 12-Jun-2006 01:21:02 yallie
+  CSharpVisitor.cs, Refal.cs
+   Started working on a C# code generator
+
+  PassiveExpression.cs
+   Passive expression is an expression without execution braces ("<>")
+
+  RefalBase.cs
+   Added base class for refal program
+
+  test02-hand.cs
+   Hand-coded translation on test02.ref
+
+  CodeBuilder.cs, Syntax.cs
+   The first public function is marked as program entry point
+
  11-Jun-2006 16:46:40 yallie
   CodeVisitor.cs, FormatVisitor.cs, Refal.cs, Syntax.cs, b.bat
    Started working on a code generator: wrote refal code formatter

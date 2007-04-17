@@ -33,6 +33,10 @@ namespace Refal
 		public void MarkFunctionAsPublic()
 		{
 			currentFunction.IsPublic = true;
+
+			// first public function is an entry point
+			if (program.EntryPoint == null)
+				program.EntryPoint = currentFunction;
 		}
 
 		public void SetFunctionName(string name)

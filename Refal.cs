@@ -35,7 +35,8 @@ namespace Refal
 
 		static void GenerateCode(Program program)
 		{
-			FormatCodeVisitor visitor = new FormatCodeVisitor();
+			//FormatCodeVisitor visitor = new FormatCodeVisitor();
+			CSharpCodeVisitor visitor = new CSharpCodeVisitor();
 			program.Accept(visitor);
 			Console.WriteLine(visitor.Text);
 
