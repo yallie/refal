@@ -9,6 +9,7 @@ namespace Refal
 		DefinedFunction currentFunction = null;
 		Block currentBlock = null;
 		Sentence currentSentence = null;
+		Pattern currentPattern = null;
 
 		public CodeBuilder()
 		{
@@ -45,15 +46,16 @@ namespace Refal
 			program.Functions[name] = currentFunction;
 		}
 
-		public void EndFunction()
+		public void EndFunction(Block block)
 		{
+			currentFunction.Block = block;
 			currentFunction = null;
 		}
 
 		public Block BeginBlock()
 		{
 			currentBlock = new Block();
-			currentFunction.Block = currentBlock;
+			return currentBlock;
 		}
 
 		public void EndBlock()
@@ -70,6 +72,16 @@ namespace Refal
 		public void EndSentence()
 		{
 			currentSentence = null;
+		}
+
+		public void BeginPattern()
+		{
+			currentPattern = new Pattern();
+		}
+
+		public void EndPattern()
+		{
+			currentPattern = null;
 		}
 	}
 }

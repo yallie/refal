@@ -112,10 +112,10 @@ External =
 	{ "," Identifier                             (. cb.AddExternalFunction(t.val); .)
 	} ";" .
 
-Function =                                      (. cb.BeginFunction(); .)
+Function =                                      (. cb.BeginFunction(); Block block; .)
 	[ Entry                                      (. cb.SetEntryPoint(); .)
 	] Identifier                                 (. cb.SetFunctionName(t.val); .)
-	Block [ ";" ]                                (. cb.EndFunction(); .)
+	Block<out block> [ ";" ]                     (. cb.EndFunction(block); .)
 	.
 
 Block<out Block block> =                        (. block = cb.BeginBlock(); .)
@@ -133,12 +133,16 @@ Sentence =                                      (. cb.BeginSentence(); .)
 	)                                            (. cb.EndSentence(); .)
 	.
 
-Pattern =
-	{ Variable | Literal | "(" Pattern ")" } .
+Pattern =                                       (. cb.BeginPattern(); .)
+	{ Variable
+	| Literal
+	| "(" Pattern ")"
+	}                                            (. cb.EndPattern(); .)
+	.
 
-WhereOrWithClause =
+WhereOrWithClause =                             (. Block block; .)
 	( "," | "&" ) Expression ":"
-	( Block /* with-clause */
+	( Block<out block> /* with-clause */
 	| Pattern /* where-clause */
 		( "=" Expression
 		| WhereOrWithClause
