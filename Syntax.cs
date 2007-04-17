@@ -8,6 +8,7 @@ namespace Refal
 	public class Program
 	{
 		IDictionary functions = new Hashtable();
+		Function entryPoint;
 
 		public Program()
 		{
@@ -16,6 +17,12 @@ namespace Refal
 		public IDictionary Functions
 		{
 			get { return functions; }
+		}
+
+		public Function EntryPoint
+		{
+			get { return entryPoint; }
+			set { entryPoint = value; }
 		}
 	}
 
@@ -27,6 +34,11 @@ namespace Refal
 		{
 		}
 
+		public Function(string name)
+		{
+			this.name = name;
+		}
+
 		public string Name
 		{
 			get { return name; }
@@ -36,15 +48,21 @@ namespace Refal
 
 	public class ExternalFunction : Function
 	{
+		public ExternalFunction(string name) : base(name)
+		{
+		}
 	}
 
 	public class DefinedFunction : Function
 	{
 		Block block;
 
-		public DefinedFunction(string name)
+		public DefinedFunction() : base()
 		{
-			this.name = name;
+		}
+
+		public DefinedFunction(string name) : base(name)
+		{
 		}
 
 		public Block Block

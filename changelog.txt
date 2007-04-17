@@ -1,4 +1,14 @@
 
+ 11-Jun-2006 12:13:52 yallie
+  Refal.atg
+   Started adding actions for building the AST
+
+  Syntax.cs
+   Added entry point handling and some more
+
+  CodeBuilder.cs
+   New helper class to simplify the process of building the AST
+
  11-Jun-2006 11:34:38 yallie
   Syntax.cs
    Added comment about syntax summary

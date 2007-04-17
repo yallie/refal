@@ -21,6 +21,16 @@ COMPILER Refal
 	}
 
 /*-------------------------------------------------------------------------*/
+/*	AST built by compiler                                                   */
+/*-------------------------------------------------------------------------*/
+
+	static CodeBuilder cb = new CodeBuilder();
+	public static Program Program
+	{
+		get { return cb.Program; }
+	}
+
+/*-------------------------------------------------------------------------*/
 /* scanner and parser                                                      */
 /*-------------------------------------------------------------------------*/
 
@@ -97,22 +107,31 @@ Refal = Definition { Definition } .
 Definition = Function | External .
 
 External =
-	Extern Identifier { "," Identifier } ";" .
+	Extern
+	Identifier                                   (. cb.AddExternalFunction(t.val); .)
+	{ "," Identifier                             (. cb.AddExternalFunction(t.val); .)
+	} ";" .
 
-Function =
-	[ Entry ] Identifier
-	Block [ ";" ] .
+Function =                                      (. cb.BeginFunction(); .)
+	[ Entry                                      (. cb.SetEntryPoint(); .)
+	] Identifier                                 (. cb.SetFunctionName(t.val); .)
+	Block [ ";" ]                                (. cb.EndFunction(); .)
+	.
 
-Block =	
+Block<out Block block> =                        (. block = cb.BeginBlock(); .)
 	"{"
-		Sentence { IF (IsSentence()) ";" Sentence } [ ";" ]
-	"}" .
+		Sentence
+		{ IF (IsSentence()) ";" Sentence }
+		[ ";" ]
+	"}"                                          (. cb.EndBlock(); .)
+	.
 
-Sentence =
+Sentence =                                      (. cb.BeginSentence(); .)
 	Pattern
 	( "=" Expression
 	| WhereOrWithClause
-	) .
+	)                                            (. cb.EndSentence(); .)
+	.
 
 Pattern =
 	{ Variable | Literal | "(" Pattern ")" } .
