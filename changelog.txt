@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 02:11:50 yallie
+  Refal.atg
+   Where- and with-clauses improvements
+
  11-Jun-2006 02:08:50 yallie
   Refal.atg
    Where- and with-clauses continued

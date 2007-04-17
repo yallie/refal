@@ -39,7 +39,7 @@ CHARACTERS
 
 TOKENS
 	
-	Identifier = ['@'] Letter { Letter | Digit | "-" }.
+	Identifier = ['@'] Letter { Letter | Digit | "-" | "_" }.
 	String     = '"' { StringChar | '\\' Printable { HexDigit } } '"'.
 	Character  = '\'' { CharChar | '\\' Printable { HexDigit } } '\''.
 	
@@ -118,7 +118,7 @@ LExpression =
 	{ Element | Literal | "(" LExpression ")" } .
 
 WhereOrWithClause =
-	( "," | "&" ) Call ":"
+	( "," | "&" ) RExpression ":"
 	( Block
 	| LExpression "=" RExpression
 	) .
