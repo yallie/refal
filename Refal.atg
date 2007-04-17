@@ -41,7 +41,7 @@ TOKENS
 	
 	Identifier = ['@'] Letter { Letter | Digit }.
 	String     = '"' { StringChar | '\\' Printable { HexDigit } } '"'.
-	Character  = '\'' ( CharChar | '\\' Printable { HexDigit } ) '\''.
+	Character  = '\'' { CharChar | '\\' Printable { HexDigit } } '\''.
 	
 	Integer    = ( Digit { Digit } | ("0x" | "0X") HexDigit { HexDigit } )
 		[ ( "U" | "u" [ "L" | "l" ] ) | ("L" | "l" [ "U" | "u" ] ) ] .
@@ -72,9 +72,11 @@ TOKENS
 	LBracket   = "[" .
 	LParen     = "(" .
 	LBrace     = "{" .
+	LCorner    = "<" .
 	RBracket   = "]" .
 	RParen     = ")" .
 	RBrace     = "}" .
+	RCorner    = ">" .
 
 COMMENTS FROM "/*" TO "*/" NESTED
 COMMENTS FROM "*" TO Cr 
@@ -93,11 +95,17 @@ Function =
 	"{" Pattern { IF (IsPattern()) ";" Pattern } [ ";" ] "}" .
 
 Pattern =
-	[ LExpression ] "=" [ RExpression ] .
+	LExpression "=" RExpression .
 
-LExpression = "e.1" .
+LExpression = { Element | Literal | "(" LExpression ")" } .
 
-RExpression = "<>" .
+RExpression = { Call | Element | Literal | "(" LExpression ")" } .
+
+Element = ( "e" | "s" ) "." ( Integer | Identifier ) .
+
+Literal = String | Character | Integer .
+
+Call = "<" Identifier RExpression ">" .
 
 /*-------------------------------------------------------------------------*/
 

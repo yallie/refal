@@ -1,0 +1,12 @@
+
+ 11-Jun-2006 01:29:50 yallie
+  Refal.atg
+   Added new non-terminals (Element, Literal, Call),
+   modified patterns and expressions (Pattern, LExpression, RExpression)
+
+  test02.ref, test.bat
+   The first step towards test suite
+
+ 11-Jun-2006 00:30:38 yallie
+  *.*
+   Initial checkin
