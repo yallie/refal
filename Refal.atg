@@ -170,7 +170,9 @@ Expression<out Expression expression> =         (. expression = new Expression()
                                                    FunctionCall call; 
                                                    Expression innerExpression; .)
 	{ Call<out call>                             (. expression.Terms.Add(call); .)
-	| Variable<out variable>                     (. expression.Terms.Add(variable); .)
+	| Variable<out variable>                     (. // expression can not contain free variables
+	                                                variable.IsBound = true;
+	                                                expression.Terms.Add(variable); .)
 	| Symbol<out symbol>                         (. expression.Terms.Add(symbol); .)
 	| "(" Expression<out innerExpression> ")"    (. expression.Terms.Add(new ExpressionInParentheses(innerExpression)); .)
 	} .

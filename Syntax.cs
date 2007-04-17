@@ -388,6 +388,7 @@ namespace Refal
 	public abstract class Variable : Term
 	{
 		string index;
+		bool isBound = false;
 
 		public Variable()
 		{
@@ -402,6 +403,12 @@ namespace Refal
 		{
 			get { return index; }
 			set { index = value; }
+		}
+
+		public bool IsBound
+		{
+			get { return isBound; }
+			set { isBound = value; }
 		}
 
 		public override void Accept(CodeVisitor visitor)

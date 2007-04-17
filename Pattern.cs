@@ -36,6 +36,10 @@ namespace Refal.Runtime
 	{
 		object symbol = null;
 
+		public SymbolVariable(string name) : base(name)
+		{
+		}
+
 		public object Symbol
 		{
 			get { return symbol; }
@@ -48,6 +52,10 @@ namespace Refal.Runtime
 		// term is either a symbol or an expression in structure brackets
 		object symbol = null;
 		PassiveExpression expression;
+
+		public TermVariable(string name) : base(name)
+		{
+		}
 
 		public object Symbol
 		{
@@ -65,6 +73,10 @@ namespace Refal.Runtime
 	public class ExpressionVariable : Variable
 	{
 		PassiveExpression expression;
+
+		public ExpressionVariable(string name) : base(name)
+		{
+		}
 
 		public PassiveExpression Expression
 		{

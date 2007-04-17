@@ -8,6 +8,7 @@ namespace Refal
 	{
 		StringBuilder sb = new StringBuilder();
 		int indentLevel = 2;
+//		int currentPatternIndex = 1;
 
 		public CSharpCodeVisitor()
 		{
@@ -79,10 +80,9 @@ namespace Refal.Runtime
 			foreach (Sentence sentence in block.Sentences)
 			{
 				sentence.Accept(this);
-				sb.Append(";\r\n");
+				sb.Append(";\r\n\r\n");
 			}
 
-			sb.Append("\r\n");
 			Indent(indentLevel);
 			sb.Append("throw new RecognitionImpossibleException(\"Recognition impossible\");\r\n");
 
@@ -115,12 +115,7 @@ namespace Refal.Runtime
 
 		public override void VisitPattern(Pattern pattern)
 		{
-			if (pattern.Terms.Count == 0)
-			{
-				sb.Append("null");
-				return;
-			}
-				
+			sb.Append("new Pattern(");
 			for (int i = 0; i < pattern.Terms.Count; i++)
 			{
 				Term term = pattern.Terms[i] as Term;
@@ -129,16 +124,11 @@ namespace Refal.Runtime
 				if (i < pattern.Terms.Count - 1)
 					sb.Append(", ");
 			}
+			sb.Append(")");
 		}
 
 		public override void VisitExpression(Expression expression)
 		{
-			if (expression.Terms.Count == 0)
-			{
-				sb.Append("null");
-				return;
-			}
-				
 			sb.Append("new PassiveExpression(");
 			for (int i = 0; i < expression.Terms.Count; i++)
 			{
@@ -183,44 +173,40 @@ namespace Refal.Runtime
 
 		public override void VisitTrueIdentifier(TrueIdentifier identifier)
 		{
-			sb.Append(true);
+			sb.Append("true");
 		}
 
 		public override void VisitFalseIdentifier(FalseIdentifier falseIdentifier)
 		{
-			sb.Append(false);
+			sb.Append("false");
 		}
 
 		public override void VisitSymbolVariable(SymbolVariable symbolVariable)
 		{
-			sb.Append("s.");
-			sb.Append(symbolVariable.Index);
+			if (!symbolVariable.IsBound)
+				sb.AppendFormat("new SymbolVariable(\"{0}\")", symbolVariable.Index);
 		}
 
 		public override void VisitTermVariable(TermVariable termVariable)
 		{
-			sb.Append("t.");
-			sb.Append(termVariable.Index);
+			if (!termVariable.IsBound)
+				sb.AppendFormat("new TermVariable(\"{0}\")", termVariable.Index);
 		}
 
 		public override void VisitExpressionVariable(ExpressionVariable expressionVariable)
 		{
-			sb.Append("e.");
-			sb.Append(expressionVariable.Index);
+			if (!expressionVariable.IsBound)
+				sb.AppendFormat("new ExpressionVariable(\"{0}\")", expressionVariable.Index);
 		}
 
 		public override void VisitExpressionInParentheses(ExpressionInParentheses expressionInParentheses)
 		{
-			sb.Append("(");
 			expressionInParentheses.Expression.Accept(this);
-			sb.Append(")");
 		}
 
 		public override void VisitPatternInParentheses(PatternInParentheses patternInParentheses)
 		{
-			sb.Append("(");
 			patternInParentheses.Pattern.Accept(this);
-			sb.Append(")");
 		}
 
 		public override void VisitMacrodigit(Macrodigit macrodigit)

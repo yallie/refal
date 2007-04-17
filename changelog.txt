@@ -1,4 +1,8 @@
 
+ 12-Jun-2006 02:20:14 yallie
+  CSharpVisitor.cs, Pattern.cs, Syntax.cs, Refal.atg
+   Improved patterns support
+
  12-Jun-2006 01:55:44 yallie
   Pattern.cs
    Finished the first version of pattern class
