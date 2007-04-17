@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 02:01:50 yallie
+  Refal.atg
+   Started working on where- and with-clauses
+
  11-Jun-2006 01:47:22 yallie
   Refal.atg
    Improved identifiers, had to add LL(1) conflict resolver

@@ -100,13 +100,23 @@ ExternalFunction =
 	External Identifier { "," Identifier } ";" .
 
 NormalFunction =
-	[ EntryPoint ] Identifier 
-	"{" Pattern { IF (IsPattern()) ";" Pattern } [ ";" ] "}" [ ";" ] .
+	[ EntryPoint ] Identifier
+	Block [ ";" ] .
+
+Block =	
+	"{"
+		Pattern { IF (IsPattern()) ";" Pattern } [ ";" ]
+	"}" .
 
 Pattern =
 	LExpression "=" RExpression .
 
-LExpression = { Element | Literal | "(" LExpression ")" } .
+LExpression =
+	{ Element | Literal | "(" LExpression ")" }
+	[ WhereOrWithClause ] .
+
+WhereOrWithClause =
+	( "," | "&" ) Call ":" ( Block | LExpression ) .
 
 RExpression = { Call | Element | Literal | "(" RExpression ")" } .
 
