@@ -1,4 +1,8 @@
 
+ 11-Jun-2006 14:22:00 yallie
+  Refal.atg, Syntax.cs
+   Added some where- and with- clauses semantics
+
  11-Jun-2006 14:02:58 yallie
   Refal.atg, CodeBuilder.cs
    Minor changes

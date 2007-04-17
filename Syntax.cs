@@ -93,7 +93,6 @@ namespace Refal
 		Pattern pattern;
 		Conditions conditions;
 		Expression expression;
-		Block block;
 
 		public Sentence()
 		{
@@ -116,18 +115,13 @@ namespace Refal
 			get { return expression; }
 			set { expression = value; }
 		}
-
-		public Block Block
-		{
-			get { return block; }
-			set { block = value; }
-		}
 	}
 
    public class Conditions
 	{
 		Expression expression;
 		Pattern pattern;
+		Block block;
 		Conditions moreConditions;
 
 		public Conditions()
@@ -150,6 +144,12 @@ namespace Refal
 		{
 			get { return moreConditions; }
 			set { moreConditions = value; }
+		}
+
+		public Block Block
+		{
+			get { return block; }
+			set { block = value; }
 		}
 	}
 
