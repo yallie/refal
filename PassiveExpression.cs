@@ -29,7 +29,7 @@ namespace Refal.Runtime
 			get { return List[index]; }
 		}
 
-		public int Add(object symbol)
+		public virtual int Add(object symbol)
 		{
 			if (symbol is char[])
 			{

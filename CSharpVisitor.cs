@@ -8,7 +8,7 @@ namespace Refal
 	{
 		StringBuilder sb = new StringBuilder();
 		int indentLevel = 2;
-//		int currentPatternIndex = 1;
+		int currentPatternIndex = 1;
 
 		public CSharpCodeVisitor()
 		{
@@ -43,7 +43,7 @@ namespace Refal.Runtime
 	{{
 		static void Main()
 		{{
-			{0}(null);
+			{0}(new PassiveExpression());
 		}}" + "\r\n\r\n", program.EntryPoint.Name);
 
 			foreach (Function function in program.FunctionList)
@@ -94,15 +94,16 @@ namespace Refal.Runtime
 		public override void VisitSentence(Sentence sentence)
 		{
 			Indent(indentLevel);
-
-			sb.Append("if (RefalBase.Match(expression, ");
+			sb.AppendFormat("Pattern pattern{0} = ", currentPatternIndex);
 			sentence.Pattern.Accept(this);
+			sb.Append(";\r\n");
 
 			// TODO
 //			if (sentence.Conditions != null)
 //				sentence.Conditions.Accept(this);
 
-			sb.Append("))\r\n");
+			Indent(indentLevel);
+			sb.AppendFormat("if (RefalBase.Match(expression, pattern{0}))\r\n", currentPatternIndex);
 
 			if (sentence.Expression != null)
 			{
@@ -111,6 +112,8 @@ namespace Refal.Runtime
 				sb.Append("return ");
 				sentence.Expression.Accept(this);
 			}
+
+			currentPatternIndex++;
 		}
 
 		public override void VisitPattern(Pattern pattern)
@@ -185,18 +188,24 @@ namespace Refal.Runtime
 		{
 			if (!symbolVariable.IsBound)
 				sb.AppendFormat("new SymbolVariable(\"{0}\")", symbolVariable.Index);
+			else
+				sb.AppendFormat("pattern{0}.GetVariable(\"{1}\")", currentPatternIndex, symbolVariable.Index);
 		}
 
 		public override void VisitTermVariable(TermVariable termVariable)
 		{
 			if (!termVariable.IsBound)
 				sb.AppendFormat("new TermVariable(\"{0}\")", termVariable.Index);
+			else
+				sb.AppendFormat("pattern{0}.GetVariable(\"{1}\")", currentPatternIndex, termVariable.Index);
 		}
 
 		public override void VisitExpressionVariable(ExpressionVariable expressionVariable)
 		{
 			if (!expressionVariable.IsBound)
 				sb.AppendFormat("new ExpressionVariable(\"{0}\")", expressionVariable.Index);
+			else
+				sb.AppendFormat("pattern{0}.GetVariable(\"{1}\")", currentPatternIndex, expressionVariable.Index);
 		}
 
 		public override void VisitExpressionInParentheses(ExpressionInParentheses expressionInParentheses)

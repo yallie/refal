@@ -25,10 +25,49 @@ namespace Refal.Runtime
 					return true;
 				}
 
+				// expression is empty, pattern isn't
 				return false;
 			}
 
-			// both pattern and expression are not empty, perform matching
+			// handle simple cases
+			if (pattern.Count == 1)
+			{
+				if (pattern[0] is ExpressionVariable)
+				{
+					// bind free variable to an expression
+					ExpressionVariable var = (ExpressionVariable)pattern[0];
+					var.Expression = expression;
+					return true;
+				}
+
+				// check for single symbol or single term
+				if (expression.Count == 1)
+				{
+					// symbol matches symbol
+					if (pattern[0].Equals(expression[0]) && !(pattern[0] is Variable))
+						return true;
+
+					// term ::= symbol | (expression)
+					if (expression[0] is PassiveExpression && pattern[0] is TermVariable)
+					{
+						// bind free variable to an expression
+						TermVariable var = (TermVariable)pattern[0];
+						PassiveExpression expr = (PassiveExpression)expression[0];
+						var.Expression = expr;
+						return true;
+					}
+
+					// either term or symbol
+					if (pattern[0] is Variable && !(expression[0] is PassiveExpression))
+					{
+						Variable var = (Variable)pattern[0];
+						var.Value = expression[0];
+						return true;
+					}
+				}
+			}
+
+			// both pattern and expression are not empty, perform non-trivial matching
 			// TODO
 
 			return false;

@@ -1,4 +1,8 @@
 
+ 12-Jun-2006 13:53:56 yallie
+  PatternMatching.cs, CSharpVisitor.cs, PassiveExpression.cs, Pattern.cs, RefalBase.cs
+   Started working on pattern matching
+
  12-Jun-2006 02:20:14 yallie
   CSharpVisitor.cs, Pattern.cs, Syntax.cs, Refal.atg
    Improved patterns support

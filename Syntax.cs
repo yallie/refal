@@ -399,7 +399,7 @@ namespace Refal
 			this.index = index;
 		}
 
-		public string Index
+		public virtual string Index
 		{
 			get { return index; }
 			set { index = value; }
@@ -419,6 +419,12 @@ namespace Refal
 
 	public class SymbolVariable : Variable
 	{
+		public override string Index
+		{
+			get { return base.Index; }
+			set { base.Index = "s." + value; }
+		}
+
 		public override void Accept(CodeVisitor visitor)
 		{
 			visitor.VisitSymbolVariable(this);
@@ -427,6 +433,12 @@ namespace Refal
 
 	public class TermVariable : Variable
 	{
+		public override string Index
+		{
+			get { return base.Index; }
+			set { base.Index = "t." + value; }
+		}
+
 		public override void Accept(CodeVisitor visitor)
 		{
 			visitor.VisitTermVariable(this);
@@ -435,6 +447,12 @@ namespace Refal
 
 	public class ExpressionVariable : Variable
 	{
+		public override string Index
+		{
+			get { return base.Index; }
+			set { base.Index = "e." + value; }
+		}
+
 		public override void Accept(CodeVisitor visitor)
 		{
 			visitor.VisitExpressionVariable(this);
