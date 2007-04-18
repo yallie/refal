@@ -17,15 +17,6 @@ namespace Refal.Runtime
 		// command line arguments
 		protected static string[] commandLineArguments = null;
 
-		public static bool Match(PassiveExpression expression, Pattern pattern)
-		{
-			// empty expression matches empty pattern
-			if (pattern == null || pattern.IsEmpty)
-				return (expression == null || expression.IsEmpty);
-
-			return pattern.Match(expression);
-		}
-
 		// Standard RTL routines
 
 		public static PassiveExpression _Print(PassiveExpression expression)

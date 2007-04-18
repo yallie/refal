@@ -116,7 +116,7 @@ namespace Refal.Runtime
 
 			// match inout expression
 			Indent(indentLevel);
-			sb.AppendFormat("if (RefalBase.Match(expression, pattern{0}))\r\n", currentPatternIndex);
+			sb.AppendFormat("if (pattern{0}.Match(expression))\r\n", currentPatternIndex);
 			Indent(indentLevel);
 			sb.Append("{\r\n");
 
@@ -186,7 +186,7 @@ namespace Refal.Runtime
 				sb.AppendFormat("pattern{0}.CopyBoundVariables(pattern{1});\r\n", currentPatternIndex, currentPatternIndex - 1);
 
 				Indent(indentLevel);
-				sb.AppendFormat("if (RefalBase.Match(expression, pattern{0}))\r\n", currentPatternIndex);
+				sb.AppendFormat("if (pattern{0}.Match(expression))\r\n", currentPatternIndex);
 				Indent(indentLevel);
 				sb.Append("{\r\n");
 				indentLevel++;

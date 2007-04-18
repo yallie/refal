@@ -1,4 +1,11 @@
 
+ 15-Jun-2006 22:30:23 yallie
+  CSharpVisitor.cs, RefalBase.cs
+   Removed static Match() method from RefalBase class
+
+  test.bat, PatternMatching.cs
+   Removed obsolete file PatternMatching.cs
+
  15-Jun-2006 21:59:29 yallie
   Pattern.cs, RefalBase.cs
    Moved Match() method from PatternMatchHelper class to Pattern
