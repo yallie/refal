@@ -1,4 +1,8 @@
 
+ 12-Jun-2006 23:15:30 yallie
+  RefalBase.cs
+   Minor changes in pattern matching
+
  12-Jun-2006 22:57:32 yallie
   CSharpVisitor.cs, PassiveExpression.cs, PatternMatching.cs
    Introduced special symbols (structure braces) instead of subexpressions

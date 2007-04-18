@@ -99,7 +99,12 @@ namespace Refal.Runtime
 
 		public static PassiveExpression Card(PassiveExpression expression)
 		{
-			return PassiveExpression.Build(Console.ReadLine());
+			string s = Console.ReadLine();
+
+			if (s != null)
+				return PassiveExpression.Build(s.ToCharArray());
+			else
+				return PassiveExpression.Build(0);
 		}
 	}
 
