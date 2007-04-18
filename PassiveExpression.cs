@@ -66,6 +66,11 @@ namespace Refal.Runtime
 			return -1;
 		}
 
+		public void Remove(object o)
+		{
+			List.Remove(o);
+		}
+
 		public bool IsEmpty
 		{
 			get { return List.Count == 0; }

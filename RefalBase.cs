@@ -11,6 +11,9 @@ namespace Refal.Runtime
 		// Refal file I/O support hash: handle -> StreamReader/StreamWriter
 		private static Hashtable openFiles = new Hashtable();
 
+		// command line arguments
+		protected static string[] commandLineArguments = null;
+
 		public static bool Match(PassiveExpression expression, Pattern pattern)
 		{
 			if (expression == null || expression.IsEmpty)
@@ -179,6 +182,58 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(s.ToCharArray());
 			else
 				return PassiveExpression.Build(0);
+		}
+
+		public static PassiveExpression Put(PassiveExpression expression)
+		{
+//			return Prout(expression);
+
+			if (expression == null || expression.IsEmpty)
+				return Prout(expression);
+
+			string handle = expression[0].ToString();
+			StreamWriter sw = openFiles[handle] as StreamWriter;
+
+			if (sw == null)
+				return Prout(expression);
+
+			sw.WriteLine(ExpressionToString(expression, 1)); // sw Console
+
+			PassiveExpression result = PassiveExpression.Build(expression);
+			result.Remove(result[0]);
+			return result;
+		}
+
+		protected static void CloseFiles()
+		{
+			foreach (object o in openFiles.Values)
+			{
+				if (o is StreamWriter)
+					(o as StreamWriter).Close();
+				else if (o is StreamReader)
+					(o as StreamReader).Close();
+			}
+		}
+
+		protected static string[] CommandLineArguments
+		{
+			get { return commandLineArguments; }
+			set { commandLineArguments = value; }
+		}
+
+		public static PassiveExpression Arg(PassiveExpression expression)
+		{
+			if (expression == null || expression.IsEmpty || commandLineArguments == null)
+				return new PassiveExpression();
+
+			int index = Convert.ToInt32(expression[0]) - 1; // in Refal, index is 1-based
+
+			if (index >= commandLineArguments.Length)
+			{
+				return new PassiveExpression();
+			}
+
+			return PassiveExpression.Build(commandLineArguments[index].ToCharArray());
 		}
 	}
 

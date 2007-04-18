@@ -44,9 +44,13 @@ namespace Refal.Runtime
 {{
 	public class Program : RefalBase
 	{{
-		static void Main()
+		static void Main(string[] args)
 		{{
+			RefalBase.commandLineArguments = args;
+
 			{0}(new PassiveExpression());
+
+			RefalBase.CloseFiles();
 		}}" + "\r\n\r\n", program.EntryPoint.Name);
 
 			foreach (Function function in program.FunctionList)

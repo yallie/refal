@@ -1,0 +1,12 @@
+
+Chpm { e.1 = <Chpm1 [. ^ e.1 .]>; }
+
+    /* change to MB format;
+       set pointer at the beginning */
+
+Chpm1 {
+   [ e.1 ^ '+' e.2 ] = <Chpm1 [ e.1'-' ^ e.2 ]>;
+   [ e.1 ^ s.X e.2 ] = <Chpm1 [ e.1 s.X ^ e.2 ]>;
+   [ e.1 ^ (e.2)e.3 ] = <Chpm1 [ e.1( ^ e.2)e.3 ]>;
+   [ e.1(e.2 ^ )e.3 ] = <Chpm1 [ e.1(e.2) ^ e.3 ]>;
+   [. e.1 ^ .] = e.1;  }

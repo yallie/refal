@@ -1,4 +1,17 @@
 
+ 14-Jun-2006 20:20:22 yallie
+  CSharpVisitor.cs, test14.cs
+   Added support for command-line arguments in refal programs
+
+  RefalBase.cs
+   Added support for command-line arguments, <Put> and <Arg> standard functions
+
+  test-mb*.ref
+   Added input and output files for multi-bracket preprocessor example
+
+  PassiveExpression.cs
+   Added Remove() method
+
  13-Jun-2006 09:24:34 yallie
   test03.cs
    Replaced double quotes with single quotes

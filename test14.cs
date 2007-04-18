@@ -6,9 +6,13 @@ namespace Refal.Runtime
 {
 	public class Program : RefalBase
 	{
-		static void Main()
+		static void Main(string[] args)
 		{
+			RefalBase.commandLineArguments = args;
+
 			Go(new PassiveExpression());
+
+			RefalBase.CloseFiles();
 		}
 
 		public static PassiveExpression Go(PassiveExpression expression)
