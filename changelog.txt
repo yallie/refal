@@ -1,4 +1,11 @@
 
+ 13-Jun-2006 09:24:34 yallie
+  test03.cs
+   Replaced double quotes with single quotes
+
+  test-ref.log
+   Added reference log file
+
  13-Jun-2006 09:24:13 yallie
   PatternMatching.cs
    Added matching term variables and expression comparison

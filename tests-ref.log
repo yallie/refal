@@ -1,0 +1,824 @@
+This section should be empty: 
+---------------------------------------- 
+Go {
+	 = ;
+}
+
+
+$ENTRY Go {
+	 = <Prout 'Hello'>;
+}
+
+
+$ENTRY Go {
+	 = <Prout <Pal "sator arepo tenet opera rotas">>;
+}
+
+Pal {
+	 = True;
+	s.1 = True;
+	s.1 e.2 s.1 = <Pal e.2>;
+	e.1 = False;
+}
+
+
+$ENTRY Go {
+	 = <Prout <Chpm '++312a=-3+=-'>>;
+}
+
+Chpm {
+	'+' e.1 = '-' <Chpm e.1>;
+	s.1 e.2 = s.1 <Chpm e.2>;
+	 = ;
+}
+
+
+$ENTRY Go {
+	 = <Prout <Chpm '++312a=-3+=-'>>;
+}
+
+Chpm {
+	e.1 '+' e.2 = e.1 '-' <Chpm e.2>;
+	e.1 = e.1;
+}
+
+
+$ENTRY Go {
+	 = <Prout "0 + 0 = " <RAdd ('0') ('0')>> <Prout "0' + 0 = " <RAdd ('0\'') ('0')>> <Prout "0 + 0' = " <RAdd ('0') ('0\'')>> <Prout "0' + 0' = " <RAdd ('0\'') ('0\'')>> <Prout "0'' + 0''' = " <RAdd ('0\'\'') ('0\'\'\'')>>;
+}
+
+RAdd {
+	(e.1) ('0') = e.1;
+	(e.1) (e.2 '\'') = <RAdd (e.1) (e.2)> '\'';
+	e.1 = ;
+}
+
+
+$ENTRY Go {
+	 = <Prout "0 + 0 =" <AddB ('0') ('0')>> <Prout "0 + 1 =" <AddB ('0') ('1')>> <Prout "1 + 0 =" <AddB ('1') ('0')>> <Prout "1 + 1 =" <AddB ('1') ('1')>> <Prout "10 + 01 =" <AddB ('10') ('01')>> <Prout "1011 + 0110 =" <AddB ('1011') ('0110')>> <Prout "101100001 + 10110101 =" <AddB ('101100001') ('10110101')>> <Prout "asdbn + ddd =" <AddB ('asdbn') ('ddd')>>;
+}
+
+AddB {
+	() (e.1) = e.1;
+	(e.1) () = e.1;
+	(e.1 '0') (e.2 s.3) = <AddB (e.1) (e.2)> s.3;
+	(e.1 s.3) (e.2 '0') = <AddB (e.1) (e.2)> s.3;
+	(e.1 '1') (e.2 '1') = <AddB ('1') (<AddB (e.1) (e.2)>)> '0';
+	e.1 = '** error! **';
+}
+
+
+$ENTRY Go {
+	 = <Output >;
+}
+
+Output {
+	 = <Output <Card >>;
+	0 = ;
+	e.1 = <Prout e.1> <Output <Card >>;
+}
+
+
+$ENTRY Go {
+	 = <Open 'r' File "08_inout.ref"> <Output () (File)>;
+}
+
+Output {
+	() (s.D) = <Output (<Get s.D>) (s.D)>;
+	(0) (s.D) = ;
+	(e.1) (s.D) = <Prout e.1> <Output (<Get s.D>) (s.D)>;
+}
+
+
+$ENTRY Go {
+	 = <Open 'r' <InputFile > '08_inout.ref'> <Output () (<InputFile >)>;
+}
+
+InputFile {
+	 = 1;
+}
+
+Output {
+	() (s.D) = <Output (<Get s.D>) (s.D)>;
+	(0) (s.D) = ;
+	(e.1) (s.D) = <Prout e.1> <Output (<Get s.D>) (s.D)>;
+}
+
+
+$ENTRY Go {
+	 = <Open 'w' 1 '09_inout.ex2'> <Xxout 1 <Input '09_inout.ex1'>> <Open 'r' 1 '09_inout.ex2'> <Prout <Xxin '09_inout.ex2'>>;
+}
+
+$EXTRN Input;
+
+
+$EXTRN Xxout;
+
+
+$EXTRN Xxin;
+
+
+
+$ENTRY Go {
+	 = <Prout <Xxin '10_inout.ex'>>;
+}
+
+$EXTRN Xxin;
+
+
+
+$ENTRY Go {
+	 = <Job <Card >>;
+}
+
+Job {
+	0 = ;
+	e.X = <Prout <Trans-line e.X>> <Job <Card >>;
+}
+
+Trans-line {
+	' ' e.X = <Trans-line e.X>;
+	e.Word ' ' e.Rest = <Trans (e.Word) <Table >> ' ' <Trans-line e.Rest>;
+	 = ;
+	e.Word = <Trans (e.Word) <Table >> ' ';
+}
+
+Table {
+	 = (('cane') 'dog') (('gatto') 'cat') (('cavallo') 'horse') (('rana') 'frog') (('porco') 'pig');
+}
+
+Trans {
+	(e.It) e.1 ((e.It) e.Eng) e.2 = e.Eng;
+	(e.It) e.1 = '***';
+}
+
+
+$ENTRY Go {
+	 = <Open 'r' 1 <Arg 1>> <Open 'w' 2 <Arg 2>> <Mbprep <Next >>;
+}
+
+Next {
+	, <Get 1>: {
+		'*' e.1 = <Putz 2 '*' e.1> <Next >;
+		e.1 = e.1;
+	};
+}
+
+Mbprep {
+	0 = ;
+	e.1, <Lookm0 e.1>: {
+		(e.A) '[' e.B = <Out e.A <Lookp (('[')) (e.B)>>;
+		e.1 = <Putz 2 e.1> <Mbprep <Next >>;
+	};
+}
+
+Lookm0 {
+	e.1 '[' e.2 = <Lookm () e.1 '[' e.2>;
+	e.1 = e.1;
+}
+
+Lookm {
+	(e.1) '[' e.2 = (e.1) '[' e.2;
+	(e.1) '\"' e.2, <Quotes '\"' () e.2>:  = <Lookm (e.1 e.0) e.3>;
+	(e.1) '\'' e.2, <Quotes '\'' () e.2>:  = <Lookm (e.1 e.0) e.3>;
+	(e.1) '/*' e.2 '*/' e.3 = <Lookm (e.1 '/*' e.2 '*/') e.3>;
+	(e.1) t.A e.2 = <Lookm (e.1 t.A) e.2>;
+	(e.1) = e.1;
+}
+
+Lookp {
+	(e.ML (e.1)) ('[' e.2) = <Lookp (e.ML (e.1) ('[')) (e.2)>;
+	(('[' e.1)) (']' e.2) = <Transl (()) ('[' e.1 ']')> e.2;
+	(e.ML (e.1) ('[' e.2)) (']' e.3) = <Lookp (e.ML (e.1 <Transl (()) ('[' e.2 ']')>)) (e.3)>;
+	(e.L (e.1)) ('\"' e.2), <Quotes '\"' () e.2>:  = <Lookp (e.L (e.1 (e.0))) (e.3)>;
+	(e.L (e.1)) ('\'' e.2), <Quotes '\'' () e.2>:  = <Lookp (e.L (e.1 (e.0))) (e.3)>;
+	(e.L (e.1)) ('/*' e.2 '*/' e.3) = <Lookp (e.L (e.1 ('/*' e.2 '*/'))) (e.3)>;
+	(e.L (e.1)) (0) = <Ermes 'ERROR: No pair for ['>;
+	(e.L (e.1)) (s.A e.2) = <Lookp (e.L (e.1 s.A)) (e.2)>;
+	(e.L (e.1)) () = <Lookp (e.L (e.1 ".EOL.")) (<Next >)>;
+}
+
+Quotes {
+	s.Q (e.1) e.0 '\\' '\\' e.2 = <Quotes s.Q (e.1 e.0 '\\' '\\') e.2>;
+	s.Q (e.1) e.0 '\\' s.Q e.2 = <Quotes s.Q (e.1 e.0 '\\' s.Q) e.2>;
+	s.Q (e.1) e.0 s.Q e.2 = (s.Q e.1 e.0 s.Q) e.2;
+	s.Q (e.1) e.2 = (s.Q) e.1 e.2;
+}
+
+Out {
+	e.1 ".EOL." e.2 = <Putz 2 <Elpar e.1>> <Out e.2>;
+	e.1 = <Mbprep <Elpar e.1>>;
+}
+
+Elpar {
+	e.1 (e.2) e.3 = e.1 e.2 <Elpar e.3>;
+	e.1 = e.1;
+}
+
+Transl {
+	(()) ('[.' e.1) = <Transl (('((')) (e.1)>;
+	(()) ('[' e.1) = <Transl (('(e.ML(')) (e.1)>;
+	(e.ML (e.1)) ('(' e.2) = <Transl (e.ML (e.1) ()) (e.2)>;
+	(e.ML (e.1) (e.2)) (')' e.3) = <Transl (e.ML (e.1 '(' e.2 ')')) (e.3)>;
+	((e.1)) (')' e.3) = <Ermes 'ERROR: Unbalanced right parenth. before ^'>;
+	(e.ML (e.1)) (']') = <Ermes 'ERROR: No pointer'>;
+	(e.ML (e.1)) ('^' e.2) = <Trlmb e.ML (e.1)> '))(' <Transla (()) (e.2)>;
+	(e.ML (e.1)) (t.A e.2) = <Transl (e.ML (e.1 t.A)) (e.2)>;
+}
+
+Transla {
+	(e.ML (e.1)) ('(' e.2) = <Transla (e.ML (e.1) ()) (e.2)>;
+	(e.ML (e.1) (e.2)) (')' e.3) = <Transla (e.ML (e.1 '(' e.2 ')')) (e.3)>;
+	((e.1)) (')' e.2) = <Transla ((e.1 ')(')) (e.2)>;
+	((e.1)) ('.]') = e.1 ')';
+	((e.1)) (']') = e.1 ')e.MR';
+	(e.ML (e.1)) (']') = <Ermes 'ERROR: Unbalanced left parenth. after pointer'>;
+	(e.ML (e.1)) (t.A e.2) = <Transla (e.ML (e.1 t.A)) (e.2)>;
+}
+
+Trlmb {
+	(e.1) (e.2) e.L = e.1 ')(' <Trlmb (e.2) e.L>;
+	(e.1) = e.1;
+}
+
+Putz {
+	s.C e.E = <Destroy <Put s.C e.E>>;
+}
+
+Destroy {
+	e.E = ;
+}
+
+Ermes {
+	e.X = <Prout <Put 2 e.X>>;
+}
+
+
+$ENTRY Pair {
+	e.X = <Pair1 (()) (e.X)>;
+}
+
+Pair1 {
+	(e.L (e.1)) ('(' e.2) e.R = <Pair1 (e.L (e.1) ()) (e.2) e.R>;
+	(e.L (e.1) (e.2)) (')' e.3) e.R = <Pair1 (e.L (e.1 (e.2))) (e.3) e.R>;
+	((e.1)) (')' e.3) e.R = <Prout '*** ERROR: Unbalanced ")"' 'found by Pair:'> <Prout '*** ' e.1 ')'>;
+	(e.L (e.1)) (s.2 e.3) e.R = <Pair1 (e.L (e.1 s.2)) (e.3) e.R>;
+	((e.1)) () = e.1;
+	(e.L (e.1)) () = <Prout '*** ERROR: Unbalanced "(" ' 'found by Pair:'> <Prlmb e.L>;
+}
+
+$ENTRY PairArg {
+	s.numb = <Pair <Arg s.numb>>;
+}
+
+Prlmb {
+	(e.1) e.2 = <Prout '*** ' e.1 '('> <Prlmb e.2>;
+	 = ;
+}
+
+$ENTRY Input {
+	 = <Input1 0>;
+	s.C, <Type s.C>:  = <Input1 s.C>;
+	e.File, <Status 'r' e.File>: {
+		New s.C = <Open 'r' s.C e.File> <Input1 s.C>;
+		Old s.C = <Input1 s.C>;
+	};
+}
+
+Status {
+	s.M e.File, <F-table >: {
+		e.1 s.C (s.M '/' e.File) e.2 = Old s.C <Br 153443950 '=' e.1 s.C (s.M '/' e.File) e.2>;
+		e.1 s.C (s.M1 '/' e.File) e.2 = New s.C <Br 153443950 '=' e.1 s.C (s.M '/' e.File) e.2>;
+		e.1 s.C s.X e.2 = New s.C <Br 153443950 '=' e.1 s.C (s.M '/' e.File) s.X e.2>;
+		e.1 = <Prout "Sorry. Can't open " e.File ". No more channels">;
+	};
+}
+
+F-table {
+	, <Dg 153443950>: {
+		 = 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 'X';
+		e.1 = e.1;
+	};
+}
+
+Input1 {
+	s.C = <Parse ('$') <Read-in s.C <Get s.C>>>;
+}
+
+Read-in {
+	s.C = ;
+	s.C 0 = ;
+	s.C e.1 = ' ' e.1 <Read-in s.C <Get s.C>>;
+}
+
+$ENTRY InputArg {
+	s.numb = <Parse ('$') <Arg s.numb>>;
+}
+
+Parse {
+	(e.1) ' ' e.2 = <Parse (e.1) e.2>;
+	(e.1) '\t' e.2 = <Parse (e.1) e.2>;
+	(e.1) '(' e.2 = <Parse ((e.1)) e.2>;
+	((e.1) e.2) ')' e.3 = <Parse (e.1 (e.2)) e.3>;
+	('$' e.1) ')' e.3 = <Prout > <Prout > <Prout '*** ERROR: Unbalanced \')\' in input'> <Prout e.1 ')'>;
+	(e.1) '\'' e.2 = <Quotes Parse '\'' (e.1) e.2>;
+	(e.1) '\"' e.2 = <Quotes Parse '\"' ((e.1)) e.2>;
+	(e.1) '\\' e.2, e.2: {
+		'x' s.d1 s.d2 e.3, <Hex s.d1 s.d2>:  = <Parse (e.1 s.hex) e.3>;
+		s.A e.3, <Escape s.A>:  = <Parse (e.1 s.A1) e.3>;
+		e.3 = <Prout > '*' Error <Prout '*** ERROR: Unexpected escape sequnce in input'> <Prout '*** ' e.1> <Prout '*** ' '\\' e.3>;
+	};
+	(e.1) s.A e.2 = <Parse1 (e.1) (<Type s.A>) s.A e.2>;
+	('$' e.1) = e.1;
+	((e.1) e.2) = <Prout > <Prout > <Prout '*** ERROR: Unbalanced \'(\' in input'> <Prout-lm (e.1) e.2>;
+}
+
+Prout-lm {
+	(e.1) e.2 = <Prout-lm e.1> <Prout '*** (' e.2>;
+	'$' e.1 = <Prout '*** ' e.1>;
+}
+
+Escape {
+	'\\' = '\\';
+	'n' = '\n';
+	'r' = '\r';
+	't' = '\t';
+	'\'' = '\'';
+	'\"' = '\"';
+	'(' = '\(';
+	')' = '\)';
+	'<' = '\<';
+	'>' = '\>';
+	e.3 = ;
+}
+
+Quotes {
+	s.Fun s.Q (e.1) '\\' e.2, e.2: {
+		'x' s.d1 s.d2 e.3, <Hex s.d1 s.d2>:  = <Quotes s.Fun s.Q (e.1 s.hex) e.3>;
+		s.A e.3, <Escape s.A>:  = <Quotes s.Fun s.Q (e.1 s.A1) e.3>;
+		e.3 = <Prout > '*' Error <Prout '*** ERROR: Unexpected escape sequnce in input'> <Prout '*** ' e.1> <Prout '*** ' '\\' e.3>;
+	};
+	s.Fun '\'' (e.1) '\'' e.2 = <Mu s.Fun (e.1) e.2>;
+	s.Fun '\"' ((e.0) e.1) '\"' e.2 = <Mu s.Fun (e.0 <Implode_Ext e.1>) e.2>;
+	s.Fun s.Q (e.1) EOF = <QuotesError s.Q (e.1)>;
+	s.Fun s.Q (e.1) s.A e.2 = <Quotes s.Fun s.Q (e.1 s.A) e.2>;
+	s.Fun s.Q (e.1) = <QuotesError s.Q (e.1)>;
+}
+
+QuotesError {
+	s.Q (e.1) = <Prout > '*' Error <Prout '*** ERROR: Unbalanced quote in input'> <Prout '*** ' e.1> <Prout '*** ' s.Q>;
+}
+
+Hex {
+	s.d1 s.d2, <Hex s.d1>: , <Hex s.d2>:  = <Chr <Add (<Mul s.h1 16>) s.h2>>;
+	s.h, <Type s.h>:  = s.h;
+	'A' = 10;
+	'a' = 10;
+	'B' = 11;
+	'b' = 11;
+	'C' = 12;
+	'c' = 12;
+	'D' = 13;
+	'd' = 13;
+	'E' = 14;
+	'e' = 14;
+	'F' = 15;
+	'f' = 15;
+	e.hs = ;
+}
+
+Parse1 {
+	(e.1) ('L' e.A1) s.A e.2 = <Word (e.1) (s.A) e.2>;
+	(e.1) ('D' e.A1) s.A e.2 = <Number (e.1) (s.A) e.2>;
+	(e.1) (s.T e.A1) s.A e.2 = <Parse (e.1 s.A) e.2>;
+}
+
+Word {
+	(e.1) (e.W) s.B e.2, <Type s.B>: {
+		'L' e.B1 = <Word (e.1) (e.W s.B) e.2>;
+		'D' e.B1 = <Word (e.1) (e.W s.B) e.2>;
+		'Ol-' = <Word (e.1) (e.W '-') e.2>;
+		'Ou_' = <Word (e.1) (e.W '_') e.2>;
+		s.T e.B1 = <Parse (e.1 <Implode_Ext e.W>) s.B e.2>;
+	};
+	(e.1) (e.W) = <Parse (e.1 <Implode_Ext e.W>)>;
+}
+
+Number {
+	(e.1) (e.N) s.X e.2, <Type s.X>:  = <Number (e.1) (e.N s.X) e.2>;
+	(e.1) (e.N) e.X = <Parse (e.1 <Numb e.N>) e.X>;
+}
+
+$ENTRY Xxout {
+	s.C e.X, <Type s.C>:  = <Xxout1 s.C e.X>;
+	(e.File) e.X, <Status 'w' e.File>: {
+		New s.C = <Open 'w' s.C e.File> <Xxout1 s.C e.X>;
+		Old s.C = <Xxout1 s.C e.X>;
+	};
+}
+
+Xxout1 {
+	s.C e.X = <Cut-Put s.C <ConS e.X>>;
+}
+
+ConS {
+	s.A e.1, <Type s.A>: {
+		'W' e.A1 = <WORD <String (Word NoQuote) <Explode s.A>>> ' ' <ConS e.1>;
+		'N' e.A1 = <Symb s.A> ' ' <ConS e.1>;
+		s.T e.A1 = '\'' <String (Chars NoQuote) s.A e.1>;
+	};
+	(e.1) e.2 = '(' <ConS e.1> ')' <ConS e.2>;
+	 = ;
+}
+
+WORD {
+	e.word Quote = '\"' e.word '\"';
+	e.word NoQuote = e.word;
+}
+
+String {
+	(s.flag e.Quote) '\\' e.1 = '\\' '\\' <String (s.flag Quote) e.1>;
+	(s.flag e.Quote) '\'' e.1 = '\\' '\'' <String (s.flag Quote) e.1>;
+	(s.flag e.Quote) '\"' e.1 = '\\' '\"' <String (s.flag Quote) e.1>;
+	(s.flag e.Quote) '\t' e.1 = '\\' 't' <String (s.flag Quote) e.1>;
+	(s.flag e.Quote) '\n' e.1 = '\\' 'n' <String (s.flag Quote) e.1>;
+	(s.flag e.Quote) '\r' e.1 = '\\' 'r' <String (s.flag Quote) e.1>;
+	t.flag s.A e.1, <Type s.A>: {
+		'W' e.Word = <String t.flag> <WORD <String (Word NoQuote) <Explode s.A>>> ' ' <ConS e.1>;
+		'N' e.Number = <String t.flag> <Symb s.A> ' ' <ConS e.1>;
+		'L' e.Letter = s.A <String t.flag e.1>;
+		'D' e.Digit = s.A <String t.flag e.1>;
+		'P' e.Printable = s.A <String t.flag e.1>;
+		s.T e.A1, t.flag:  = '\\x' <ToHex <Ord s.A>> <String (s.flag Quote) e.1>;
+	};
+	t.flag (e.1) e.2 = <String t.flag> '(' <ConS e.1> ')' <ConS e.2>;
+	(Word s.Quote) = s.Quote;
+	(Chars e.Quote) = '\'';
+}
+
+ToHex {
+	s.digit, <Divmod (s.digit) 16>:  = <ToHexDig s.q> <ToHexDig s.r>;
+}
+
+ToHexDig {
+	15 = 'F';
+	14 = 'E';
+	13 = 'D';
+	12 = 'C';
+	11 = 'B';
+	10 = 'A';
+	s.d = <Symb s.d>;
+}
+
+Cut-Put {
+	s.C = ;
+	s.C e.X, <First 75 e.X>: {
+		(e.1) = <Putout s.C e.1>;
+		(e.1) e.2 = <Putout s.C e.1> <Cut-Put s.C e.2>;
+	};
+}
+
+$ENTRY Xxinr {
+	 = <Xxinr1 0>;
+	s.C, <Type s.C>:  = <Xxinr1 s.C>;
+	e.File, <Status 'r' e.File>: {
+		New s.C = <Open 'r' s.C e.File> <Xxinr1 s.C>;
+		Old s.C = <Xxinr1 s.C>;
+	};
+}
+
+Xxinr1 {
+	s.C = <Mescp ('$') <Read-all s.C <Get s.C>>>;
+}
+
+Read-all {
+	s.C 0 = EOF;
+	s.C e.X = e.X <Read-all s.C <Get s.C>>;
+}
+
+Mescp {
+	(e.1) '\'' e.2 = <Quotes Mescp '\'' (e.1) e.2>;
+	(e.1) '\"' e.2 = <Quotes Mescp '\"' ((e.1)) e.2>;
+	(e.1) '\\' e.2 = <Prout > '*' Error <Prout '*** ERROR: Unexpected escape sequnce in input'> <Prout '*** ' e.1> <Prout '*** ' '\\' e.2>;
+	(e.1) '(' e.2 = <Mescp ((e.1)) e.2>;
+	((e.1) e.2) ')' e.3 = <Mescp (e.1 (e.2)) e.3>;
+	(e.1) ')' e.3 = <Prout > <Prout > <Prout 'Unbalanced ) in input'> <Prout e.1 ' ***)***'>;
+	(e.1) EOF = <Mescp (e.1)>;
+	(e.1) s.A e.2 = <Mescp1 (<Type s.A>) (e.1) (s.A) e.2>;
+	('$' e.1) = e.1;
+	((e.1) e.2) = <Prout > <Prout > <Prout 'Unbalanced (... in input'> <Prout e.1 ' ***(***'>;
+}
+
+Mescp1 {
+	('L' e.A1) (e.1) (s.A e.2) ' ' e.3 = <Mescp (e.1 <Implode s.A e.2>) e.3>;
+	('L' e.A1) (e.1) (s.A e.2) EOF = <Mescp (e.1 <Implode s.A e.2>)>;
+	('D' e.A1) (e.1) (s.A e.2) ' ' e.3 = <Mescp (e.1 <Numb s.A e.2>) e.3>;
+	('D' e.A1) (e.1) (s.A e.2) EOF = <Mescp (e.1 <Numb s.A e.2>)>;
+	(s.T e.A1) (e.1) (s.A e.2) s.X e.3 = <Mescp1 (s.T e.A1) (e.1) (s.A e.2 s.X) e.3>;
+}
+
+
+$ENTRY Go {
+	 = <Introduction > <Loop >;
+}
+
+Introduction {
+	 = <Prout 'This is a program to translate an arithmetic expression'> <Prout 'into a code for a one-address computer. Primary operands'> <Prout 'are identifiers and whole numbers. Operations are:'> <Prout '+, -, *, /, ^with usual priorities. Parentheses as usual.'> <Prout 'Example: Joe^2*5/(SUM + 318)'> <Prout >;
+}
+
+Invitation {
+	 = <Prout > <Prout > <Prout 'Type in an expression (one line), or Ctrl-Z to terminate'>;
+}
+
+Loop {
+	 = <Nil <Dgall >> <Invitation > <Inout <Card >>;
+}
+
+Nil {
+	e.X = ;
+}
+
+Inout {
+	0 = <Prout 'End of session'>;
+	e.X = <Out <Translate <Lex ('$') e.X>>>;
+}
+
+Out {
+	 = <Loop >;
+	e.1 = <Prout 'The translation is:'> <Write e.1> <Loop >;
+}
+
+Lex {
+	(e.1) '(' e.2 = <Lex ((e.1)) e.2>;
+	((e.1) e.2) ')' e.3 = <Lex (e.1 (e.2)) e.3>;
+	('$' e.1) ')' e.3 = <Prout 'ERROR: Unpaired right parenthsis:'> <Prout e.1 ')'>;
+	(e.1) ' ' e.2 = <Lex (e.1) e.2>;
+	(e.1) '\t' e.2 = <Lex (e.1) e.2>;
+	(e.1) '\'' e.2, <Quotes '\'' () e.2>: {
+		() e.3 = <Prout 'ERROR: Unpaired quote \'' e.2>;
+		(e.0) e.3 = <Lex (e.1 e.0) e.2>;
+	};
+	(e.1) s.A e.2, <Type s.A>: {
+		'L' e.A1, <Id-tail (s.A) e.2>:  = <Lex (e.1 <Implode e.Id>) e.3>;
+		'D' e.A1, <D-string (s.A) e.2>:  = <Lex (e.1 <Numb e.D-Str>) e.3>;
+		s.T e.A1 = <Lex (e.1 s.A) e.2>;
+	};
+	('$' e.1) = e.1;
+	(e.M) = <Prout 'ERROR: Unpaired left parentheses'> <Pr-lmb e.M>;
+}
+
+Quotes {
+	s.Q (e.1) e.0 '\\' '\\' e.2 = <Quotes s.Q (e.1 e.0 '\\' '\\') e.2>;
+	s.Q (e.1) e.0 '\\' s.Q e.2 = <Quotes s.Q (e.1 e.0 '\\' s.Q) e.2>;
+	s.Q (e.1) e.0 s.Q e.2 = (e.1 e.0) e.2;
+	s.Q (e.1) e.2 = () e.1 e.2;
+}
+
+Id-tail {
+	(e.1) s.A e.2, <Type s.A>: {
+		'L' e.3 = <Id-tail (e.1 s.A) e.2>;
+		'D' e.3 = <Id-tail (e.1 s.A) e.2>;
+		s.T e.3 = (e.1) s.A e.2;
+	};
+	(e.1) = (e.1);
+}
+
+D-string {
+	(e.1) s.A e.2, <Type s.A>:  = <D-string (e.1 s.A) e.2>;
+	(e.1) e.2 = (e.1) e.2;
+}
+
+Pr-lmb {
+	(e.1) e.2 = <Pr-lmb e.1> <Prout '(' e.2>;
+	'$' e.1 = ;
+}
+
+Translate {
+	 = ;
+	e.1 = <Code-gen (1) <Parse e.1> <Dg 'compl'>>;
+}
+
+Last1 {
+	(e.A s.X e.B) e.1 s.X (e.2) = e.1 s.X (e.2);
+	(e.A) e.1 t.X (e.2) = <Last1 (e.A) e.1 (t.X e.2)>;
+	(e.A) (e.2) = (e.2);
+}
+
+Parse {
+	e.Exp, <Last1 ('+-') e.Exp ()>:  = s.Op (<Parse e.1>) <Parse e.2>;
+	e.Exp, <Last1 ('*/') e.Exp ()>:  = s.Op (<Parse e.1>) <Parse e.2>;
+	e.1 '^' e.2 = '^' (<Parse e.1>) <Parse e.2>;
+	s.Symb, <Type s.Symb>:  = s.Symb;
+	s.Symb, <Type s.Symb>:  = s.Symb;
+	(e.Exp) = <Parse e.Exp>;
+	 = ;
+	e.Exp = <Prout 'Syntax error. Cannot parse ' e.Exp> <Br 'compl=fail'>;
+}
+
+Code-gen {
+	e.1 'fail' = ;
+	(s.N) '-' () e.2 = <Code-gen (s.N) e.2> 'Minus ;';
+	(s.N) s.Op (e.1) s.2 = <Code-gen (s.N) e.1> <Code-op s.Op> <Outform s.2> ';';
+	(s.N) '+' (s.1) e.2 = <Code-gen (s.N) e.2> <Code-op '+'> <Outform s.1> ';';
+	(s.N) '*' (s.1) e.2 = <Code-gen (s.N) e.2> <Code-op '*'> <Outform s.1> ';';
+	(s.N) s.Op (e.1) e.2 = <Code-gen (s.N) e.2> 'STORE R+' <Symb s.N> ';' <Code-gen (<Add (s.N) 1>) e.1> <Code-op s.Op> 'R+' <Symb s.N> ';';
+	(s.N) s.Symb = 'LOAD ' <Outform s.Symb> ';';
+	(s.N) e.X = ('Syntax error') ';';
+}
+
+Outform {
+	s.S, <Type s.S>: {
+		'Wi' e.S1 = <Explode s.S>;
+		'N' e.S1 = <Symb s.S>;
+	};
+}
+
+Code-op {
+	'+' = 'ADD ';
+	'-' = 'SUB ';
+	'*' = 'MUL ';
+	'/' = 'DIV ';
+	'^' = 'POW ';
+}
+
+Write {
+	(e.1) ';' e.2 = <Prout e.1>;
+	e.1 ';' e.2 = <Prout '      ' e.1> <Write e.2>;
+	 = ;
+}
+
+
+$ENTRY Go {
+	 = <Job >;
+}
+
+Job {
+	 = <Prout 'Type expression to evaluate. To end: empty line. '> <Prout 'To end session: empty expression'> <Prout > <Check-end <Inp-met >>;
+}
+
+Check-end {
+	 = <Prout 'End of session'>;
+	'*' Error = <Job >;
+	e.X = <Out <UpD e.X>>;
+}
+
+Out {
+	e.X = <Prout 'The result is:'> <Prout e.X> <Prout > <Job >;
+}
+
+$EXTRN UpD;
+
+
+Inp-met {
+	 = <Parse ('$') <Read-in <Card >>>;
+}
+
+Read-in {
+	 = ;
+	0 = ;
+	e.1 = ' ' e.1 <Read-in <Card >>;
+}
+
+Parse {
+	(e.1) ' ' e.2 = <Parse (e.1) e.2>;
+	(e.1) '\t' e.2 = <Parse (e.1) e.2>;
+	(e.1) '(' e.2 = <Parse ((e.1)) e.2>;
+	((e.1) e.2) ')' e.3 = <Parse (e.1 (e.2)) e.3>;
+	('$' e.1) ')' e.3 = <Prout > '*' Error <Prout '*** ERROR: Unbalanced \')\' in input'> <Prout e.1 ')'>;
+	(e.1) '<' e.2 = <Parse ((e.1 '*')) e.2>;
+	((e.1 '*') s.F e.2) '>' e.3, <Checkf s.F>: {
+		Mul, e.2:  = <Parse (e.1 ('!' Mul e.4)) e.3>;
+		s.F1 = <Parse (e.1 ('!' s.F1 e.2)) e.3>;
+		 = <Prout > '*' Error <Prout 'Invalid function name ' s.F>;
+	};
+	((e.1 '*') e.2) '>' e.3 = <Prout > '*' Error <Prout '*** ERROR: No function name in input'> <Prout e.1 '*(?????'>;
+	('$' e.1) '>' e.3 = <Prout > '*' Error <Prout '*** ERROR: Unbalanced \'>\' in input'> <Prout e.1 '>'>;
+	(e.1) '*' e.2 = <Parse (e.1 '*V') e.2>;
+	(e.1) '\'' e.2 = <Quotes Parse '\'' (e.1) e.2>;
+	(e.1) '\"' e.2 = <Quotes Parse '\"' ((e.1)) e.2>;
+	(e.1) '\\' e.2, e.2: {
+		'x' s.d1 s.d2 e.3, <Hex s.d1 s.d2>:  = <Parse (e.1 s.hex) e.3>;
+		s.A e.3, <Escape s.A>:  = <Parse (e.1 s.A1) e.3>;
+		e.3 = <Prout > '*' Error <Prout '*** ERROR: Unexpected escape sequnce in input'> <Prout '*** ' e.1> <Prout '*** ' '\\' e.3>;
+	};
+	(e.1) s.A e.2 = <Parse1 (e.1) (<Type s.A>) s.A e.2>;
+	('$' e.1) = e.1;
+	((e.1) e.2) = <Prout > '*' Error <Prout '*** ERROR: Unbalanced \'(\' or \'<\' in input'> <Prout-lm (e.1) e.2>;
+}
+
+Checkf {
+	'+' = Add;
+	'-' = Sub;
+	'*' = Mul;
+	'/' = Div;
+	s.F, <Type s.F>:  = s.F;
+	s.F = ;
+}
+
+Prout-lm {
+	(e.1 '*') e.2 = <Prout-lm e.1> <Prout '*** *(' e.2>;
+	(e.1) e.2 = <Prout-lm e.1> <Prout '*** (' e.2>;
+	'$' e.1 = <Prout '*** ' e.1>;
+}
+
+Escape {
+	'\\' = '\\';
+	'n' = '\n';
+	'r' = '\r';
+	't' = '\t';
+	'\'' = '\'';
+	'\"' = '\"';
+	'(' = '\(';
+	')' = '\)';
+	'<' = '\<';
+	'>' = '\>';
+	e.3 = ;
+}
+
+Quotes {
+	s.Fun s.Q (e.1) '\\' e.2, e.2: {
+		'x' s.d1 s.d2 e.3, <Hex s.d1 s.d2>:  = <Quotes s.Fun s.Q (e.1 s.hex) e.3>;
+		s.A e.3, <Escape s.A>:  = <Quotes s.Fun s.Q (e.1 s.A1) e.3>;
+		e.3 = <Prout > '*' Error <Prout '*** ERROR: Unexpected escape sequnce in input'> <Prout '*** ' e.1> <Prout '*** ' '\\' e.3>;
+	};
+	s.Fun '\'' (e.1) '\'' e.2 = <Mu s.Fun (e.1) e.2>;
+	s.Fun '\"' ((e.0) e.1) '\"' e.2 = <Mu s.Fun (e.0 <Implode_Ext e.1>) e.2>;
+	s.Fun s.Q (e.1) EOF = <QuotesError s.Q (e.1)>;
+	s.Fun '\'' (e.1) '*' e.2 = <Quotes s.Fun '\'' (e.1 '*V') e.2>;
+	s.Fun s.Q (e.1) s.A e.2 = <Quotes s.Fun s.Q (e.1 s.A) e.2>;
+	s.Fun s.Q (e.1) = <QuotesError s.Q (e.1)>;
+}
+
+QuotesError {
+	s.Q (e.1) = <Prout > '*' Error <Prout '*** ERROR: Unbalanced quote in input'> <Prout '*** ' e.1> <Prout '*** ' s.Q>;
+}
+
+Hex {
+	s.d1 s.d2, <Hex s.d1>: , <Hex s.d2>:  = <Chr <Add (<Mul s.h1 16>) s.h2>>;
+	s.h, <Type s.h>:  = s.h;
+	'A' = 10;
+	'a' = 10;
+	'B' = 11;
+	'b' = 11;
+	'C' = 12;
+	'c' = 12;
+	'D' = 13;
+	'd' = 13;
+	'E' = 14;
+	'e' = 14;
+	'F' = 15;
+	'f' = 15;
+	e.hs = ;
+}
+
+Parse1 {
+	(e.1) ('L' e.A1) s.A e.2 = <Word (e.1) (s.A) e.2>;
+	(e.1) ('D' e.A1) s.A e.2 = <Number (e.1) (s.A) e.2>;
+	(e.1) (s.T e.A1) s.A e.2 = <Parse (e.1 s.A) e.2>;
+}
+
+Word {
+	(e.1) (e.W) s.B e.2, <Type s.B>: {
+		'L' e.B1 = <Word (e.1) (e.W s.B) e.2>;
+		'D' e.B1 = <Word (e.1) (e.W s.B) e.2>;
+		'Ol-' = <Word (e.1) (e.W '-') e.2>;
+		'Ou_' = <Word (e.1) (e.W '_') e.2>;
+		s.T e.B1 = <Parse (e.1 <Implode_Ext e.W>) s.B e.2>;
+	};
+	(e.1) (e.W) = <Parse (e.1 <Implode_Ext e.W>)>;
+}
+
+Number {
+	(e.1) (e.N) s.X e.2, <Type s.X>:  = <Number (e.1) (e.N s.X) e.2>;
+	(e.1) (e.N) e.X = <Parse (e.1 <Numb e.N>) e.X>;
+}
+
+
+Sort {
+	 = ;
+	t.1 e.2, <Partit () t.1 () e.2>:  = <Sort e.L> t.1 <Sort e.R>;
+}
+
+Partit {
+	(e.L) s.M (e.R) = (e.L) s.M (e.R);
+	(e.L) s.M (e.R) s.X e.2, <Order s.X s.M>: {
+		T = <Partit (e.L s.X) s.M (e.R) e.2>;
+		F = <Partit (e.L) s.M (e.R s.X) e.2>;
+	};
+}
+
+
+Up {
+	'*V' e.1 = '*' <Up e.1>;
+	'*' ((s.F) e.1) e.2 = <Mu s.F <Up e.1>> <Up e.2>;
+	'*!' (e.2) e.1 = e.2 <Up e.1>;
+	s.2 e.1 = s.2 <Up e.1>;
+	(e.2) e.1 = (<Up e.2>) <Up e.1>;
+	 = ;
+}
+
+
+This section should contain errors: 
+---------------------------------------- 
+*** Duplicate definition of Test1 
+-- line 8 col 8: Duplicate definition of function Test1

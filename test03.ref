@@ -2,7 +2,7 @@
 /* test03 - Palyndrome */
 
 $ENTRY Go {
-	= <Prout <Pal "sator arepo tenet opera rotas">>;
+	= <Prout <Pal 'sator arepo tenet opera rotas'>>;
 }
 
 Pal {
