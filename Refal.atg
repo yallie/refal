@@ -134,9 +134,7 @@ Sentence<out Sentence sentence> =               (. sentence = new Sentence();
                                                    Conditions conditions; .)
 	Pattern<out pattern>                         (. sentence.Pattern = pattern; .)
 	( "=" Expression<out expression>             (. sentence.Expression = expression; .)
-	| WhereOrWithClause<
-		out conditions, out expression>           (. sentence.Conditions = conditions; 
-                                                   sentence.Expression = expression; .)
+	| WhereOrWithClause<out conditions>          (. sentence.Conditions = conditions; .)
 	) .
 
 Pattern<out Pattern pattern> =                  (. pattern = new Pattern(); 
@@ -148,19 +146,17 @@ Pattern<out Pattern pattern> =                  (. pattern = new Pattern();
 	| "(" Pattern<out innerPattern> ")"          (. pattern.Terms.Add(new PatternInParentheses(innerPattern)); .)
 	} .
 
-WhereOrWithClause<out Conditions conditions,
-	out Expression expression> =                 (. conditions = new Conditions();
-                                                   expression = null;
+WhereOrWithClause<out Conditions conditions> =  (. conditions = new Conditions();
                                                    Block block; Pattern pattern;
                                                    Expression condExpression;
+                                                   Expression resultExpression;
                                                    Conditions moreConditions; .)
 	( "," | "&" )
 	Expression<out condExpression> ":"           (. conditions.Expression = condExpression; .)
 	( Block<out block> /* with-clause */         (. conditions.Block = block; .)
 	| Pattern<out pattern> /* where-clause */    (. conditions.Pattern = pattern; .)
-		( "=" Expression<out expression>
-		| WhereOrWithClause<
-			out moreConditions, out expression>    (. conditions.MoreConditions = moreConditions; .)
+		( "=" Expression<out resultExpression>    (. conditions.ResultExpression = resultExpression; .)
+		| WhereOrWithClause<out moreConditions>   (. conditions.MoreConditions = moreConditions; .)
 		)
 	) .
 

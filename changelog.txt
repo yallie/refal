@@ -1,4 +1,8 @@
 
+ 13-Jun-2006 03:25:03 yallie
+  CSharpVisitor.cs, Refal.atg, Syntax.cs, test24.*
+   Improved where-clauses support
+
  13-Jun-2006 03:03:54 yallie
   CSharpVisitor.cs
    Added where-clause code generation

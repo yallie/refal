@@ -16,7 +16,7 @@ namespace Refal.Runtime
 			Pattern pattern1 = new Pattern();
 			if (RefalBase.Match(expression, pattern1))
 			{
-				return PassiveExpression.Build(Prout(PassiveExpression.Build(PreAlph(PassiveExpression.Build("a".ToCharArray(), "c".ToCharArray())))));
+				return PassiveExpression.Build(Prout(PassiveExpression.Build(PreAlph(PassiveExpression.Build("a".ToCharArray(), "z".ToCharArray())))));
 			};
 
 			throw new RecognitionImpossibleException("Recognition impossible");
@@ -39,7 +39,7 @@ namespace Refal.Runtime
 				if (RefalBase.Match(expression4, pattern4))
 				{
 					return PassiveExpression.Build(true);
-				}; // <-- edited by hand here
+				}
 			};
 
 			Pattern pattern5 = new Pattern(new ExpressionVariable("e.Z"));
@@ -51,16 +51,16 @@ namespace Refal.Runtime
 			throw new RecognitionImpossibleException("Recognition impossible");
 		}
 
-			private static PassiveExpression Alphabet(PassiveExpression expression)
+		private static PassiveExpression Alphabet(PassiveExpression expression)
+		{
+			Pattern pattern6 = new Pattern();
+			if (RefalBase.Match(expression, pattern6))
 			{
-				Pattern pattern6 = new Pattern();
-				if (RefalBase.Match(expression, pattern6))
-				{
-					return PassiveExpression.Build("abcdefghijklmnopqrstuvwxyz".ToCharArray());
-				};
+				return PassiveExpression.Build("abcdefghijklmnopqrstuvwxyz".ToCharArray());
+			};
 
-				throw new RecognitionImpossibleException("Recognition impossible");
-			}
+			throw new RecognitionImpossibleException("Recognition impossible");
+		}
 
 	}
 }

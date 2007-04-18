@@ -2,7 +2,7 @@
 /* test24 - test23 with extended syntax (where-clause) */
 
 $ENTRY Go {
-	= <Prout <PreAlph 'a' 'c'>>;
+	= <Prout <PreAlph 'a' 'z'>>;
 }
 
 PreAlph {

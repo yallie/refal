@@ -181,6 +181,7 @@ namespace Refal
 		Pattern pattern;
 		Block block;
 		Conditions moreConditions;
+		Expression resultExpression;
 
 		public Conditions()
 		{
@@ -202,6 +203,12 @@ namespace Refal
 		{
 			get { return moreConditions; }
 			set { moreConditions = value; }
+		}
+
+		public Expression ResultExpression
+		{
+			get { return resultExpression; }
+			set { resultExpression = value; }
 		}
 
 		public Block Block

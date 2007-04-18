@@ -103,21 +103,21 @@ namespace Refal.Runtime
 			Indent(indentLevel);
 			sb.Append("{\r\n");
 
+			indentLevel++;
+
+			// where-clause
+			if (sentence.Conditions != null)
+				sentence.Conditions.Accept(this);
+
 			if (sentence.Expression != null)
 			{
-				indentLevel++;
-
-				// where-clause
-				if (sentence.Conditions != null)
-					sentence.Conditions.Accept(this);
-
 				Indent(indentLevel);
 				sb.Append("return PassiveExpression.Build(");
 				sentence.Expression.Accept(this);
 				sb.Append(");\r\n");
-
-				indentLevel--;
 			}
+
+			indentLevel--;
 
 			Indent(indentLevel);
 			sb.Append("}");
@@ -148,18 +148,30 @@ namespace Refal.Runtime
 				sb.AppendFormat("if (RefalBase.Match(expression{0}, pattern{0}))\r\n", currentPatternIndex);
 				Indent(indentLevel);
 				sb.Append("{\r\n");
-
 				indentLevel++;
-			}
 
-/*			if (conditions.Block != null)
-			{
-				conditions.Block.Accept(this);
+				// more conditions
+				if (conditions.MoreConditions != null)
+					conditions.MoreConditions.Accept(this);
+
+				// and resulting expression
+				if (conditions.ResultExpression != null)
+				{
+					Indent(indentLevel);
+					sb.Append("return PassiveExpression.Build(");
+					conditions.ResultExpression.Accept(this);
+					sb.Append(");\r\n");
+				}
+
+/*				if (conditions.Block != null) //???
+				{
+					conditions.Block.Accept(this);
+				}*/
+
+				indentLevel--;
+				Indent(indentLevel);
+				sb.Append("}\r\n");
 			}
-			else if (conditions.MoreConditions != null)
-			{
-				conditions.MoreConditions.Accept(this);
-			}*/
 		}
 
 		public override void VisitPattern(Pattern pattern)
