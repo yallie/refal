@@ -45,29 +45,24 @@ namespace Refal.Runtime
 					object ex = expression[exIndex];
 					object pat = pattern[patIndex];
 
-					bool needRollback = false;
-
-					if (MatchStructureBraces(ex, pat, ref needRollback))
+					if (MatchStructureBraces(ex, pat))
 						continue;
 					
-					if (!needRollback && MatchTwoSymbols(ex, pat, ref needRollback))
+					if (MatchTwoSymbols(ex, pat))
 						continue;
 					
-					if (!needRollback && MatchSimpleVariables(ex, pat, ref needRollback))
+					if (MatchSimpleVariables(ex, pat))
 						continue;
 					
-					if (!needRollback && MatchTermSubexpression(ex, pat, ref needRollback))
+					if (MatchTermSubexpression(ex, pat))
 						continue;
 					
-					if (!needRollback && MatchExpressionVariable(ex, pat, ref needRollback))
+					if (MatchExpressionVariable(ex, pat))
 						continue;
 
 					// roll back to the last expression variable
-					if (!RollBackToLastExpression())
-					{
-						// can't roll back => matching failed
-						match = false;
-					}
+					// if can't roll backm then matching failed
+					match = RollBackToLastExpression();
 
 				} // while()
 
@@ -104,7 +99,7 @@ namespace Refal.Runtime
 			}
 		}
 
-		private bool MatchStructureBraces(object ex, object pat, ref bool needRollback)
+		private bool MatchStructureBraces(object ex, object pat)
 		{
 			// braces can only match itself
 			if (pat is OpeningBrace)
@@ -115,7 +110,7 @@ namespace Refal.Runtime
 					return true;
 				}
 				else
-					needRollback = true;
+					return RollBackToLastExpression();
 			}
 			else if (pat is ClosingBrace)
 			{
@@ -125,14 +120,14 @@ namespace Refal.Runtime
 					return true;
 				}
 				else
-					needRollback = true;
+					return RollBackToLastExpression();
 			}
 
 			// match successfull
 			return false;
 		}
 
-		private bool MatchTwoSymbols(object ex, object pat, ref bool needRollback)
+		private bool MatchTwoSymbols(object ex, object pat)
 		{
 			// symbol matches single symbol
 			if (!(pat is Variable))
@@ -144,13 +139,13 @@ namespace Refal.Runtime
 					return true;
 				}
 				else
-					needRollback = true;
+					return RollBackToLastExpression();
 			}
 
 			return false;
 		}
 
-		private bool MatchSimpleVariables(object ex, object pat, ref bool needRollback)
+		private bool MatchSimpleVariables(object ex, object pat)
 		{
 			// symbol or term variable matches single symbol
 			if ((pat is SymbolVariable || pat is TermVariable) && !(ex is StructureBrace))
@@ -172,14 +167,14 @@ namespace Refal.Runtime
 				{
 					// symbol don't match the bound variable,
 					// roll back to the last expression variable
-					needRollback = true;
+					return RollBackToLastExpression();
 				}
 			}
 
 			return false;
 		}
 
-		private bool MatchTermSubexpression(object ex, object pat, ref bool needRollback)
+		private bool MatchTermSubexpression(object ex, object pat)
 		{
 			// term variable matches subexpression in structure braces
 			if ((pat is TermVariable) && (ex is StructureBrace))
@@ -214,12 +209,12 @@ namespace Refal.Runtime
 						{
 							// closing structure brace not found => rolling back
 							// in fact, this can only be caused by unmatched braces...
-							needRollback = true;
+							return RollBackToLastExpression();
 						}
 					}
 					else 
 					{
-						needRollback = true;
+						return RollBackToLastExpression();
 					}
 				}
 				else // not the first occurance => compare expression
@@ -230,14 +225,14 @@ namespace Refal.Runtime
 						return true;
 					}
 					else
-						needRollback = true;
+						return RollBackToLastExpression();
 				}
 			}
 
 			return false;
 		}
 
-		private bool MatchExpressionVariable(object ex, object pat, ref bool needRollback)
+		private bool MatchExpressionVariable(object ex, object pat)
 		{
 			// expression variable can match nothing, symbol(s), 
 			// and expression(s) within structure braces
@@ -297,13 +292,13 @@ namespace Refal.Runtime
 							{
 								// closing structure brace not found => rolling back
 								// this can only be caused by unmatched braces => error in compiler
-								needRollback = true;
+								return RollBackToLastExpression();
 							}
 						}
 						else
 						{
 							// extra closing brace ) => roll back
-							needRollback = true;
+							return RollBackToLastExpression();
 						}
 					}
 				}
@@ -316,7 +311,7 @@ namespace Refal.Runtime
 					}
 					else
 						// expression don't match, roll back
-						needRollback = true;
+						return RollBackToLastExpression();
 				}
 			}
 
