@@ -7,239 +7,67 @@ namespace Refal.Runtime
 	{
 		public static bool Match(PassiveExpression expression, Pattern pattern)
 		{
-			bool match = true;
-			Stack rollBackStack = new Stack();
+			return new PatternMatchHelper(expression, pattern).Match();
+		}
 
-			// assume that expression and pattern aren't empty
-			int exIndex = 0, patIndex = 0;
+		private PatternMatchHelper(PassiveExpression expression, Pattern pattern)
+		{
+			this.expression = expression;
+			this.pattern = pattern;
+		}
 
+		// expression and pattern to match
+		PassiveExpression expression = null;
+		Pattern pattern = null;
+
+		// current expression and pattern element indices
+		int exIndex = 0, patIndex = 0;
+
+		// private implementation details
+		bool match = true;
+
+		// stack holding positions of the last expression variables
+		Stack rollBackStack = new Stack();
+
+		struct RollbackInfo
+		{
+			public int exIndex;
+			public int patIndex; 
+		}
+
+		private bool Match()
+		{
 			while (true)
 			{
 				while (match && patIndex < pattern.Count && exIndex < expression.Count)
 				{
+					// assume that expression and pattern aren't empty
 					object ex = expression[exIndex];
 					object pat = pattern[patIndex];
 
 					bool needRollback = false;
 
-					// braces can only match itself
-					if (pat is OpeningBrace)
-					{
-						if (ex is OpeningBrace)
-						{
-							exIndex++; patIndex++;
-							continue;
-						}
-						else
-							needRollback = true;
-					}
-					else if (pat is ClosingBrace)
-					{
-						if (ex is ClosingBrace)
-						{
-							exIndex++; patIndex++;
-							continue;
-						}
-						else
-							needRollback = true;
-					}
+					if (MatchStructureBraces(ex, pat, ref needRollback))
+						continue;
+					
+					if (!needRollback && MatchTwoSymbols(ex, pat, ref needRollback))
+						continue;
+					
+					if (!needRollback && MatchSimpleVariables(ex, pat, ref needRollback))
+						continue;
+					
+					if (!needRollback && MatchTermSubexpression(ex, pat, ref needRollback))
+						continue;
+					
+					if (!needRollback && MatchExpressionVariable(ex, pat, ref needRollback))
+						continue;
 
-					// symbol matches single symbol
-					else if (!(pat is Variable))
-					{
-						// check for () is redundant because of ex.Equals(pat)
-						if (ex.Equals(pat) && !(ex is StructureBrace))
-						{
-							exIndex++; patIndex++;
-							continue;
-						}
-						else
-							needRollback = true;
-					}
-
-					// symbol or term variable matches single symbol
-					else if ((pat is SymbolVariable || pat is TermVariable) && !(ex is StructureBrace))
-					{
-						Variable var = pat as Variable;
-
-						if (patIndex == var.FirstOccurance)
-						{
-							var.Value = ex;
-							exIndex++; patIndex++;
-							continue;
-						}
-						else if (ex.Equals(var.Value))
-						{
-							exIndex++; patIndex++;
-							continue;
-						}
-						else 
-						{
-							// symbol don't match the bound variable,
-							// roll back to the last expression variable
-							needRollback = true;
-						}
-					}
-
-					// term variable matches subexpression in structure braces
-					else if ((pat is TermVariable) && (ex is StructureBrace))
-					{
-						TermVariable term = pat as TermVariable;
-
-						// first occurance => copy subexpression
-						if (patIndex == term.FirstOccurance)
-						{
-							if (ex is OpeningBrace)
-							{
-								term.Expression.Add(ex);
-								exIndex++; patIndex++;
-
-								// extract subexpression within the structure braces
-								int rank = 1;
-								while (exIndex < expression.Count && rank > 0)
-								{
-									ex = expression[exIndex++];
-									term.Expression.Add(ex);
-
-									if (ex is OpeningBrace)
-										rank++;
-									else if (ex is ClosingBrace)
-										rank--;
-								}
-
-								// subexpression with surrounding braces is extracted
-								if (rank == 0)
-									continue;
-								else
-								{
-									// closing structure brace not found => rolling back
-									// in fact, this can only be caused by unmatched braces...
-									needRollback = true;
-								}
-							}
-							else 
-							{
-								needRollback = true;
-							}
-						}
-						else // not the first occurance => compare expression
-						{
-							if (CompareExpressions(expression, exIndex, term.Expression))
-							{
-								exIndex += term.Expression.Count; patIndex++;
-								continue;
-							}
-							else
-								needRollback = true;
-						}
-					}
-
-					// expression variable can match nothing, symbol(s), 
-					// and expression(s) within structure braces
-					else if (pat is ExpressionVariable)
-					{
-						ExpressionVariable var = pat as ExpressionVariable;
-
-						if (patIndex == var.FirstOccurance)
-						{
-							if (var.Expression == null)
-							{
-								// start with empty expression
-								var.Expression = new PassiveExpression();
-								RollbackInfo info = new RollbackInfo();
-								info.exIndex = exIndex;
-								info.patIndex = patIndex;
-								rollBackStack.Push(info);
-								patIndex++;
-								continue;
-							}
-							else
-							{
-								// continue adding terms to expression
-								if (!(ex is StructureBrace))
-								{
-									var.Expression.Add(ex);
-									RollbackInfo info = new RollbackInfo();
-									info.exIndex = exIndex + 1;
-									info.patIndex = patIndex;
-									rollBackStack.Push(info);
-									exIndex++; patIndex++;
-									continue;
-								}
-								// handle structure braces, extract subexpression
-								else if (ex is OpeningBrace)
-								{
-									var.Expression.Add(ex);
-									exIndex++;
-
-									// extract subexpression within the structure braces
-									int rank = 1;
-									while (exIndex < expression.Count && rank > 0)
-									{
-										ex = expression[exIndex++];
-										var.Expression.Add(ex);
-
-										if (ex is OpeningBrace)
-											rank++;
-										else if (ex is ClosingBrace)
-											rank--;
-									}
-
-									// subexpression with surrounding braces is extracted
-									if (rank == 0)
-										continue;
-									else
-									{
-										// closing structure brace not found => rolling back
-										// this can only be caused by unmatched braces => error in compiler
-										needRollback = true;
-									}
-								}
-								else
-								{
-									// extra closing brace ) => roll back
-									needRollback = true;
-								}
-							}
-						}
-						else // not the first occurance, compare expressions
-						{
-							if (CompareExpressions(expression, exIndex, var.Expression))
-							{
-								exIndex += var.Expression.Count; patIndex++;
-								continue;
-							}
-							else
-								// expression don't match, roll back
-								needRollback = true;
-						}
-					}
-
-					// if can't find any match, roll back
-					else
-					{
-						needRollback = true;
-					}
-
-					// roll back to the last expression variable, if needed
-					if (needRollback)
+					// roll back to the last expression variable
+					if (!RollBackToLastExpression())
 					{
 						// can't roll back => matching failed
-						if (rollBackStack.Count == 0)
-						{
-							match = false;
-						}
-						else
-						{
-							// restore state up to the last expression variable
-							RollbackInfo info = (RollbackInfo)rollBackStack.Pop();
-							exIndex = info.exIndex;
-							patIndex = info.patIndex;
-
-							// clear values of all bound variables starting later than patIndex
-							ClearBoundValues(pattern, patIndex);
-						}
-					} // if (needRollback)
+						match = false;
+					}
 
 				} // while()
 
@@ -268,39 +96,231 @@ namespace Refal.Runtime
 				}
 
 				// if can roll back, try once more
-				if (rollBackStack.Count == 0)
+				if (!RollBackToLastExpression())
 				{
-					// nothing to roll back => matching has failed
+					// can't to roll back => matching has failed
 					return false;
 				}
-				else
-				{
-					// restore state up to the last expression variable and iterate once more!
-					RollbackInfo info = (RollbackInfo)rollBackStack.Pop();
-					exIndex = info.exIndex;
-					patIndex = info.patIndex;
+			}
+		}
 
-					// clear values of all bound variables starting later than patIndex
-					ClearBoundValues(pattern, patIndex);
+		private bool MatchStructureBraces(object ex, object pat, ref bool needRollback)
+		{
+			// braces can only match itself
+			if (pat is OpeningBrace)
+			{
+				if (ex is OpeningBrace)
+				{
+					exIndex++; patIndex++;
+					return true;
+				}
+				else
+					needRollback = true;
+			}
+			else if (pat is ClosingBrace)
+			{
+				if (ex is ClosingBrace)
+				{
+					exIndex++; patIndex++;
+					return true;
+				}
+				else
+					needRollback = true;
+			}
+
+			// match successfull
+			return false;
+		}
+
+		private bool MatchTwoSymbols(object ex, object pat, ref bool needRollback)
+		{
+			// symbol matches single symbol
+			if (!(pat is Variable))
+			{
+				// check for () is redundant because of ex.Equals(pat)
+				if (ex.Equals(pat) && !(ex is StructureBrace))
+				{
+					exIndex++; patIndex++;
+					return true;
+				}
+				else
+					needRollback = true;
+			}
+
+			return false;
+		}
+
+		private bool MatchSimpleVariables(object ex, object pat, ref bool needRollback)
+		{
+			// symbol or term variable matches single symbol
+			if ((pat is SymbolVariable || pat is TermVariable) && !(ex is StructureBrace))
+			{
+				Variable var = pat as Variable;
+
+				if (patIndex == var.FirstOccurance)
+				{
+					var.Value = ex;
+					exIndex++; patIndex++;
+					return true;
+				}
+				else if (ex.Equals(var.Value))
+				{
+					exIndex++; patIndex++;
+					return true;
+				}
+				else 
+				{
+					// symbol don't match the bound variable,
+					// roll back to the last expression variable
+					needRollback = true;
 				}
 			}
+
+			return false;
 		}
 
-		struct RollbackInfo
+		private bool MatchTermSubexpression(object ex, object pat, ref bool needRollback)
 		{
-			public int exIndex;
-			public int patIndex; 
-		}
-
-		private static void ClearBoundValues(Pattern pattern, int startFromIndex)
-		{
-			foreach (string name in pattern.Variables.Keys)
+			// term variable matches subexpression in structure braces
+			if ((pat is TermVariable) && (ex is StructureBrace))
 			{
-				Variable var = (Variable)pattern.Variables[name];
+				TermVariable term = pat as TermVariable;
 
-				if (var.FirstOccurance > startFromIndex) // not >=!
-					var.Value = null;
+				// first occurance => copy subexpression
+				if (patIndex == term.FirstOccurance)
+				{
+					if (ex is OpeningBrace)
+					{
+						term.Expression.Add(ex);
+						exIndex++; patIndex++;
+
+						// extract subexpression within the structure braces
+						int rank = 1;
+						while (exIndex < expression.Count && rank > 0)
+						{
+							ex = expression[exIndex++];
+							term.Expression.Add(ex);
+
+							if (ex is OpeningBrace)
+								rank++;
+							else if (ex is ClosingBrace)
+								rank--;
+						}
+
+						// subexpression with surrounding braces is extracted
+						if (rank == 0)
+							return true;
+						else
+						{
+							// closing structure brace not found => rolling back
+							// in fact, this can only be caused by unmatched braces...
+							needRollback = true;
+						}
+					}
+					else 
+					{
+						needRollback = true;
+					}
+				}
+				else // not the first occurance => compare expression
+				{
+					if (CompareExpressions(expression, exIndex, term.Expression))
+					{
+						exIndex += term.Expression.Count; patIndex++;
+						return true;
+					}
+					else
+						needRollback = true;
+				}
 			}
+
+			return false;
+		}
+
+		private bool MatchExpressionVariable(object ex, object pat, ref bool needRollback)
+		{
+			// expression variable can match nothing, symbol(s), 
+			// and expression(s) within structure braces
+			if (pat is ExpressionVariable)
+			{
+				ExpressionVariable var = pat as ExpressionVariable;
+
+				if (patIndex == var.FirstOccurance)
+				{
+					if (var.Expression == null)
+					{
+						// start with empty expression
+						var.Expression = new PassiveExpression();
+						RollbackInfo info = new RollbackInfo();
+						info.exIndex = exIndex;
+						info.patIndex = patIndex;
+						rollBackStack.Push(info);
+						patIndex++;
+						return true;
+					}
+					else
+					{
+						// continue adding terms to expression
+						if (!(ex is StructureBrace))
+						{
+							var.Expression.Add(ex);
+							RollbackInfo info = new RollbackInfo();
+							info.exIndex = exIndex + 1;
+							info.patIndex = patIndex;
+							rollBackStack.Push(info);
+							exIndex++; patIndex++;
+							return true;
+						}
+						// handle structure braces, extract subexpression
+						else if (ex is OpeningBrace)
+						{
+							var.Expression.Add(ex);
+							exIndex++;
+
+							// extract subexpression within the structure braces
+							int rank = 1;
+							while (exIndex < expression.Count && rank > 0)
+							{
+								ex = expression[exIndex++];
+								var.Expression.Add(ex);
+
+								if (ex is OpeningBrace)
+									rank++;
+								else if (ex is ClosingBrace)
+									rank--;
+							}
+
+							// subexpression with surrounding braces is extracted
+							if (rank == 0)
+								return true;
+							else
+							{
+								// closing structure brace not found => rolling back
+								// this can only be caused by unmatched braces => error in compiler
+								needRollback = true;
+							}
+						}
+						else
+						{
+							// extra closing brace ) => roll back
+							needRollback = true;
+						}
+					}
+				}
+				else // not the first occurance, compare expressions
+				{
+					if (CompareExpressions(expression, exIndex, var.Expression))
+					{
+						exIndex += var.Expression.Count; patIndex++;
+						return true;
+					}
+					else
+						// expression don't match, roll back
+						needRollback = true;
+				}
+			}
+
+			return false;
 		}
 
 		private static bool CompareExpressions(PassiveExpression expression, int exIndex, PassiveExpression varExpression)
@@ -336,6 +356,32 @@ namespace Refal.Runtime
 			}
 
 			return false;
+		}
+
+		private bool RollBackToLastExpression()
+		{
+			if (rollBackStack.Count == 0)
+				return false;
+
+			// restore state up to the last expression variable
+			RollbackInfo info = (RollbackInfo)rollBackStack.Pop();
+			exIndex = info.exIndex;
+			patIndex = info.patIndex;
+
+			// clear values of all bound variables starting later than patIndex
+			ClearBoundValues(pattern, patIndex);
+			return true;
+		}
+
+		private static void ClearBoundValues(Pattern pattern, int startFromIndex)
+		{
+			foreach (string name in pattern.Variables.Keys)
+			{
+				Variable var = (Variable)pattern.Variables[name];
+
+				if (var.FirstOccurance > startFromIndex) // not >=!
+					var.Value = null;
+			}
 		}
 
 /*		// kept for test purposes only
