@@ -1,4 +1,8 @@
 
+ 13-Jun-2006 08:20:45 yallie
+  PatternMatching.cs, Syntax.cs
+   Minor changes
+
  13-Jun-2006 05:24:14 yallie
   test*.*
    Updated a few test programs

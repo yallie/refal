@@ -190,6 +190,7 @@ namespace Refal.Runtime
 						// not the first occurance, compare expressions
 						else if (ex.Equals(var.Expression))
 						{
+							// TODO!!!
 							exIndex++; patIndex++;
 							continue;
 						}

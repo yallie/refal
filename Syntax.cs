@@ -68,7 +68,7 @@ namespace Refal
 		public string Name
 		{
 			get { return name; }
-			set { name = value; }
+			set { name = value.Replace("-", "__"); }
 		}
 
 		public override void Accept(CodeVisitor visitor)
@@ -488,7 +488,7 @@ namespace Refal
 		public string FunctionName
 		{
 			get { return functionName; }
-			set { functionName = value; }
+			set { functionName = value.Replace("-", "__"); }
 		}
 
 		public Expression Expression
