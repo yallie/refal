@@ -107,7 +107,7 @@ namespace Refal.Runtime
 			return null;
 		}
 
-		private static string ExpressionToString(PassiveExpression expression, int startIndex)
+		protected static string ExpressionToString(PassiveExpression expression, int startIndex)
 		{
 			StringBuilder sb = new StringBuilder();
 

@@ -91,7 +91,8 @@ namespace Refal.Runtime
 			}
 
 			Indent(indentLevel);
-			sb.Append("throw new RecognitionImpossibleException(\"Recognition impossible\");\r\n");
+			sb.Append("throw new RecognitionImpossibleException(\"Recognition impossible. " +
+				"Last expression: \" + ExpressionToString(expression, 0));\r\n");
 
 			indentLevel--;
 			Indent(indentLevel);

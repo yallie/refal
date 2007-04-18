@@ -1,4 +1,14 @@
 
+ 14-Jun-2006 20:20:42 yallie
+  PatternMatching.cs
+   At last fixed refactored pattern matching
+
+  PassiveExpression.cs
+   Added forgotten inheritance in structure braces
+
+  CSharpVisitor.cs
+   Minor changes
+
  14-Jun-2006 20:20:38 yallie
   PatternMatching.cs
    Continued pattern matching refactoring, still doesn't work properly

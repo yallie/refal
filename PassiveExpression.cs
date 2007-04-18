@@ -173,14 +173,14 @@ namespace Refal.Runtime
 		}
 	}
 
-	public class OpeningBrace
+	public class OpeningBrace : StructureBrace
 	{
 		public OpeningBrace()
 		{
 		}
 	}
 
-	public class ClosingBrace
+	public class ClosingBrace : StructureBrace
 	{
 		public ClosingBrace()
 		{

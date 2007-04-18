@@ -73,12 +73,14 @@ namespace Refal.Runtime
 				// in that case, matching should succeed, with all remaining variables taking empty values
 				if (match && exIndex >= expression.Count && patIndex < pattern.Count)
 				{
-					while (match && patIndex < pattern.Count)
+					bool matchLastExpressions = true;
+
+					while (matchLastExpressions && patIndex < pattern.Count)
 					{
 						object pat = pattern[patIndex++];
 						if (!(pat is ExpressionVariable))
 						{
-							match = false;
+							matchLastExpressions = false;
 							break;
 						}
 
@@ -86,7 +88,7 @@ namespace Refal.Runtime
 						var.Expression = new PassiveExpression();
 					}
 
-					if (match && patIndex >= pattern.Count)
+					if (matchLastExpressions && patIndex >= pattern.Count)
 						return true;
 				}
 
@@ -102,44 +104,33 @@ namespace Refal.Runtime
 		private bool MatchStructureBraces(object ex, object pat)
 		{
 			// braces can only match itself
-			if (pat is OpeningBrace)
+			if (pat is StructureBrace)
 			{
-				if (ex is OpeningBrace)
+				if (pat.GetType() == ex.GetType())
 				{
 					exIndex++; patIndex++;
 					return true;
 				}
-				else
-					return RollBackToLastExpression();
-			}
-			else if (pat is ClosingBrace)
-			{
-				if (ex is ClosingBrace)
-				{
-					exIndex++; patIndex++;
-					return true;
-				}
-				else
-					return RollBackToLastExpression();
+
+				return RollBackToLastExpression();
 			}
 
-			// match successfull
+			// match failed
 			return false;
 		}
 
 		private bool MatchTwoSymbols(object ex, object pat)
 		{
 			// symbol matches single symbol
-			if (!(pat is Variable))
+			if (!(pat is Variable) && !(pat is StructureBrace))
 			{
-				// check for () is redundant because of ex.Equals(pat)
-				if (ex.Equals(pat) && !(ex is StructureBrace))
+				if (pat.Equals(ex))
 				{
 					exIndex++; patIndex++;
 					return true;
 				}
-				else
-					return RollBackToLastExpression();
+
+				return RollBackToLastExpression();
 			}
 
 			return false;
@@ -158,17 +149,16 @@ namespace Refal.Runtime
 					exIndex++; patIndex++;
 					return true;
 				}
-				else if (ex.Equals(var.Value))
+
+				if (ex.Equals(var.Value))
 				{
 					exIndex++; patIndex++;
 					return true;
 				}
-				else 
-				{
-					// symbol don't match the bound variable,
-					// roll back to the last expression variable
-					return RollBackToLastExpression();
-				}
+
+				// symbol don't match the bound variable,
+				// roll back to the last expression variable
+				return RollBackToLastExpression();
 			}
 
 			return false;
@@ -177,7 +167,7 @@ namespace Refal.Runtime
 		private bool MatchTermSubexpression(object ex, object pat)
 		{
 			// term variable matches subexpression in structure braces
-			if ((pat is TermVariable) && (ex is StructureBrace))
+			if ((pat is TermVariable) && (ex is OpeningBrace))
 			{
 				TermVariable term = pat as TermVariable;
 
@@ -186,6 +176,7 @@ namespace Refal.Runtime
 				{
 					if (ex is OpeningBrace)
 					{
+						term.Expression = new PassiveExpression();
 						term.Expression.Add(ex);
 						exIndex++; patIndex++;
 
@@ -205,17 +196,13 @@ namespace Refal.Runtime
 						// subexpression with surrounding braces is extracted
 						if (rank == 0)
 							return true;
-						else
-						{
-							// closing structure brace not found => rolling back
-							// in fact, this can only be caused by unmatched braces...
-							return RollBackToLastExpression();
-						}
-					}
-					else 
-					{
+
+						// closing structure brace not found => rolling back
+						// in fact, this can only be caused by unmatched braces...
 						return RollBackToLastExpression();
 					}
+
+					return RollBackToLastExpression();
 				}
 				else // not the first occurance => compare expression
 				{
@@ -224,8 +211,8 @@ namespace Refal.Runtime
 						exIndex += term.Expression.Count; patIndex++;
 						return true;
 					}
-					else
-						return RollBackToLastExpression();
+
+					return RollBackToLastExpression();
 				}
 			}
 
@@ -287,19 +274,22 @@ namespace Refal.Runtime
 
 							// subexpression with surrounding braces is extracted
 							if (rank == 0)
-								return true;
-							else
 							{
-								// closing structure brace not found => rolling back
-								// this can only be caused by unmatched braces => error in compiler
-								return RollBackToLastExpression();
+								RollbackInfo info = new RollbackInfo();
+								info.exIndex = exIndex;
+								info.patIndex = patIndex;
+								rollBackStack.Push(info);
+								patIndex++;
+								return true;
 							}
-						}
-						else
-						{
-							// extra closing brace ) => roll back
+
+							// closing structure brace not found => rolling back
+							// this can only be caused by unmatched braces => error in compiler
 							return RollBackToLastExpression();
 						}
+
+						// extra closing brace ) => roll back
+						return RollBackToLastExpression();
 					}
 				}
 				else // not the first occurance, compare expressions
@@ -309,9 +299,9 @@ namespace Refal.Runtime
 						exIndex += var.Expression.Count; patIndex++;
 						return true;
 					}
-					else
-						// expression don't match, roll back
-						return RollBackToLastExpression();
+
+					// expression don't match, roll back
+					return RollBackToLastExpression();
 				}
 			}
 
