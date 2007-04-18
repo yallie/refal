@@ -41,6 +41,9 @@ namespace Refal.Runtime
 
 		public override MatchResult Match(PassiveExpression expression, ref int exIndex, int patIndex)
 		{
+			if (expression == null || exIndex >= expression.Count)
+				return MatchResult.Failure;
+
 			// symbol matches single symbol
 			if (Value.Equals(expression[exIndex]))
 			{
@@ -60,6 +63,9 @@ namespace Refal.Runtime
 
 		public override MatchResult Match(PassiveExpression expression, ref int exIndex, int patIndex)
 		{
+			if (expression == null || exIndex >= expression.Count)
+				return MatchResult.Failure;
+
 			// opening brace <=> opening brace, closing brace <=> closing brace
 			if (expression[exIndex].GetType() == GetType())
 			{

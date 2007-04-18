@@ -6,34 +6,38 @@ namespace Refal.Runtime
 {
 	public class Program : RefalBase
 	{
-		static void Main()
+		static void Main(string[] args)
 		{
-			Go(new PassiveExpression());
+			RefalBase.commandLineArguments = args;
+
+			_Go(new PassiveExpression());
+
+			RefalBase.CloseFiles();
 		}
 
-		public static PassiveExpression Go(PassiveExpression expression)
+		public static PassiveExpression _Go(PassiveExpression expression)
 		{
 			Pattern pattern1 = new Pattern();
 			if (RefalBase.Match(expression, pattern1))
 			{
-				return PassiveExpression.Build(Prout(PassiveExpression.Build(Order(PassiveExpression.Build("x".ToCharArray(), "r".ToCharArray())))));
+				return PassiveExpression.Build(_Prout(PassiveExpression.Build(_Order(PassiveExpression.Build("x".ToCharArray(), "r".ToCharArray())))));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
-		private static PassiveExpression Order(PassiveExpression expression)
+		private static PassiveExpression _Order(PassiveExpression expression)
 		{
 			Pattern pattern2 = new Pattern(new SymbolVariable("s.1"), new SymbolVariable("s.2"));
 			if (RefalBase.Match(expression, pattern2))
 			{
-				return PassiveExpression.Build(Order1(PassiveExpression.Build(PreAlph(PassiveExpression.Build(pattern2.GetVariable("s.1"), pattern2.GetVariable("s.2"))), new OpeningBrace(), pattern2.GetVariable("s.1"), new ClosingBrace(), pattern2.GetVariable("s.2"))));
+				return PassiveExpression.Build(_Order1(PassiveExpression.Build(_PreAlph(PassiveExpression.Build(pattern2.GetVariable("s.1"), pattern2.GetVariable("s.2"))), new OpeningBrace(), pattern2.GetVariable("s.1"), new ClosingBrace(), pattern2.GetVariable("s.2"))));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
-		private static PassiveExpression Order1(PassiveExpression expression)
+		private static PassiveExpression _Order1(PassiveExpression expression)
 		{
 			Pattern pattern3 = new Pattern(true, new OpeningBrace(), new ExpressionVariable("e.1"), new ClosingBrace(), new ExpressionVariable("e.2"));
 			if (RefalBase.Match(expression, pattern3))
@@ -47,10 +51,10 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(pattern4.GetVariable("e.2"), pattern4.GetVariable("e.1"));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
-		private static PassiveExpression PreAlph(PassiveExpression expression)
+		private static PassiveExpression _PreAlph(PassiveExpression expression)
 		{
 			Pattern pattern5 = new Pattern(new SymbolVariable("s.1"), new SymbolVariable("s.1"));
 			if (RefalBase.Match(expression, pattern5))
@@ -61,7 +65,7 @@ namespace Refal.Runtime
 			Pattern pattern6 = new Pattern(new SymbolVariable("s.1"), new SymbolVariable("s.2"));
 			if (RefalBase.Match(expression, pattern6))
 			{
-				expression = PassiveExpression.Build(Alphabet(PassiveExpression.Build()));
+				expression = PassiveExpression.Build(_Alphabet(PassiveExpression.Build()));
 				Pattern pattern7 = new Pattern(new ExpressionVariable("e.A"), new SymbolVariable("s.1"), new ExpressionVariable("e.B"), new SymbolVariable("s.2"), new ExpressionVariable("e.C"));
 				pattern7.CopyBoundVariables(pattern6);
 				if (RefalBase.Match(expression, pattern7))
@@ -76,10 +80,10 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(false);
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
-		private static PassiveExpression Alphabet(PassiveExpression expression)
+		private static PassiveExpression _Alphabet(PassiveExpression expression)
 		{
 			Pattern pattern9 = new Pattern();
 			if (RefalBase.Match(expression, pattern9))
@@ -87,7 +91,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build("abcdefghijklmnopqrstuvwxyz".ToCharArray());
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 	}

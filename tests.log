@@ -1,34 +1,43 @@
 Test results:
-Comparing files test02.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test03.txt и TEST.OUT
+FC: различия не найдены
 
-Comparing files test03.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test04.txt и TEST.OUT
+FC: различия не найдены
 
-Comparing files test04.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test05.txt и TEST.OUT
+FC: различия не найдены
 
-Comparing files test05.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test06.txt и TEST.OUT
+FC: различия не найдены
 
-Comparing files test06.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test07.txt и TEST.OUT
+FC: различия не найдены
 
-Comparing files test07.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test08.txt и TEST.OUT
+FC: различия не найдены
 
-Comparing files test08.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test09.txt и TEST.OUT
+FC: различия не найдены
 
-Comparing files test09.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test10.txt и TEST.OUT
+FC: различия не найдены
 
-Comparing files test10.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test13.txt и TEST.OUT
+FC: различия не найдены
 
-Comparing files test13.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test14.txt и TEST.OUT
+FC: различия не найдены
 
-Comparing files test14.txt and TEST.OUT
-FC: no differences encountered
+Сравнение файлов test23.txt и TEST.OUT
+FC: различия не найдены
+
+Сравнение файлов test24.txt и TEST.OUT
+FC: различия не найдены
+
+Сравнение файлов test25.txt и TEST.OUT
+FC: различия не найдены
+
+Сравнение файлов test26.txt и TEST.OUT
+FC: различия не найдены
 

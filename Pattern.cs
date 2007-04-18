@@ -19,6 +19,11 @@ namespace Refal.Runtime
 		{
 		}
 
+		public new PatternItem this[int index]
+		{
+			get { return List[index] as PatternItem; }
+		}
+
 		public override int Add(object symbol)
 		{
 			// handle variables in a special way
@@ -84,6 +89,17 @@ namespace Refal.Runtime
 					variables[name] = var;
 					var.FirstOccurance = -1;
 				}
+			}
+		}
+
+		public void ClearBoundValues(int startFromIndex)
+		{
+			foreach (string name in Variables.Keys)
+			{
+				Variable var = (Variable)Variables[name];
+
+				if (var.FirstOccurance > startFromIndex) // not >=!
+					var.Value = null;
 			}
 		}
 	}

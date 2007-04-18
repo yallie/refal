@@ -7,24 +7,44 @@ namespace Refal.Runtime
 	{
 		public static bool Match(PassiveExpression expression, Pattern pattern)
 		{
-			return new PatternMatchHelper(expression, pattern).Match();
+			return new PatternMatchHelper().InternalMatch(expression, pattern);
 		}
 
-		private PatternMatchHelper(PassiveExpression expression, Pattern pattern)
+		private PatternMatchHelper()
 		{
-			this.expression = expression;
-			this.pattern = pattern;
 		}
 
-		// expression and pattern to match
-		PassiveExpression expression = null;
-		Pattern pattern = null;
+		private bool InternalMatch(PassiveExpression expression, Pattern pattern)
+		{
+			// assume at least pattern != null
+			int exIndex = 0, patIndex = 0;
 
-		// current expression and pattern element indices
-		int exIndex = 0, patIndex = 0;
+			while (patIndex < pattern.Count || exIndex < expression.Count)
+			{
+				if (patIndex >= pattern.Count)
+				{
+					if (!RollBackToLastPartialMatch(pattern, ref exIndex, ref patIndex))
+						return false;
 
-		// private implementation details
-		bool match = true;
+					continue;
+				}
+
+				switch (pattern[patIndex].Match(expression, ref exIndex, patIndex++))
+				{
+					case MatchResult.Success:
+						continue;
+						
+					case MatchResult.PartialSuccess:
+						SaveRollBackInfo(exIndex, patIndex - 1);
+						continue;
+				}
+
+				if (!RollBackToLastPartialMatch(pattern, ref exIndex, ref patIndex))
+					return false;
+			}
+
+			return true;
+		}
 
 		// stack holding positions of the last expression variables
 		Stack rollBackStack = new Stack();
@@ -35,66 +55,6 @@ namespace Refal.Runtime
 			public int patIndex; 
 		}
 
-		private bool Match()
-		{
-			while (true)
-			{
-				while (match && patIndex < pattern.Count && exIndex < expression.Count)
-				{
-					// assume that expression and pattern aren't empty
-					PatternItem pat = pattern[patIndex] as PatternItem;
-
-					MatchResult mr = pat.Match(expression, ref exIndex, patIndex++);
-
-					if (mr == MatchResult.Success)
-						continue;
-					
-					if (mr == MatchResult.PartialSuccess)
-					{
-						SaveRollBackInfo(exIndex, patIndex - 1);
-						continue;
-					}
-
-					// roll back to the last partial match to find another match
-					// if can't roll back, then matching failed
-					match = RollBackToLastPartialMatch();
-				}
-
-				if (match && patIndex >= pattern.Count && exIndex >= expression.Count)
-					return true;
-
-				// check for special case: expression has ended, but pattern contains a few expression variables
-				// in that case, matching should succeed, with all remaining variables taking empty values
-				if (match && exIndex >= expression.Count && patIndex < pattern.Count)
-				{
-					bool matchLastExpressions = true;
-
-					while (matchLastExpressions && patIndex < pattern.Count)
-					{
-						object pat = pattern[patIndex++];
-						if (!(pat is ExpressionVariable))
-						{
-							matchLastExpressions = false;
-							break;
-						}
-
-						ExpressionVariable var = (ExpressionVariable)pat;
-						var.Expression = new PassiveExpression();
-					}
-
-					if (matchLastExpressions && patIndex >= pattern.Count)
-						return true;
-				}
-
-				// if can roll back, try once more
-				if (!RollBackToLastPartialMatch())
-				{
-					// can't to roll back => matching has failed
-					return false;
-				}
-			}
-		}
-
 		private void SaveRollBackInfo(int exIndex, int patIndex)
 		{
 			RollbackInfo info = new RollbackInfo();
@@ -103,7 +63,7 @@ namespace Refal.Runtime
 			rollBackStack.Push(info);
 		}
 
-		private bool RollBackToLastPartialMatch()
+		private bool RollBackToLastPartialMatch(Pattern pattern, ref int exIndex, ref int patIndex)
 		{
 			if (rollBackStack.Count == 0)
 				return false;
@@ -114,19 +74,8 @@ namespace Refal.Runtime
 			patIndex = info.patIndex;
 
 			// clear values of all bound variables starting later than patIndex
-			ClearBoundValues(pattern, patIndex);
+			pattern.ClearBoundValues(patIndex);
 			return true;
-		}
-
-		private static void ClearBoundValues(Pattern pattern, int startFromIndex)
-		{
-			foreach (string name in pattern.Variables.Keys)
-			{
-				Variable var = (Variable)pattern.Variables[name];
-
-				if (var.FirstOccurance > startFromIndex) // not >=!
-					var.Value = null;
-			}
 		}
 	}
 }

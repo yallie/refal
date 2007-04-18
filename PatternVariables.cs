@@ -74,7 +74,7 @@ namespace Refal.Runtime
 
 		protected override MatchResult MatchAny(PassiveExpression expression, ref int exIndex)
 		{
-			if (exIndex >= expression.Count)
+			if (expression == null || exIndex >= expression.Count)
 				return MatchResult.Failure;
 
 			// match anything except braces
@@ -89,7 +89,7 @@ namespace Refal.Runtime
 
 		protected override MatchResult MatchSame(PassiveExpression expression, ref int exIndex)
 		{
-			if (exIndex >= expression.Count)
+			if (expression == null || exIndex >= expression.Count)
 				return MatchResult.Failure;
 
 			// match the bound value
@@ -130,7 +130,7 @@ namespace Refal.Runtime
 
 		protected override MatchResult MatchAny(PassiveExpression expression, ref int exIndex)
 		{
-			if (exIndex >= expression.Count)
+			if (expression == null || exIndex >= expression.Count)
 				return MatchResult.Failure;
 
 			// match single symbol (symbol == not a brace)
@@ -170,7 +170,7 @@ namespace Refal.Runtime
 
 		protected override MatchResult MatchSame(PassiveExpression expression, ref int exIndex)
 		{
-			if (exIndex >= expression.Count)
+			if (expression == null || exIndex >= expression.Count)
 				return MatchResult.Failure;
 
 			// match same symbol
@@ -222,7 +222,7 @@ namespace Refal.Runtime
 			}
 			else
 			{
-				if (exIndex >= expression.Count)
+				if (expression == null || exIndex >= expression.Count)
 					return MatchResult.Failure;
 
 				// continue adding terms to expression
@@ -263,7 +263,7 @@ namespace Refal.Runtime
 
 		protected override MatchResult MatchSame(PassiveExpression expression, ref int exIndex)
 		{
-			if (expression.CompareToExpression(exIndex, this.Expression))
+			if (expression != null && expression.CompareToExpression(exIndex, this.Expression))
 			{
 				exIndex += this.Expression.Count;
 				return MatchResult.Success;

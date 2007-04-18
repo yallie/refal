@@ -1,4 +1,14 @@
 
+ 15-Jun-2006 02:17:29 yallie
+  Pattern.cs, PatternMatching.cs, PatternItems.cs, PatternVariables.cs
+   Improved pattern matching, further refactoring
+
+  test*.txt, tests.log
+   Added more reference output files for regression tests
+
+  test*.cs
+   Updated compiled samples
+
  15-Jun-2006 02:17:02 yallie
   PatternMatching.cs, PatternVariables.cs
    Further improvements on pattern matching
