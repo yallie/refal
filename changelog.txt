@@ -1,4 +1,14 @@
 
+ 13-Jun-2006 02:27:19 yallie
+  RefalBase.cs
+   New runtime library functions: <Print>, <Prout>, <Open>, <Get>
+
+  PatternMatching.cs
+   Added rollback to the last partial match in certain situations
+
+  test23.*
+   New test program (examines alphabet order of two symbols)
+
  12-Jun-2006 23:15:30 yallie
   RefalBase.cs
    Minor changes in pattern matching

@@ -231,26 +231,30 @@ namespace Refal.Runtime
 				if (match && patIndex >= pattern.Count && exIndex >= expression.Count)
 					return true;
 
+				// check for special case: expression has ended, but pattern contains a few expression variables
+				// in that case, matching should succeed, with all remaining variables taking empty values
+				if (match && exIndex >= expression.Count && patIndex < pattern.Count)
+				{
+					while (match && patIndex < pattern.Count)
+					{
+						object pat = pattern[patIndex++];
+						if (!(pat is ExpressionVariable))
+						{
+							match = false;
+							break;
+						}
+
+						ExpressionVariable var = (ExpressionVariable)pat;
+						var.Expression = new PassiveExpression();
+					}
+
+					if (match && patIndex >= pattern.Count)
+						return true;
+				}
+
 				// if can roll back, try once more
 				if (rollBackStack.Count == 0)
 				{
-					// check for special case: expression has ended, but pattern contains a few expression variables
-					// in that case, matching should succeed, with all remaining variables taking empty values
-					if (match && exIndex >= expression.Count && patIndex < pattern.Count)
-					{
-						while (patIndex < pattern.Count)
-						{
-							object pat = pattern[patIndex++];
-							if (!(pat is ExpressionVariable))
-								return false;
-
-							ExpressionVariable var = (ExpressionVariable)pat;
-							var.Expression = new PassiveExpression();
-						}
-
-						return true;
-					}
-
 					// nothing to roll back => matching has failed
 					return false;
 				}

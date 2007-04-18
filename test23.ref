@@ -1,0 +1,18 @@
+
+/* test23 */
+
+$ENTRY Go {
+	= <Prout <PreAlph 'a' 'c'>>;
+}
+
+PreAlph {
+   s.1 s.1 = True;
+   s.1 s.2 = <Before s.1 s.2 In <Alphabet>>;
+}
+ 
+Before {
+   s.1 s.2 In e.A s.1 e.B s.2 e.C = True;
+   e.Z = False;
+}
+ 
+Alphabet { = 'abcdefghijklmnopqrstuvwxyz'; }
