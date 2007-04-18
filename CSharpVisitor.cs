@@ -48,7 +48,7 @@ namespace Refal.Runtime
 		{{
 			RefalBase.commandLineArguments = args;
 
-			{0}(new PassiveExpression());
+			_{0}(new PassiveExpression());
 
 			RefalBase.CloseFiles();
 		}}" + "\r\n\r\n", program.EntryPoint.Name);
@@ -71,7 +71,7 @@ namespace Refal.Runtime
 		public override void VisitDefinedFunction(DefinedFunction function)
 		{
 			Indent(indentLevel);
-			sb.AppendFormat("{0} static PassiveExpression {1}(PassiveExpression expression)\r\n",
+			sb.AppendFormat("{0} static PassiveExpression _{1}(PassiveExpression expression)\r\n",
 				function.IsPublic ? "public" : "private", function.Name);
 			Indent(indentLevel);
 
@@ -235,7 +235,7 @@ namespace Refal.Runtime
 
 		public override void VisitFunctionCall(FunctionCall functionCall)
 		{
-			sb.AppendFormat("{0}(PassiveExpression.Build(", functionCall.FunctionName);
+			sb.AppendFormat("_{0}(PassiveExpression.Build(", functionCall.FunctionName);
 			functionCall.Expression.Accept(this);
 			sb.Append("))");
 		}
@@ -250,12 +250,28 @@ namespace Refal.Runtime
 			if (charValue.EndsWith("'"))
 				charValue = charValue.Substring(0, charValue.Length - 1);
 				
-			sb.AppendFormat("\"{0}\".ToCharArray()", charValue);
+			sb.AppendFormat("\"{0}\".ToCharArray()", EscapeString(charValue));
 		}
 
 		public override void VisitCompoundSymbol(CompoundSymbol compoundSymbol)
 		{
-			sb.Append(compoundSymbol.Value);
+			string symValue = compoundSymbol.Value;
+
+			if (symValue.StartsWith("\""))
+				symValue = symValue.Substring(1);
+
+			if (symValue.EndsWith("\""))
+				symValue = symValue.Substring(0, symValue.Length - 1);
+				
+			sb.AppendFormat("\"{0}\"", EscapeString(symValue));
+		}
+
+		public static string EscapeString(string s)
+		{
+			return s.Replace("\\(", "(").Replace("\\)", ")").
+				Replace("\\<", "<").Replace("\\>", ">").
+				Replace("\\\"", "\"").Replace("\\\'", "\'").
+				Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("'", "\\'");
 		}
 
 		public override void VisitIdentifier(Identifier identifier)

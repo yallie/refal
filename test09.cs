@@ -6,28 +6,32 @@ namespace Refal.Runtime
 {
 	public class Program : RefalBase
 	{
-		static void Main()
+		static void Main(string[] args)
 		{
-			Go(new PassiveExpression());
+			RefalBase.commandLineArguments = args;
+
+			_Go(new PassiveExpression());
+
+			RefalBase.CloseFiles();
 		}
 
-		public static PassiveExpression Go(PassiveExpression expression)
+		public static PassiveExpression _Go(PassiveExpression expression)
 		{
 			Pattern pattern1 = new Pattern();
 			if (RefalBase.Match(expression, pattern1))
 			{
-				return PassiveExpression.Build(Open(PassiveExpression.Build("r".ToCharArray(), "File", "test09.ref")), Output(PassiveExpression.Build(new OpeningBrace(), new ClosingBrace(), new OpeningBrace(), "File", new ClosingBrace())));
+				return PassiveExpression.Build(_Open(PassiveExpression.Build("r".ToCharArray(), "File", "test09.ref")), _Output(PassiveExpression.Build(new OpeningBrace(), new ClosingBrace(), new OpeningBrace(), "File", new ClosingBrace())));
 			};
 
 			throw new RecognitionImpossibleException("Recognition impossible");
 		}
 
-		private static PassiveExpression Output(PassiveExpression expression)
+		private static PassiveExpression _Output(PassiveExpression expression)
 		{
 			Pattern pattern2 = new Pattern(new OpeningBrace(), new ClosingBrace(), new OpeningBrace(), new SymbolVariable("s.D"), new ClosingBrace());
 			if (RefalBase.Match(expression, pattern2))
 			{
-				return PassiveExpression.Build(Output(PassiveExpression.Build(new OpeningBrace(), Get(PassiveExpression.Build(pattern2.GetVariable("s.D"))), new ClosingBrace(), new OpeningBrace(), pattern2.GetVariable("s.D"), new ClosingBrace())));
+				return PassiveExpression.Build(_Output(PassiveExpression.Build(new OpeningBrace(), _Get(PassiveExpression.Build(pattern2.GetVariable("s.D"))), new ClosingBrace(), new OpeningBrace(), pattern2.GetVariable("s.D"), new ClosingBrace())));
 			};
 
 			Pattern pattern3 = new Pattern(new OpeningBrace(), 0, new ClosingBrace(), new OpeningBrace(), new SymbolVariable("s.D"), new ClosingBrace());
@@ -39,7 +43,7 @@ namespace Refal.Runtime
 			Pattern pattern4 = new Pattern(new OpeningBrace(), new ExpressionVariable("e.1"), new ClosingBrace(), new OpeningBrace(), new SymbolVariable("s.D"), new ClosingBrace());
 			if (RefalBase.Match(expression, pattern4))
 			{
-				return PassiveExpression.Build(Prout(PassiveExpression.Build(pattern4.GetVariable("e.1"))), Output(PassiveExpression.Build(new OpeningBrace(), Get(PassiveExpression.Build(pattern4.GetVariable("s.D"))), new ClosingBrace(), new OpeningBrace(), pattern4.GetVariable("s.D"), new ClosingBrace())));
+				return PassiveExpression.Build(_Prout(PassiveExpression.Build(pattern4.GetVariable("e.1"))), _Output(PassiveExpression.Build(new OpeningBrace(), _Get(PassiveExpression.Build(pattern4.GetVariable("s.D"))), new ClosingBrace(), new OpeningBrace(), pattern4.GetVariable("s.D"), new ClosingBrace())));
 			};
 
 			throw new RecognitionImpossibleException("Recognition impossible");

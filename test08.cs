@@ -6,28 +6,32 @@ namespace Refal.Runtime
 {
 	public class Program : RefalBase
 	{
-		static void Main()
+		static void Main(string[] args)
 		{
-			Go(new PassiveExpression());
+			RefalBase.commandLineArguments = args;
+
+			_Go(new PassiveExpression());
+
+			RefalBase.CloseFiles();
 		}
 
-		public static PassiveExpression Go(PassiveExpression expression)
+		public static PassiveExpression _Go(PassiveExpression expression)
 		{
 			Pattern pattern1 = new Pattern();
 			if (RefalBase.Match(expression, pattern1))
 			{
-				return PassiveExpression.Build(Output(PassiveExpression.Build()));
+				return PassiveExpression.Build(_Output(PassiveExpression.Build()));
 			};
 
 			throw new RecognitionImpossibleException("Recognition impossible");
 		}
 
-		private static PassiveExpression Output(PassiveExpression expression)
+		private static PassiveExpression _Output(PassiveExpression expression)
 		{
 			Pattern pattern2 = new Pattern();
 			if (RefalBase.Match(expression, pattern2))
 			{
-				return PassiveExpression.Build(Output(PassiveExpression.Build(Card(PassiveExpression.Build()))));
+				return PassiveExpression.Build(_Output(PassiveExpression.Build(_Card(PassiveExpression.Build()))));
 			};
 
 			Pattern pattern3 = new Pattern(0);
@@ -39,7 +43,7 @@ namespace Refal.Runtime
 			Pattern pattern4 = new Pattern(new ExpressionVariable("e.1"));
 			if (RefalBase.Match(expression, pattern4))
 			{
-				return PassiveExpression.Build(Prout(PassiveExpression.Build(pattern4.GetVariable("e.1"))), Output(PassiveExpression.Build(Card(PassiveExpression.Build()))));
+				return PassiveExpression.Build(_Prout(PassiveExpression.Build(pattern4.GetVariable("e.1"))), _Output(PassiveExpression.Build(_Card(PassiveExpression.Build()))));
 			};
 
 			throw new RecognitionImpossibleException("Recognition impossible");

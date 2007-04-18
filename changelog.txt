@@ -1,4 +1,19 @@
 
+ 14-Jun-2006 20:20:30 yallie
+  CSharpVisitor.cs
+   Added escaped strings and prefix "_" in generated function names
+
+  RefalBase.cs
+   Added prefix "_" to all library functions
+   Added bury/dig standard functions
+   Added a lot of stubs for non-implemented functions
+
+  test*.txt
+   Added refence output for almost all runnable examples
+
+  test.bat, tests.log
+   Improved automated testing
+
  14-Jun-2006 20:20:22 yallie
   CSharpVisitor.cs, test14.cs
    Added support for command-line arguments in refal programs

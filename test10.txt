@@ -1,0 +1,12 @@
+/* test10 */
+* Displays lines read from file test10.ref
+* Written by Y [14-06-03], [13-06-06]
+$ENTRY Go { = 
+	<Open 'r' <InputFile> 'test10.ref'> <Output () (<InputFile>)>;
+}
+InputFile { = 1; }
+Output {
+	() (s.D) = <Output (<Get s.D>) (s.D)>;
+	(0) (s.D) = ; /* stop: end of file */
+	(e.1) (s.D) = <Prout e.1> <Output (<Get s.D>) (s.D)>;
+}

@@ -11,6 +11,9 @@ namespace Refal.Runtime
 		// Refal file I/O support hash: handle -> StreamReader/StreamWriter
 		private static Hashtable openFiles = new Hashtable();
 
+		// bury/dig functions global expression storage
+		protected static Hashtable buriedExpressions = new Hashtable();
+
 		// command line arguments
 		protected static string[] commandLineArguments = null;
 
@@ -84,7 +87,7 @@ namespace Refal.Runtime
 
 		// Standard RTL routines
 
-		public static PassiveExpression Print(PassiveExpression expression)
+		public static PassiveExpression _Print(PassiveExpression expression)
 		{
 			if (expression == null)
 				return null;
@@ -94,7 +97,7 @@ namespace Refal.Runtime
 			return expression;
 		}
 
-		public static PassiveExpression Prout(PassiveExpression expression)
+		public static PassiveExpression _Prout(PassiveExpression expression)
 		{
 			if (expression == null)
 				return null;
@@ -120,7 +123,7 @@ namespace Refal.Runtime
 			return sb.ToString();
 		}
 
-		public static PassiveExpression Card(PassiveExpression expression)
+		public static PassiveExpression _Card(PassiveExpression expression)
 		{
 			string s = Console.ReadLine();
 
@@ -130,7 +133,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(0);
 		}
 
-		public static PassiveExpression Open(PassiveExpression expression)
+		public static PassiveExpression _Open(PassiveExpression expression)
 		{
 			// <Open s.Mode s.D e.File-name>
 			if (expression == null || expression.Count < 1)
@@ -166,16 +169,16 @@ namespace Refal.Runtime
 			return null;
 		}
 
-		public static PassiveExpression Get(PassiveExpression expression)
+		public static PassiveExpression _Get(PassiveExpression expression)
 		{
 			if (expression == null || expression.IsEmpty)
-				return Card(expression);
+				return _Card(expression);
 
 			string handle = expression[0].ToString();
 			StreamReader sr = openFiles[handle] as StreamReader;
 
 			if (sr == null)
-				return Card(expression);
+				return _Card(expression);
 
 			string s = sr.ReadLine();
 			if (s != null)
@@ -184,18 +187,18 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(0);
 		}
 
-		public static PassiveExpression Put(PassiveExpression expression)
+		public static PassiveExpression _Put(PassiveExpression expression)
 		{
 //			return Prout(expression);
 
 			if (expression == null || expression.IsEmpty)
-				return Prout(expression);
+				return _Prout(expression);
 
 			string handle = expression[0].ToString();
 			StreamWriter sw = openFiles[handle] as StreamWriter;
 
 			if (sw == null)
-				return Prout(expression);
+				return _Prout(expression);
 
 			sw.WriteLine(ExpressionToString(expression, 1)); // sw Console
 
@@ -221,7 +224,7 @@ namespace Refal.Runtime
 			set { commandLineArguments = value; }
 		}
 
-		public static PassiveExpression Arg(PassiveExpression expression)
+		public static PassiveExpression _Arg(PassiveExpression expression)
 		{
 			if (expression == null || expression.IsEmpty || commandLineArguments == null)
 				return new PassiveExpression();
@@ -234,6 +237,106 @@ namespace Refal.Runtime
 			}
 
 			return PassiveExpression.Build(commandLineArguments[index].ToCharArray());
+		}
+
+		public static PassiveExpression _Br(PassiveExpression expression)
+		{
+			// <Br N '=' Expr>, where N is expression which does not
+			// include '=' on the upper level of the bracket's structure
+			// my restriction: N is a single value
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Dg(PassiveExpression expression)
+		{
+			// <Dg N>, where N is expression
+			// my restriction: N is a single value
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Dgall(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Cp(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Rp(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Type(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Mu(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Implode_Ext(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Implode(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Explode(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Add(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Mul(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Numb(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Symb(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Chr(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Ord(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Divmod(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _First(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static PassiveExpression _Putout(PassiveExpression expression)
+		{
+			throw new NotImplementedException();
 		}
 	}
 
