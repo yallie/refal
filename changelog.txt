@@ -1,4 +1,8 @@
 
+ 13-Jun-2006 05:24:14 yallie
+  test*.*
+   Updated a few test programs
+
  13-Jun-2006 05:23:35 yallie
   CSharpVisitor.cs, Pattern.cs
    Initial implementation of with-clauses

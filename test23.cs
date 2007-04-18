@@ -61,7 +61,7 @@ namespace Refal.Runtime
 			Pattern pattern6 = new Pattern();
 			if (RefalBase.Match(expression, pattern6))
 			{
-				return PassiveExpression.Build("abc".ToCharArray());
+				return PassiveExpression.Build("abcdefghijklmnopqrstuvwxyz".ToCharArray());
 			};
 
 			throw new RecognitionImpossibleException("Recognition impossible");

@@ -1,11 +1,11 @@
 
 /* test10 */
 
-* Displays lines read from file 08_inout.ref
-* Written by Y [14-06-03]
+* Displays lines read from file test10.ref
+* Written by Y [14-06-03], [13-06-06]
 
 $ENTRY Go { = 
-	<Open 'r' <InputFile> '08_inout.ref'> <Output () (<InputFile>)>;
+	<Open 'r' <InputFile> 'test10.ref'> <Output () (<InputFile>)>;
 }
 
 InputFile { = 1; }
