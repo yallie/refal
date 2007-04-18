@@ -1,0 +1,14 @@
+
+/* test24 - test23 with extended syntax (where-clause) */
+
+$ENTRY Go {
+	= <Prout <PreAlph 'a' 'c'>>;
+}
+
+PreAlph {
+   s.1 s.1 = True;
+   s.1 s.2, <Alphabet>: e.A s.1 e.B s.2 e.C = True;
+   e.Z = False;
+}
+ 
+Alphabet { = 'abcdefghijklmnopqrstuvwxyz'; }

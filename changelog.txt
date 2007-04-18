@@ -1,4 +1,14 @@
 
+ 13-Jun-2006 03:03:54 yallie
+  CSharpVisitor.cs
+   Added where-clause code generation
+
+  Pattern.cs
+   Added binding of the variables
+
+  test24.*
+   Added test for where-clause
+
  13-Jun-2006 02:27:19 yallie
   RefalBase.cs
    New runtime library functions: <Print>, <Prout>, <Open>, <Get>

@@ -98,10 +98,6 @@ namespace Refal.Runtime
 			sentence.Pattern.Accept(this);
 			sb.Append(");\r\n");
 
-			// TODO
-//			if (sentence.Conditions != null)
-//				sentence.Conditions.Accept(this);
-
 			Indent(indentLevel);
 			sb.AppendFormat("if (RefalBase.Match(expression, pattern{0}))\r\n", currentPatternIndex);
 			Indent(indentLevel);
@@ -109,17 +105,61 @@ namespace Refal.Runtime
 
 			if (sentence.Expression != null)
 			{
-				Indent(indentLevel + 1);
+				indentLevel++;
 
+				// where-clause
+				if (sentence.Conditions != null)
+					sentence.Conditions.Accept(this);
+
+				Indent(indentLevel);
 				sb.Append("return PassiveExpression.Build(");
 				sentence.Expression.Accept(this);
 				sb.Append(");\r\n");
+
+				indentLevel--;
 			}
 
 			Indent(indentLevel);
 			sb.Append("}");
 
 			currentPatternIndex++;
+		}
+
+		public override void VisitConditions(Conditions conditions)
+		{
+			Indent(indentLevel);
+			sb.AppendFormat("PassiveExpression expression{0} = PassiveExpression.Build(", currentPatternIndex + 1);
+			conditions.Expression.Accept(this);
+			sb.Append(");\r\n");
+
+			currentPatternIndex++;
+
+			if (conditions.Pattern != null)
+			{
+				Indent(indentLevel);
+				sb.AppendFormat("Pattern pattern{0} = new Pattern(", currentPatternIndex);
+				conditions.Pattern.Accept(this);
+				sb.Append(");\r\n");
+
+				Indent(indentLevel);
+				sb.AppendFormat("pattern{0}.BindVariables(pattern{1});\r\n", currentPatternIndex, currentPatternIndex - 1);
+
+				Indent(indentLevel);
+				sb.AppendFormat("if (RefalBase.Match(expression{0}, pattern{0}))\r\n", currentPatternIndex);
+				Indent(indentLevel);
+				sb.Append("{\r\n");
+
+				indentLevel++;
+			}
+
+/*			if (conditions.Block != null)
+			{
+				conditions.Block.Accept(this);
+			}
+			else if (conditions.MoreConditions != null)
+			{
+				conditions.MoreConditions.Accept(this);
+			}*/
 		}
 
 		public override void VisitPattern(Pattern pattern)
@@ -233,22 +273,6 @@ namespace Refal.Runtime
 		public override void VisitMacrodigit(Macrodigit macrodigit)
 		{
 			sb.AppendFormat("{0}", macrodigit.Value);
-		}
-
-		public override void VisitConditions(Conditions conditions)
-		{
-			sb.Append(", ");
-			conditions.Expression.Accept(this);
-			sb.Append(": ");
-
-			if (conditions.Block != null)
-			{
-				conditions.Block.Accept(this);
-			}
-			else if (conditions.MoreConditions != null)
-			{
-				conditions.MoreConditions.Accept(this);
-			}
 		}
 	}
 }
