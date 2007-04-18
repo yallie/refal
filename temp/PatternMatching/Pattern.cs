@@ -51,6 +51,27 @@ namespace Refal.Runtime
 
 			return ((Variable)variables[name]).Value;
 		}
+
+		public void CopyBoundVariables(Pattern pattern)
+		{
+			foreach (string name in pattern.Variables.Keys)
+			{
+				if (variables.Contains(name))
+				{
+					Variable var = (Variable)variables[name];
+					var.Value = pattern.GetVariable(name);
+					// first occurance of the variable is in another pattern
+					var.FirstOccurance = -1;
+				}
+				else
+				{
+					// copy bound variable from another pattern
+					Variable var = (Variable)pattern.Variables[name];
+					variables[name] = var;
+					var.FirstOccurance = -1;
+				}
+			}
+		}
 	}
 
 	public abstract class Variable

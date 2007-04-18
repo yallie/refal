@@ -84,38 +84,53 @@ namespace Refal.Runtime
 					// term variable matches subexpression in structure braces
 					else if ((pat is TermVariable) && (ex is StructureBrace))
 					{
-						if (ex is OpeningBrace)
+						TermVariable term = pat as TermVariable;
+
+						// first occurance => copy subexpression
+						if (patIndex == term.FirstOccurance)
 						{
-							TermVariable term = pat as TermVariable;
-							term.Expression.Add(ex);
-							exIndex++; patIndex++;
-
-							// extract subexpression within the structure braces
-							int rank = 1;
-							while (exIndex < expression.Count && rank > 0)
+							if (ex is OpeningBrace)
 							{
-								ex = expression[exIndex++];
 								term.Expression.Add(ex);
+								exIndex++; patIndex++;
 
-								if (ex is OpeningBrace)
-									rank++;
-								else if (ex is ClosingBrace)
-									rank--;
+								// extract subexpression within the structure braces
+								int rank = 1;
+								while (exIndex < expression.Count && rank > 0)
+								{
+									ex = expression[exIndex++];
+									term.Expression.Add(ex);
+
+									if (ex is OpeningBrace)
+										rank++;
+									else if (ex is ClosingBrace)
+										rank--;
+								}
+
+								// subexpression with surrounding braces is extracted
+								if (rank == 0)
+									continue;
+								else
+								{
+									// closing structure brace not found => rolling back
+									// in fact, this can only be caused by unmatched braces...
+									needRollback = true;
+								}
 							}
-
-							// subexpression with surrounding braces is extracted
-							if (rank == 0)
-								continue;
-							else
+							else 
 							{
-								// closing structure brace not found => rolling back
-								// in fact, this can only be caused by unmatched braces...
 								needRollback = true;
 							}
 						}
-						else 
+						else // not the first occurance => compare expression
 						{
-							needRollback = true;
+							if (CompareExpressions(expression, exIndex, term.Expression))
+							{
+								exIndex += term.Expression.Count; patIndex++;
+								continue;
+							}
+							else
+								needRollback = true;
 						}
 					}
 
@@ -187,16 +202,16 @@ namespace Refal.Runtime
 								}
 							}
 						}
-						// not the first occurance, compare expressions
-						else if (ex.Equals(var.Expression))
+						else // not the first occurance, compare expressions
 						{
-							exIndex++; patIndex++;
-							continue;
-						}
-						else
-						{
-							// expression don't match, roll back
-							needRollback = true;
+							if (CompareExpressions(expression, exIndex, var.Expression))
+							{
+								exIndex += var.Expression.Count; patIndex++;
+								continue;
+							}
+							else
+								// expression don't match, roll back
+								needRollback = true;
 						}
 					}
 
@@ -231,26 +246,30 @@ namespace Refal.Runtime
 				if (match && patIndex >= pattern.Count && exIndex >= expression.Count)
 					return true;
 
+				// check for special case: expression has ended, but pattern contains a few expression variables
+				// in that case, matching should succeed, with all remaining variables taking empty values
+				if (match && exIndex >= expression.Count && patIndex < pattern.Count)
+				{
+					while (match && patIndex < pattern.Count)
+					{
+						object pat = pattern[patIndex++];
+						if (!(pat is ExpressionVariable))
+						{
+							match = false;
+							break;
+						}
+
+						ExpressionVariable var = (ExpressionVariable)pat;
+						var.Expression = new PassiveExpression();
+					}
+
+					if (match && patIndex >= pattern.Count)
+						return true;
+				}
+
 				// if can roll back, try once more
 				if (rollBackStack.Count == 0)
 				{
-					// check for special case: expression has ended, but pattern contains a few expression variables
-					// in that case, matching should succeed, with all remaining variables taking empty values
-					if (match && exIndex >= expression.Count && patIndex < pattern.Count)
-					{
-						while (patIndex < pattern.Count)
-						{
-							object pat = pattern[patIndex++];
-							if (!(pat is ExpressionVariable))
-								return false;
-
-							ExpressionVariable var = (ExpressionVariable)pat;
-							var.Expression = new PassiveExpression();
-						}
-
-						return true;
-					}
-
 					// nothing to roll back => matching has failed
 					return false;
 				}
@@ -282,6 +301,41 @@ namespace Refal.Runtime
 				if (var.FirstOccurance > startFromIndex) // not >=!
 					var.Value = null;
 			}
+		}
+
+		private static bool CompareExpressions(PassiveExpression expression, int exIndex, PassiveExpression varExpression)
+		{
+			if (expression == null && varExpression == null)
+				return true;
+
+			if (expression != null && varExpression != null)
+			{
+				for (int i = 0; i < varExpression.Count; i++)
+				{
+					if (i + exIndex >= expression.Count)
+						return false;
+
+					object ex = expression[i + exIndex];
+					object varEx = varExpression[i];
+
+					if (ex is OpeningBrace)
+					{
+						if (!(varEx is OpeningBrace))
+							return false;
+					}
+					else if (ex is ClosingBrace)
+					{
+						if (!(varEx is ClosingBrace))
+							return false;
+					}
+					else if (!ex.Equals(varEx))
+						return false;
+				}
+
+				return true;
+			}
+
+			return false;
 		}
 
 /*		// kept for test purposes only

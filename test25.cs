@@ -63,7 +63,7 @@ namespace Refal.Runtime
 			{
 				expression = PassiveExpression.Build(Alphabet(PassiveExpression.Build()));
 				Pattern pattern7 = new Pattern(new ExpressionVariable("e.A"), new SymbolVariable("s.1"), new ExpressionVariable("e.B"), new SymbolVariable("s.2"), new ExpressionVariable("e.C"));
-				pattern7.BindVariables(pattern6);
+				pattern7.CopyBoundVariables(pattern6);
 				if (RefalBase.Match(expression, pattern7))
 				{
 					return PassiveExpression.Build(true);

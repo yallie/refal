@@ -16,7 +16,7 @@ namespace Refal.Runtime
 			Pattern pattern1 = new Pattern();
 			if (RefalBase.Match(expression, pattern1))
 			{
-				return PassiveExpression.Build(Prout(PassiveExpression.Build(PreAlph(PassiveExpression.Build("a".ToCharArray(), "z".ToCharArray())))));
+				return PassiveExpression.Build(Prout(PassiveExpression.Build(PreAlph(PassiveExpression.Build("a".ToCharArray(), "c".ToCharArray())))));
 			};
 
 			throw new RecognitionImpossibleException("Recognition impossible");
@@ -33,13 +33,13 @@ namespace Refal.Runtime
 			Pattern pattern3 = new Pattern(new SymbolVariable("s.1"), new SymbolVariable("s.2"));
 			if (RefalBase.Match(expression, pattern3))
 			{
-				expression = PassiveExpression.Build(Alphabet(PassiveExpression.Build()));
+				PassiveExpression expression4 = PassiveExpression.Build(Alphabet(PassiveExpression.Build()));
 				Pattern pattern4 = new Pattern(new ExpressionVariable("e.A"), new SymbolVariable("s.1"), new ExpressionVariable("e.B"), new SymbolVariable("s.2"), new ExpressionVariable("e.C"));
-				pattern4.CopyBoundVariables(pattern3);
-				if (RefalBase.Match(expression, pattern4))
+				pattern4.BindVariables(pattern3);
+				if (RefalBase.Match(expression4, pattern4))
 				{
 					return PassiveExpression.Build(true);
-				}
+				};
 			};
 
 			Pattern pattern5 = new Pattern(new ExpressionVariable("e.Z"));
@@ -51,16 +51,16 @@ namespace Refal.Runtime
 			throw new RecognitionImpossibleException("Recognition impossible");
 		}
 
-		private static PassiveExpression Alphabet(PassiveExpression expression)
-		{
-			Pattern pattern6 = new Pattern();
-			if (RefalBase.Match(expression, pattern6))
+			private static PassiveExpression Alphabet(PassiveExpression expression)
 			{
-				return PassiveExpression.Build("abcdefghijklmnopqrstuvwxyz".ToCharArray());
-			};
+				Pattern pattern6 = new Pattern();
+				if (RefalBase.Match(expression, pattern6))
+				{
+					return PassiveExpression.Build("abcdefghijklmnopqrstuvwxyz".ToCharArray());
+				};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
-		}
+				throw new RecognitionImpossibleException("Recognition impossible");
+			}
 
 	}
 }

@@ -191,9 +191,8 @@ static bool IsSentence()
 			Expression(out expression);
 			sentence.Expression = expression; 
 		} else if (la.kind == 28 || la.kind == 29) {
-			WhereOrWithClause(out conditions, out expression);
+			WhereOrWithClause(out conditions);
 			sentence.Conditions = conditions; 
-			   sentence.Expression = expression; 
 		} else SynErr(36);
 	}
 
@@ -245,13 +244,12 @@ static bool IsSentence()
 		}
 	}
 
-	static void WhereOrWithClause(out Conditions conditions,
-out Expression expression) {
+	static void WhereOrWithClause(out Conditions conditions) {
 		conditions = new Conditions();
-		 expression = null;
-		 Block block; Pattern pattern;
-		 Expression condExpression;
-		 Conditions moreConditions; 
+		Block block; Pattern pattern;
+		Expression condExpression;
+		Expression resultExpression;
+		Conditions moreConditions; 
 		if (la.kind == 28) {
 			Get();
 		} else if (la.kind == 29) {
@@ -268,9 +266,10 @@ out Expression expression) {
 			conditions.Pattern = pattern; 
 			if (la.kind == 6) {
 				Get();
-				Expression(out expression);
+				Expression(out resultExpression);
+				conditions.ResultExpression = resultExpression; 
 			} else if (la.kind == 28 || la.kind == 29) {
-				WhereOrWithClause(out moreConditions, out expression);
+				WhereOrWithClause(out moreConditions);
 				conditions.MoreConditions = moreConditions; 
 			} else SynErr(38);
 		} else SynErr(39);

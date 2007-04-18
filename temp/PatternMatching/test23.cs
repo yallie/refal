@@ -16,7 +16,7 @@ namespace Refal.Runtime
 			Pattern pattern1 = new Pattern();
 			if (RefalBase.Match(expression, pattern1))
 			{
-				return PassiveExpression.Build(Prout(PassiveExpression.Build(PreAlph(PassiveExpression.Build("a".ToCharArray(), "z".ToCharArray())))));
+				return PassiveExpression.Build(Prout(PassiveExpression.Build(PreAlph(PassiveExpression.Build("a".ToCharArray(), "c".ToCharArray())))));
 			};
 
 			throw new RecognitionImpossibleException("Recognition impossible");
@@ -33,13 +33,18 @@ namespace Refal.Runtime
 			Pattern pattern3 = new Pattern(new SymbolVariable("s.1"), new SymbolVariable("s.2"));
 			if (RefalBase.Match(expression, pattern3))
 			{
-				expression = PassiveExpression.Build(Alphabet(PassiveExpression.Build()));
-				Pattern pattern4 = new Pattern(new ExpressionVariable("e.A"), new SymbolVariable("s.1"), new ExpressionVariable("e.B"), new SymbolVariable("s.2"), new ExpressionVariable("e.C"));
-				pattern4.CopyBoundVariables(pattern3);
-				if (RefalBase.Match(expression, pattern4))
-				{
-					return PassiveExpression.Build(true);
-				}
+				return PassiveExpression.Build(Before(PassiveExpression.Build(pattern3.GetVariable("s.1"), pattern3.GetVariable("s.2"), "In", Alphabet(PassiveExpression.Build()))));
+			};
+
+			throw new RecognitionImpossibleException("Recognition impossible");
+		}
+
+		private static PassiveExpression Before(PassiveExpression expression)
+		{
+			Pattern pattern4 = new Pattern(new SymbolVariable("s.1"), new SymbolVariable("s.2"), "In", new ExpressionVariable("e.A"), new SymbolVariable("s.1"), new ExpressionVariable("e.B"), new SymbolVariable("s.2"), new ExpressionVariable("e.C"));
+			if (RefalBase.Match(expression, pattern4))
+			{
+				return PassiveExpression.Build(true);
 			};
 
 			Pattern pattern5 = new Pattern(new ExpressionVariable("e.Z"));
@@ -56,7 +61,7 @@ namespace Refal.Runtime
 			Pattern pattern6 = new Pattern();
 			if (RefalBase.Match(expression, pattern6))
 			{
-				return PassiveExpression.Build("abcdefghijklmnopqrstuvwxyz".ToCharArray());
+				return PassiveExpression.Build("abc".ToCharArray());
 			};
 
 			throw new RecognitionImpossibleException("Recognition impossible");
