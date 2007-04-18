@@ -10,6 +10,9 @@ namespace Refal
 		int indentLevel = 2;
 		int currentPatternIndex = 1;
 
+		string blockPattern = null;
+		Stack blockPatterns = new Stack();
+
 		public CSharpCodeVisitor()
 		{
 		}
@@ -93,11 +96,20 @@ namespace Refal.Runtime
 
 		public override void VisitSentence(Sentence sentence)
 		{
+			// create pattern
 			Indent(indentLevel);
 			sb.AppendFormat("Pattern pattern{0} = new Pattern(", currentPatternIndex);
 			sentence.Pattern.Accept(this);
 			sb.Append(");\r\n");
 
+			// copy variables from block pattern
+			if (blockPattern != null)
+			{
+				Indent(indentLevel);
+				sb.AppendFormat("pattern{0}.CopyBoundVariables({1});\r\n", currentPatternIndex, blockPattern);
+			}
+
+			// match inout expression
 			Indent(indentLevel);
 			sb.AppendFormat("if (RefalBase.Match(expression, pattern{0}))\r\n", currentPatternIndex);
 			Indent(indentLevel);
@@ -134,6 +146,30 @@ namespace Refal.Runtime
 
 			currentPatternIndex++;
 
+			// conditions may contain either block (with-clause) or pattern (where-clause)
+			if (conditions.Block != null)
+			{
+				// set pattern containing bound variables for the current block
+				if (blockPattern != null)
+				{
+					blockPatterns.Push(blockPattern);
+				}
+				blockPattern = string.Format("pattern{0}", currentPatternIndex - 1);
+
+				// emit block
+				Indent(indentLevel);
+				conditions.Block.Accept(this);
+				sb.Append("\r\n");
+
+				// block is finished, restore parent block pattern
+				blockPattern = null;
+				if (blockPatterns.Count > 0)
+				{
+					blockPattern = (string)blockPatterns.Pop();
+				}
+			}
+
+			// pattern (where-clause)
 			if (conditions.Pattern != null)
 			{
 				Indent(indentLevel);
@@ -142,7 +178,7 @@ namespace Refal.Runtime
 				sb.Append(");\r\n");
 
 				Indent(indentLevel);
-				sb.AppendFormat("pattern{0}.BindVariables(pattern{1});\r\n", currentPatternIndex, currentPatternIndex - 1);
+				sb.AppendFormat("pattern{0}.CopyBoundVariables(pattern{1});\r\n", currentPatternIndex, currentPatternIndex - 1);
 
 				Indent(indentLevel);
 				sb.AppendFormat("if (RefalBase.Match(expression, pattern{0}))\r\n", currentPatternIndex);
@@ -162,11 +198,6 @@ namespace Refal.Runtime
 					conditions.ResultExpression.Accept(this);
 					sb.Append(");\r\n");
 				}
-
-/*				if (conditions.Block != null) //???
-				{
-					conditions.Block.Accept(this);
-				}*/
 
 				indentLevel--;
 				Indent(indentLevel);

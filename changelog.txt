@@ -1,4 +1,11 @@
 
+ 13-Jun-2006 05:23:35 yallie
+  CSharpVisitor.cs, Pattern.cs
+   Initial implementation of with-clauses
+
+  test25.*, test26.*
+   New tests for where- and with-clauses
+
  13-Jun-2006 04:45:00 yallie
   CSharpVisitor.cs
    Minor changes in expression generation for where-clause

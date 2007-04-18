@@ -1,0 +1,21 @@
+
+/* test26 - test25 with extended syntax (with-clause) */
+
+$ENTRY Go {
+	= <Prout <Order 'f' 'a'>>;
+}
+
+Order {
+	s.1 s.2, <PreAlph s.1 s.2>: {
+		True = s.1 s.2;
+		False = s.2 s.1;
+	};
+}
+   
+PreAlph {
+   s.1 s.1 = True;
+   s.1 s.2, <Alphabet>: e.A s.1 e.B s.2 e.C = True;
+   e.Z = False;
+}
+ 
+Alphabet { = 'abcdefghijklmnopqrstuvwxyz'; }
