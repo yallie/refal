@@ -44,31 +44,21 @@ namespace Refal.Runtime
 					// assume that expression and pattern aren't empty
 					PatternItem pat = pattern[patIndex] as PatternItem;
 
-					MatchResult mr = pat.Match(expression, ref exIndex, patIndex);
+					MatchResult mr = pat.Match(expression, ref exIndex, patIndex++);
 
 					if (mr == MatchResult.Success)
-					{
-						patIndex++;
 						continue;
-					}
 					
 					if (mr == MatchResult.PartialSuccess)
 					{
-						RollbackInfo info = new RollbackInfo();
-						info.exIndex = exIndex;
-						info.patIndex = patIndex;
-						rollBackStack.Push(info);
-						patIndex++;
+						SaveRollBackInfo(exIndex, patIndex - 1);
 						continue;
 					}
-					else
-					{
-						// roll back to the last partial match to find another match
-						// if can't roll back, then matching failed
-						match = RollBackToLastPartialMatch();
-					}
-					
-				} // while()
+
+					// roll back to the last partial match to find another match
+					// if can't roll back, then matching failed
+					match = RollBackToLastPartialMatch();
+				}
 
 				if (match && patIndex >= pattern.Count && exIndex >= expression.Count)
 					return true;
@@ -103,6 +93,14 @@ namespace Refal.Runtime
 					return false;
 				}
 			}
+		}
+
+		private void SaveRollBackInfo(int exIndex, int patIndex)
+		{
+			RollbackInfo info = new RollbackInfo();
+			info.exIndex = exIndex;
+			info.patIndex = patIndex;
+			rollBackStack.Push(info);
 		}
 
 		private bool RollBackToLastPartialMatch()

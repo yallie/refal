@@ -74,13 +74,13 @@ namespace Refal.Runtime
 
 		protected override MatchResult MatchAny(PassiveExpression expression, ref int exIndex)
 		{
-			object ex = expression[exIndex];
+			if (exIndex >= expression.Count)
+				return MatchResult.Failure;
 
 			// match anything except braces
-			if (!(ex is StructureBrace))
+			if (!(expression[exIndex] is StructureBrace))
 			{
-				this.Symbol = ex;
-				exIndex++;
+				this.Symbol = expression[exIndex++];
 				return MatchResult.Success;
 			}
 
@@ -89,12 +89,12 @@ namespace Refal.Runtime
 
 		protected override MatchResult MatchSame(PassiveExpression expression, ref int exIndex)
 		{
-			object ex = expression[exIndex];
+			if (exIndex >= expression.Count)
+				return MatchResult.Failure;
 
 			// match the bound value
-			if (Value.Equals(ex))
+			if (Value.Equals(expression[exIndex++]))
 			{
-				exIndex++;
 				return MatchResult.Success;
 			}
 
@@ -130,28 +130,27 @@ namespace Refal.Runtime
 
 		protected override MatchResult MatchAny(PassiveExpression expression, ref int exIndex)
 		{
-			object ex = expression[exIndex];
+			if (exIndex >= expression.Count)
+				return MatchResult.Failure;
 
-			// match single symbol
-			if (!(ex is StructureBrace))
+			// match single symbol (symbol == not a brace)
+			if (!(expression[exIndex] is StructureBrace))
 			{
-				this.Symbol = ex;
-				exIndex++;
+				this.Symbol = expression[exIndex++];
 				return MatchResult.Success;
 			}
 
 			// match subexpression
-			else if (ex is OpeningBrace)
+			else if (expression[exIndex] is OpeningBrace)
 			{
 				this.Expression = new PassiveExpression();
-				this.Expression.Add(ex);
-				exIndex++;
+				this.Expression.Add(expression[exIndex++]);
 
 				// extract subexpression within the structure braces
 				int rank = 1;
 				while (exIndex < expression.Count && rank > 0)
 				{
-					ex = expression[exIndex++];
+					object ex = expression[exIndex++];
 					this.Expression.Add(ex);
 
 					if (ex is OpeningBrace)
@@ -171,17 +170,15 @@ namespace Refal.Runtime
 
 		protected override MatchResult MatchSame(PassiveExpression expression, ref int exIndex)
 		{
+			if (exIndex >= expression.Count)
+				return MatchResult.Failure;
+
 			// match same symbol
 			if (this.Symbol != null)
 			{
-				object ex = expression[exIndex];
-
 				// match the bound value
-				if (Symbol.Equals(ex))
-				{
-					exIndex++;
+				if (Symbol.Equals(expression[exIndex++]))
 					return MatchResult.Success;
-				}
 			}
 
 			// match same subexpression
@@ -221,12 +218,13 @@ namespace Refal.Runtime
 			{
 				// start with empty expression, don't advance exIndex
 				this.Expression = new PassiveExpression();
-
-				// save exIndex and patIndex for roll back operation
 				return MatchResult.PartialSuccess;
 			}
 			else
 			{
+				if (exIndex >= expression.Count)
+					return MatchResult.Failure;
+
 				// continue adding terms to expression
 				object ex = expression[exIndex++];
 
@@ -234,8 +232,6 @@ namespace Refal.Runtime
 				if (!(ex is StructureBrace))
 				{
 					this.Expression.Add(ex);
-
-					// save exIndex + 1 and patIndex
 					return MatchResult.PartialSuccess;
 				}
 				else if (ex is OpeningBrace)
@@ -258,10 +254,7 @@ namespace Refal.Runtime
 
 					// subexpression with surrounding braces is extracted
 					if (rank == 0)
-					{
-						// save exIndex and patIndex
 						return MatchResult.PartialSuccess;
-					}
 				}
 
 				return MatchResult.Failure;

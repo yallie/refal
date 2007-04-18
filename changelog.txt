@@ -1,4 +1,8 @@
 
+ 15-Jun-2006 02:17:02 yallie
+  PatternMatching.cs, PatternVariables.cs
+   Further improvements on pattern matching
+
  15-Jun-2006 00:27:20 yallie
   Pattern.cs, PatternItems.cs, PatternVariables.cs
    Pattern matching refactoring: moved some classes to separate files
