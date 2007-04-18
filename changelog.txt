@@ -1,4 +1,8 @@
 
+ 14-Jun-2006 20:20:47 yallie
+  test*.cs
+   Updated compiled examples
+
  14-Jun-2006 20:20:42 yallie
   PatternMatching.cs
    At last fixed refactored pattern matching

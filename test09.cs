@@ -23,7 +23,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Open(PassiveExpression.Build("r".ToCharArray(), "File", "test09.ref")), _Output(PassiveExpression.Build(new OpeningBrace(), new ClosingBrace(), new OpeningBrace(), "File", new ClosingBrace())));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Output(PassiveExpression expression)
@@ -46,7 +46,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Prout(PassiveExpression.Build(pattern4.GetVariable("e.1"))), _Output(PassiveExpression.Build(new OpeningBrace(), _Get(PassiveExpression.Build(pattern4.GetVariable("s.D"))), new ClosingBrace(), new OpeningBrace(), pattern4.GetVariable("s.D"), new ClosingBrace())));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 	}

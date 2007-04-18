@@ -23,7 +23,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Open(PassiveExpression.Build("r".ToCharArray(), 1, _Arg(PassiveExpression.Build(1)))), _Open(PassiveExpression.Build("w".ToCharArray(), 2, _Arg(PassiveExpression.Build(2)))), _Mbprep(PassiveExpression.Build(_Next(PassiveExpression.Build()))));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Next(PassiveExpression expression)
@@ -47,11 +47,11 @@ namespace Refal.Runtime
 						return PassiveExpression.Build(pattern4.GetVariable("e.1"));
 					};
 
-					throw new RecognitionImpossibleException("Recognition impossible");
+					throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 				}
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Mbprep(PassiveExpression expression)
@@ -81,11 +81,11 @@ namespace Refal.Runtime
 						return PassiveExpression.Build(_Putz(PassiveExpression.Build(2, pattern9.GetVariable("e.1"))), _Mbprep(PassiveExpression.Build(_Next(PassiveExpression.Build()))));
 					};
 
-					throw new RecognitionImpossibleException("Recognition impossible");
+					throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 				}
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Lookm0(PassiveExpression expression)
@@ -102,7 +102,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(pattern12.GetVariable("e.1"));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Lookm(PassiveExpression expression)
@@ -155,7 +155,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(pattern20.GetVariable("e.1"));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Lookp(PassiveExpression expression)
@@ -226,7 +226,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Lookp(PassiveExpression.Build(new OpeningBrace(), pattern31.GetVariable("e.L"), new OpeningBrace(), pattern31.GetVariable("e.1"), ".EOL.", new ClosingBrace(), new ClosingBrace(), new OpeningBrace(), _Next(PassiveExpression.Build()), new ClosingBrace())));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Quotes(PassiveExpression expression)
@@ -255,7 +255,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(new OpeningBrace(), pattern35.GetVariable("s.Q"), new ClosingBrace(), pattern35.GetVariable("e.1"), pattern35.GetVariable("e.2"));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Out(PassiveExpression expression)
@@ -272,7 +272,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Mbprep(PassiveExpression.Build(_Elpar(PassiveExpression.Build(pattern37.GetVariable("e.1"))))));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Elpar(PassiveExpression expression)
@@ -289,7 +289,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(pattern39.GetVariable("e.1"));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Transl(PassiveExpression expression)
@@ -342,7 +342,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Transl(PassiveExpression.Build(new OpeningBrace(), pattern47.GetVariable("e.ML"), new OpeningBrace(), pattern47.GetVariable("e.1"), pattern47.GetVariable("t.A"), new ClosingBrace(), new ClosingBrace(), new OpeningBrace(), pattern47.GetVariable("e.2"), new ClosingBrace())));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Transla(PassiveExpression expression)
@@ -389,7 +389,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Transla(PassiveExpression.Build(new OpeningBrace(), pattern54.GetVariable("e.ML"), new OpeningBrace(), pattern54.GetVariable("e.1"), pattern54.GetVariable("t.A"), new ClosingBrace(), new ClosingBrace(), new OpeningBrace(), pattern54.GetVariable("e.2"), new ClosingBrace())));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Trlmb(PassiveExpression expression)
@@ -406,7 +406,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(pattern56.GetVariable("e.1"));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Putz(PassiveExpression expression)
@@ -417,7 +417,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Destroy(PassiveExpression.Build(_Put(PassiveExpression.Build(pattern57.GetVariable("s.C"), pattern57.GetVariable("e.E"))))));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Destroy(PassiveExpression expression)
@@ -428,7 +428,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build();
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Ermes(PassiveExpression expression)
@@ -439,7 +439,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Prout(PassiveExpression.Build(_Put(PassiveExpression.Build(2, pattern59.GetVariable("e.X"))))));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 	}

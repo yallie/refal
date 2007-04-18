@@ -23,7 +23,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Job(PassiveExpression.Build(_Card(PassiveExpression.Build()))));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Job(PassiveExpression expression)
@@ -40,7 +40,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Prout(PassiveExpression.Build(_Trans__line(PassiveExpression.Build(pattern3.GetVariable("e.X"))))), _Job(PassiveExpression.Build(_Card(PassiveExpression.Build()))));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Trans__line(PassiveExpression expression)
@@ -69,7 +69,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Trans(PassiveExpression.Build(new OpeningBrace(), pattern7.GetVariable("e.Word"), new ClosingBrace(), _Table(PassiveExpression.Build()))), " ".ToCharArray());
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Table(PassiveExpression expression)
@@ -80,7 +80,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(new OpeningBrace(), new OpeningBrace(), "cane".ToCharArray(), new ClosingBrace(), "dog".ToCharArray(), new ClosingBrace(), new OpeningBrace(), new OpeningBrace(), "gatto".ToCharArray(), new ClosingBrace(), "cat".ToCharArray(), new ClosingBrace(), new OpeningBrace(), new OpeningBrace(), "cavallo".ToCharArray(), new ClosingBrace(), "horse".ToCharArray(), new ClosingBrace(), new OpeningBrace(), new OpeningBrace(), "rana".ToCharArray(), new ClosingBrace(), "frog".ToCharArray(), new ClosingBrace(), new OpeningBrace(), new OpeningBrace(), "porco".ToCharArray(), new ClosingBrace(), "pig".ToCharArray(), new ClosingBrace());
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _Trans(PassiveExpression expression)
@@ -97,7 +97,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build("***".ToCharArray());
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 	}

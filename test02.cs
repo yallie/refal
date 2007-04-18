@@ -23,7 +23,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Prout(PassiveExpression.Build("Hello".ToCharArray())));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 	}

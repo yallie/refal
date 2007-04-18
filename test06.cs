@@ -23,7 +23,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Prout(PassiveExpression.Build("0 + 0 = ", _RAdd(PassiveExpression.Build(new OpeningBrace(), "0".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "0".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("0\' + 0 = ", _RAdd(PassiveExpression.Build(new OpeningBrace(), "0\'".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "0".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("0 + 0\' = ", _RAdd(PassiveExpression.Build(new OpeningBrace(), "0".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "0\'".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("0\' + 0\' = ", _RAdd(PassiveExpression.Build(new OpeningBrace(), "0\'".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "0\'".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("0\'\' + 0\'\'\' = ", _RAdd(PassiveExpression.Build(new OpeningBrace(), "0\'\'".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "0\'\'\'".ToCharArray(), new ClosingBrace())))));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _RAdd(PassiveExpression expression)
@@ -46,7 +46,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build();
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 	}

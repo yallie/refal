@@ -23,7 +23,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(_Prout(PassiveExpression.Build("0 + 0 =", _AddB(PassiveExpression.Build(new OpeningBrace(), "0".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "0".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("0 + 1 =", _AddB(PassiveExpression.Build(new OpeningBrace(), "0".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "1".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("1 + 0 =", _AddB(PassiveExpression.Build(new OpeningBrace(), "1".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "0".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("1 + 1 =", _AddB(PassiveExpression.Build(new OpeningBrace(), "1".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "1".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("10 + 01 =", _AddB(PassiveExpression.Build(new OpeningBrace(), "10".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "01".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("1011 + 0110 =", _AddB(PassiveExpression.Build(new OpeningBrace(), "1011".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "0110".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("101100001 + 10110101 =", _AddB(PassiveExpression.Build(new OpeningBrace(), "101100001".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "10110101".ToCharArray(), new ClosingBrace())))), _Prout(PassiveExpression.Build("asdbn + ddd =", _AddB(PassiveExpression.Build(new OpeningBrace(), "asdbn".ToCharArray(), new ClosingBrace(), new OpeningBrace(), "ddd".ToCharArray(), new ClosingBrace())))));
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 		private static PassiveExpression _AddB(PassiveExpression expression)
@@ -64,7 +64,7 @@ namespace Refal.Runtime
 				return PassiveExpression.Build("** error! **".ToCharArray());
 			};
 
-			throw new RecognitionImpossibleException("Recognition impossible");
+			throw new RecognitionImpossibleException("Recognition impossible. Last expression: " + ExpressionToString(expression, 0));
 		}
 
 	}
