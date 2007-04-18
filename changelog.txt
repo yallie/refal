@@ -1,4 +1,8 @@
 
+ 15-Jun-2006 21:59:29 yallie
+  Pattern.cs, RefalBase.cs
+   Moved Match() method from PatternMatchHelper class to Pattern
+
  15-Jun-2006 02:17:29 yallie
   Pattern.cs, PatternMatching.cs, PatternItems.cs, PatternVariables.cs
    Improved pattern matching, further refactoring

@@ -23,8 +23,7 @@ namespace Refal.Runtime
 			if (pattern == null || pattern.IsEmpty)
 				return (expression == null || expression.IsEmpty);
 
-			// both pattern and expression are not empty, perform non-trivial matching
-			return PatternMatchHelper.Match(expression, pattern);
+			return pattern.Match(expression);
 		}
 
 		// Standard RTL routines

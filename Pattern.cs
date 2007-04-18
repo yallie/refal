@@ -102,5 +102,72 @@ namespace Refal.Runtime
 					var.Value = null;
 			}
 		}
+
+		public bool Match(PassiveExpression expression)
+		{
+			int exIndex = 0, patIndex = 0;
+
+			while (patIndex < Count || exIndex < expression.Count)
+			{
+				if (patIndex >= Count)
+				{
+					if (!RollBackToLastPartialMatch(ref exIndex, ref patIndex))
+						return false;
+
+					continue;
+				}
+
+				switch (this[patIndex].Match(expression, ref exIndex, patIndex++))
+				{
+					case MatchResult.Success:
+						continue;
+						
+					case MatchResult.PartialSuccess:
+						SaveRollBackInfo(exIndex, patIndex - 1);
+						continue;
+				}
+
+				if (!RollBackToLastPartialMatch(ref exIndex, ref patIndex))
+					return false;
+			}
+
+			return true;
+		}
+
+		// stack holding positions of the last expression variables
+		Stack rollBackStack = null;
+
+		struct RollbackInfo
+		{
+			public int exIndex;
+			public int patIndex; 
+		}
+
+		private void SaveRollBackInfo(int exIndex, int patIndex)
+		{
+			RollbackInfo info = new RollbackInfo();
+			info.exIndex = exIndex;
+			info.patIndex = patIndex;
+
+			if (rollBackStack == null)
+				rollBackStack = new Stack();
+
+			rollBackStack.Push(info);
+		}
+
+		private bool RollBackToLastPartialMatch(ref int exIndex, ref int patIndex)
+		{
+			if (rollBackStack == null || rollBackStack.Count == 0)
+				return false;
+
+			// restore state up to the last expression variable
+			RollbackInfo info = (RollbackInfo)rollBackStack.Pop();
+			exIndex = info.exIndex;
+			patIndex = info.patIndex;
+
+			// clear values of all bound variables starting later than patIndex
+			ClearBoundValues(patIndex);
+			return true;
+		}
 	}
 }
