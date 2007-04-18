@@ -1,4 +1,8 @@
 
+ 12-Jun-2006 14:43:48 yallie
+  temp\PatternMatching\*.*
+   Added separate solution to test and debug pattern matching
+
  12-Jun-2006 13:53:56 yallie
   PatternMatching.cs, CSharpVisitor.cs, PassiveExpression.cs, Pattern.cs, RefalBase.cs
    Started working on pattern matching
