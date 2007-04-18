@@ -15,9 +15,6 @@ namespace Refal.Runtime
 
 	public class PassiveExpression : CollectionBase
 	{
-		// mustFlatten indicates that Build() method should flatten this expression while adding
-		bool mustFlatten = true;
-
 		public PassiveExpression()
 		{
 		}
@@ -35,7 +32,7 @@ namespace Refal.Runtime
 			// flatten expressions, if needed
 			foreach (object obj in objects)
 			{
-				if (obj is PassiveExpression && ((PassiveExpression)obj).mustFlatten)
+				if (obj is PassiveExpression)
 				{
 					foreach (object symbol in (PassiveExpression)obj)
 						result.Add(symbol);
@@ -44,13 +41,6 @@ namespace Refal.Runtime
 					result.Add(obj);
 			}
 
-			return result;
-		}
-
-		public static PassiveExpression CreateSubexpression(params object[] symbols)
-		{
-			PassiveExpression result = new PassiveExpression(symbols);
-			result.mustFlatten = false;
 			return result;
 		}
 
@@ -169,5 +159,26 @@ namespace Refal.Runtime
 			ex.Print();
 		}
 */
+	}
+
+	public class StructureBrace
+	{
+		public StructureBrace()
+		{
+		}
+	}
+
+	public class OpeningBrace
+	{
+		public OpeningBrace()
+		{
+		}
+	}
+
+	public class ClosingBrace
+	{
+		public ClosingBrace()
+		{
+		}
 	}
 }

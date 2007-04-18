@@ -96,6 +96,11 @@ namespace Refal.Runtime
 
 			return null;
 		}
+
+		public static PassiveExpression Card(PassiveExpression expression)
+		{
+			return PassiveExpression.Build(Console.ReadLine());
+		}
 	}
 
 	public class RecognitionImpossibleException : Exception

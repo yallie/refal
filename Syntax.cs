@@ -229,6 +229,11 @@ namespace Refal
 			get { return terms; }
 		}
 
+		public bool IsEmpty
+		{
+			get { return terms.Count == 0; }
+		}
+
 		public override void Accept(CodeVisitor visitor)
 		{
 			visitor.VisitPattern(this);
@@ -246,6 +251,11 @@ namespace Refal
 		public ArrayList Terms
 		{
 			get { return terms; }
+		}
+
+		public bool IsEmpty
+		{
+			get { return terms.Count == 0; }
 		}
 
 		public override void Accept(CodeVisitor visitor)

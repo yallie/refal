@@ -1,4 +1,17 @@
 
+ 12-Jun-2006 22:57:32 yallie
+  CSharpVisitor.cs, PassiveExpression.cs, PatternMatching.cs
+   Introduced special symbols (structure braces) instead of subexpressions
+
+  RefalBase.cs
+   Added standard library function <Card>
+
+  test0*.cs
+   Added/updated compiled files
+
+  Syntax.cs
+   Minor changes
+
  12-Jun-2006 17:57:40 yallie
   PatternMatching.cs
    Implemented matching subpatterns and expression variables

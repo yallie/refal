@@ -22,200 +22,188 @@ namespace Refal.Runtime
 
 					bool needRollback = false;
 
-					// not a subexpression
-					if (!(ex is PassiveExpression))
+					// braces can only match itself
+					if (pat is OpeningBrace)
 					{
-						// simple match: symbol vs symbol
-						if (!(pat is Pattern) && !(pat is Variable))
+						if (ex is OpeningBrace)
 						{
-							if (ex.Equals(pat))
-							{
-								exIndex++; patIndex++;
-								continue;
-							}
-							else
-							{
-								needRollback = true;
-							}
+							exIndex++; patIndex++;
+							continue;
 						}
-
-						// symbol vs. symbol/term variable
-						if (pat is SymbolVariable || pat is TermVariable)
-						{
-							Variable var = pat as Variable;
-
-							if (patIndex == var.FirstOccurance)
-							{
-								var.Value = ex;
-								exIndex++; patIndex++;
-								continue;
-							}
-							else if (ex.Equals(var.Value))
-							{
-								exIndex++; patIndex++;
-								continue;
-							}
-							else 
-							{
-								// symbol don't match the bound variable,
-								// roll back to the last expression variable
-								needRollback = true;
-							}
-						}
-
-						// symbol vs. expression variable
-						if (pat is ExpressionVariable)
-						{
-							ExpressionVariable var = pat as ExpressionVariable;
-
-							if (patIndex == var.FirstOccurance)
-							{
-								if (var.Expression == null)
-								{
-									// start with empty expression
-									var.Expression = new PassiveExpression();
-									RollbackInfo info = new RollbackInfo();
-									info.exIndex = exIndex;
-									info.patIndex = patIndex;
-									rollBackStack.Push(info);
-								}
-								else
-								{
-									// continue adding terms to expression
-									var.Expression.Add(ex);
-									RollbackInfo info = new RollbackInfo();
-									info.exIndex = exIndex + 1;
-									info.patIndex = patIndex;
-									rollBackStack.Push(info);
-									exIndex++; 
-								}
-
-								patIndex++;
-								continue;
-							}
-							else if (ex.Equals(var.Expression))
-							{
-								// probably can't go here as ex is symbol, but...?
-								exIndex++; patIndex++;
-								continue;
-							}
-							else
-							{
-								// expression don't match
-								needRollback = true;
-							}
-						}
-					
-						// symbol vs. subpattern (don't match)
-						if (pat is Pattern)
-						{
+						else
 							needRollback = true;
-						}
-
-						if (!needRollback)
+					}
+					else if (pat is ClosingBrace)
+					{
+						if (ex is ClosingBrace)
 						{
-							// internal error: should never get here
-							throw new Exception("Pattern contains unsupported kind " +
-								"of object (trying to match symbol)");
+							exIndex++; patIndex++;
+							continue;
+						}
+						else
+							needRollback = true;
+					}
+
+					// symbol matches single symbol
+					else if (!(pat is Variable))
+					{
+						// check for () is redundant because of ex.Equals(pat)
+						if (ex.Equals(pat) && !(ex is StructureBrace))
+						{
+							exIndex++; patIndex++;
+							continue;
+						}
+						else
+							needRollback = true;
+					}
+
+					// symbol or term variable matches single symbol
+					else if ((pat is SymbolVariable || pat is TermVariable) && !(ex is StructureBrace))
+					{
+						Variable var = pat as Variable;
+
+						if (patIndex == var.FirstOccurance)
+						{
+							var.Value = ex;
+							exIndex++; patIndex++;
+							continue;
+						}
+						else if (ex.Equals(var.Value))
+						{
+							exIndex++; patIndex++;
+							continue;
+						}
+						else 
+						{
+							// symbol don't match the bound variable,
+							// roll back to the last expression variable
+							needRollback = true;
 						}
 					}
-					else // ex is a subexpression
-					{
-						// subexpression vs term variable
-						if (pat is TermVariable)
-						{
-							Variable var = pat as Variable;
 
-							if (patIndex == var.FirstOccurance)
+					// term variable matches subexpression in structure braces
+					else if ((pat is TermVariable) && (ex is StructureBrace))
+					{
+						if (ex is OpeningBrace)
+						{
+							TermVariable term = pat as TermVariable;
+							term.Expression.Add(ex);
+							exIndex++; patIndex++;
+
+							// extract subexpression within the structure braces
+							int rank = 1;
+							while (exIndex < expression.Count && rank > 0)
 							{
-								(pat as TermVariable).Expression = ex as PassiveExpression;
-								exIndex++; patIndex++;
-								continue;
+								ex = expression[exIndex++];
+								term.Expression.Add(ex);
+
+								if (ex is OpeningBrace)
+									rank++;
+								else if (ex is ClosingBrace)
+									rank--;
 							}
-							else if (ex.Equals(var.Value))
-							{
-								exIndex++; patIndex++;
+
+							// subexpression with surrounding braces is extracted
+							if (rank == 0)
 								continue;
-							}
 							else
 							{
-								// expression don't match the bound variable
+								// closing structure brace not found => rolling back
+								// in fact, this can only be caused by unmatched braces...
 								needRollback = true;
 							}
 						}
-
-						// subexpression vs. symbol variable (don't match)
-						if (pat is SymbolVariable)
+						else 
 						{
 							needRollback = true;
 						}
+					}
 
-						// subexpression vs. subpattern
-						if (pat is Pattern)
+					// expression variable can match nothing, symbol(s), 
+					// and expression(s) within structure braces
+					else if (pat is ExpressionVariable)
+					{
+						ExpressionVariable var = pat as ExpressionVariable;
+
+						if (patIndex == var.FirstOccurance)
 						{
-							PassiveExpression subexpression = ex as PassiveExpression;
-							Pattern subpattern = pat as Pattern;
-						
-							if (Match(subexpression, subpattern))
+							if (var.Expression == null)
 							{
-								exIndex++; patIndex++;
+								// start with empty expression
+								var.Expression = new PassiveExpression();
+								RollbackInfo info = new RollbackInfo();
+								info.exIndex = exIndex;
+								info.patIndex = patIndex;
+								rollBackStack.Push(info);
+								patIndex++;
 								continue;
 							}
 							else
 							{
-								// subexpression don't match the subpattern
-								needRollback = true;
-							}
-						}
-
-						// subexpression vs. expression variable
-						if (pat is ExpressionVariable)
-						{
-							ExpressionVariable var = pat as ExpressionVariable;
-
-							if (patIndex == var.FirstOccurance)
-							{
-								if (var.Expression == null)
+								// continue adding terms to expression
+								if (!(ex is StructureBrace))
 								{
-									// start with empty expression
-									var.Expression = new PassiveExpression();
-									RollbackInfo info = new RollbackInfo();
-									info.exIndex = exIndex;
-									info.patIndex = patIndex;
-									rollBackStack.Push(info);
-								}
-								else
-								{
-									// continue adding elements to expression
 									var.Expression.Add(ex);
 									RollbackInfo info = new RollbackInfo();
 									info.exIndex = exIndex + 1;
 									info.patIndex = patIndex;
 									rollBackStack.Push(info);
-									exIndex++; 
+									exIndex++; patIndex++;
+									continue;
 								}
+								// handle structure braces, extract subexpression
+								else if (ex is OpeningBrace)
+								{
+									var.Expression.Add(ex);
+									exIndex++;
 
-								patIndex++;
-								continue;
-							}
-							else if (ex.Equals(var.Expression))
-							{
-								exIndex++; patIndex++;
-								continue;
-							}
-							else
-							{
-								// expression don't match
-								needRollback = true;
+									// extract subexpression within the structure braces
+									int rank = 1;
+									while (exIndex < expression.Count && rank > 0)
+									{
+										ex = expression[exIndex++];
+										var.Expression.Add(ex);
+
+										if (ex is OpeningBrace)
+											rank++;
+										else if (ex is ClosingBrace)
+											rank--;
+									}
+
+									// subexpression with surrounding braces is extracted
+									if (rank == 0)
+										continue;
+									else
+									{
+										// closing structure brace not found => rolling back
+										// this can only be caused by unmatched braces => error in compiler
+										needRollback = true;
+									}
+								}
+								else
+								{
+									// extra closing brace ) => roll back
+									needRollback = true;
+								}
 							}
 						}
-
-						if (!needRollback)
+						// not the first occurance, compare expressions
+						else if (ex.Equals(var.Expression))
 						{
-							// internal error: should never get here
-							throw new Exception("Pattern contains unsupported kind " +
-								"of object (trying to match subexpression)");
+							exIndex++; patIndex++;
+							continue;
 						}
+						else
+						{
+							// expression don't match, roll back
+							needRollback = true;
+						}
+					}
+
+					// if can't find any match, roll back
+					else
+					{
+						needRollback = true;
 					}
 
 					// roll back to the last expression variable, if needed

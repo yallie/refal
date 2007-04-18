@@ -212,16 +212,22 @@ namespace Refal.Runtime
 
 		public override void VisitExpressionInParentheses(ExpressionInParentheses expressionInParentheses)
 		{
-			sb.Append("PassiveExpression.CreateSubexpression(");
+			sb.Append("new OpeningBrace(), ");
+
 			expressionInParentheses.Expression.Accept(this);
-			sb.Append(")");
+
+			if (!expressionInParentheses.Expression.IsEmpty) sb.Append(", ");
+			sb.Append("new ClosingBrace()");
 		}
 
 		public override void VisitPatternInParentheses(PatternInParentheses patternInParentheses)
 		{
-			sb.Append("new Pattern(");
+			sb.Append("new OpeningBrace(), ");
+
 			patternInParentheses.Pattern.Accept(this);
-			sb.Append(")");
+
+			if (!patternInParentheses.Pattern.IsEmpty) sb.Append(", ");
+			sb.Append("new ClosingBrace()");
 		}
 
 		public override void VisitMacrodigit(Macrodigit macrodigit)
