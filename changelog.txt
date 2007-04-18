@@ -1,4 +1,17 @@
 
+ 15-Jun-2006 00:18:45 yallie
+  PatternMatching.cs
+   Further pattern matching refactoring
+   Moved lots of methods to Pattern class
+
+  PassiveExpression.cs
+   Added expression comparison
+   Moved structure braces classes to Pattern class
+
+  Pattern.cs
+   Added MatchResult class
+   Added lots of methods from PatternMatching.cs
+
  14-Jun-2006 20:20:47 yallie
   test*.cs
    Updated compiled examples

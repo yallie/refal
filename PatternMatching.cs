@@ -42,28 +42,32 @@ namespace Refal.Runtime
 				while (match && patIndex < pattern.Count && exIndex < expression.Count)
 				{
 					// assume that expression and pattern aren't empty
-					object ex = expression[exIndex];
-					object pat = pattern[patIndex];
+					PatternItem pat = pattern[patIndex] as PatternItem;
 
-					if (MatchStructureBraces(ex, pat))
-						continue;
-					
-					if (MatchTwoSymbols(ex, pat))
-						continue;
-					
-					if (MatchSimpleVariables(ex, pat))
-						continue;
-					
-					if (MatchTermSubexpression(ex, pat))
-						continue;
-					
-					if (MatchExpressionVariable(ex, pat))
-						continue;
+					MatchResult mr = pat.Match(expression, ref exIndex, patIndex);
 
-					// roll back to the last expression variable
-					// if can't roll backm then matching failed
-					match = RollBackToLastExpression();
-
+					if (mr == MatchResult.Success)
+					{
+						patIndex++;
+						continue;
+					}
+					
+					if (mr == MatchResult.PartialSuccess)
+					{
+						RollbackInfo info = new RollbackInfo();
+						info.exIndex = exIndex;
+						info.patIndex = patIndex;
+						rollBackStack.Push(info);
+						patIndex++;
+						continue;
+					}
+					else
+					{
+						// roll back to the last expression variable
+						// if can't roll backm then matching failed
+						match = RollBackToLastExpression();
+					}
+					
 				} // while()
 
 				if (match && patIndex >= pattern.Count && exIndex >= expression.Count)
@@ -101,7 +105,7 @@ namespace Refal.Runtime
 			}
 		}
 
-		private bool MatchStructureBraces(object ex, object pat)
+/*		private bool MatchStructureBraces(object ex, object pat)
 		{
 			// braces can only match itself
 			if (pat is StructureBrace)
@@ -122,9 +126,10 @@ namespace Refal.Runtime
 		private bool MatchTwoSymbols(object ex, object pat)
 		{
 			// symbol matches single symbol
-			if (!(pat is Variable) && !(pat is StructureBrace))
+//			if (!(pat is Variable) && !(pat is StructureBrace))
+			if (pat is Symbol)
 			{
-				if (pat.Equals(ex))
+				if ((pat as Symbol).Value.Equals(ex))
 				{
 					exIndex++; patIndex++;
 					return true;
@@ -341,7 +346,7 @@ namespace Refal.Runtime
 			}
 
 			return false;
-		}
+		} */
 
 		private bool RollBackToLastExpression()
 		{

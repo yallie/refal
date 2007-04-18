@@ -150,6 +150,36 @@ namespace Refal.Runtime
 			return sb;
 		}
 
+		public bool CompareToExpression(int startIndex, PassiveExpression expression)
+		{
+			if (expression == null || expression.IsEmpty)
+				return true;
+
+			for (int i = 0; i < expression.Count; i++)
+			{
+				if (startIndex + i >= this.Count)
+					return false;
+
+				object ex1 = this[startIndex + i];
+				object ex2 = expression[i];
+
+				if (ex1 is OpeningBrace)
+				{
+					if (!(ex2 is OpeningBrace))
+						return false;
+				}
+				else if (ex1 is ClosingBrace)
+				{
+					if (!(ex2 is ClosingBrace))
+						return false;
+				}
+				else if (!ex1.Equals(ex2))
+					return false;
+			}
+
+			return true;
+		}
+
 /*		public void Print()
 		{
 			foreach (object value in this)
@@ -164,26 +194,5 @@ namespace Refal.Runtime
 			ex.Print();
 		}
 */
-	}
-
-	public class StructureBrace
-	{
-		public StructureBrace()
-		{
-		}
-	}
-
-	public class OpeningBrace : StructureBrace
-	{
-		public OpeningBrace()
-		{
-		}
-	}
-
-	public class ClosingBrace : StructureBrace
-	{
-		public ClosingBrace()
-		{
-		}
 	}
 }
