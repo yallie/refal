@@ -94,9 +94,9 @@ namespace Refal.Runtime
 		public override void VisitSentence(Sentence sentence)
 		{
 			Indent(indentLevel);
-			sb.AppendFormat("Pattern pattern{0} = ", currentPatternIndex);
+			sb.AppendFormat("Pattern pattern{0} = new Pattern(", currentPatternIndex);
 			sentence.Pattern.Accept(this);
-			sb.Append(";\r\n");
+			sb.Append(");\r\n");
 
 			// TODO
 //			if (sentence.Conditions != null)
@@ -104,21 +104,26 @@ namespace Refal.Runtime
 
 			Indent(indentLevel);
 			sb.AppendFormat("if (RefalBase.Match(expression, pattern{0}))\r\n", currentPatternIndex);
+			Indent(indentLevel);
+			sb.Append("{\r\n");
 
 			if (sentence.Expression != null)
 			{
 				Indent(indentLevel + 1);
 
-				sb.Append("return ");
+				sb.Append("return PassiveExpression.Build(");
 				sentence.Expression.Accept(this);
+				sb.Append(");\r\n");
 			}
+
+			Indent(indentLevel);
+			sb.Append("}");
 
 			currentPatternIndex++;
 		}
 
 		public override void VisitPattern(Pattern pattern)
 		{
-			sb.Append("new Pattern(");
 			for (int i = 0; i < pattern.Terms.Count; i++)
 			{
 				Term term = pattern.Terms[i] as Term;
@@ -127,12 +132,10 @@ namespace Refal.Runtime
 				if (i < pattern.Terms.Count - 1)
 					sb.Append(", ");
 			}
-			sb.Append(")");
 		}
 
 		public override void VisitExpression(Expression expression)
 		{
-			sb.Append("new PassiveExpression(");
 			for (int i = 0; i < expression.Terms.Count; i++)
 			{
 				Term term = expression.Terms[i] as Term;
@@ -141,14 +144,13 @@ namespace Refal.Runtime
 				if (i < expression.Terms.Count - 1)
 					sb.Append(", ");
 			}
-			sb.Append(")");
 		}
 
 		public override void VisitFunctionCall(FunctionCall functionCall)
 		{
-			sb.AppendFormat("{0}(", functionCall.FunctionName);
+			sb.AppendFormat("{0}(PassiveExpression.Build(", functionCall.FunctionName);
 			functionCall.Expression.Accept(this);
-			sb.Append(")");
+			sb.Append("))");
 		}
 
 		public override void VisitCharacter(Character character)
@@ -210,12 +212,16 @@ namespace Refal.Runtime
 
 		public override void VisitExpressionInParentheses(ExpressionInParentheses expressionInParentheses)
 		{
+			sb.Append("PassiveExpression.CreateSubexpression(");
 			expressionInParentheses.Expression.Accept(this);
+			sb.Append(")");
 		}
 
 		public override void VisitPatternInParentheses(PatternInParentheses patternInParentheses)
 		{
+			sb.Append("new Pattern(");
 			patternInParentheses.Pattern.Accept(this);
+			sb.Append(")");
 		}
 
 		public override void VisitMacrodigit(Macrodigit macrodigit)

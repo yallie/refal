@@ -98,6 +98,11 @@ namespace Refal.Runtime
 			get { return base.Value; }
 			set { base.Value = value; }
 		}
+
+		public override string ToString()
+		{
+			return string.Format("SymbolVariable {0}, value = {1}", Name, Value);
+		}
 	}
 
 	public class TermVariable : Variable
@@ -120,6 +125,11 @@ namespace Refal.Runtime
 			get { return base.Value as PassiveExpression; }
 			set { base.Value = value; }
 		}
+
+		public override string ToString()
+		{
+			return string.Format("TermVariable {0}, value = {1}", Name, Value);
+		}
 	}
 
 	public class ExpressionVariable : Variable
@@ -132,6 +142,11 @@ namespace Refal.Runtime
 		{
 			get { return base.Value as PassiveExpression; }
 			set { base.Value = value; }
+		}
+
+		public override string ToString()
+		{
+			return string.Format("ExpressionVariable {0}, value = {1}", Name, Value);
 		}
 	}
 }

@@ -3,55 +3,9 @@ using System.Collections;
 
 namespace Refal.Runtime
 {
-	class TestPatterns
+	class PatternMatchHelper
 	{
-		static void Main()
-		{
-			PassiveExpression ex = new PassiveExpression("Hello", "Dirty", "World");
-			Pattern p = new Pattern("Hello", new SymbolVariable("s.1"), "World");
-			TestPatternMatching(ex, p);
-
-			ex = new PassiveExpression(1, "World");
-			p = new Pattern(new SymbolVariable("s.1"), new SymbolVariable("s.1"));
-			TestPatternMatching(ex, p);
-
-			ex = new PassiveExpression(1, 2, "World");
-			p = new Pattern(new SymbolVariable("s.1"), new TermVariable("t.1"), new SymbolVariable("s.2"));
-			TestPatternMatching(ex, p);
-
-			ex = new PassiveExpression("Hey", new PassiveExpression(1, 2, 3), "Jude");
-			p = new Pattern(new SymbolVariable("s.1"), new TermVariable("t.1"), new SymbolVariable("s.2"));
-			TestPatternMatching(ex, p);
-
-			ex = new PassiveExpression("Hey", new PassiveExpression(1, 2, 3), "Jude");
-			p = new Pattern(new ExpressionVariable("e.1"));
-			TestPatternMatching(ex, p);
-
-			ex = new PassiveExpression("Hey", 1, 3, new PassiveExpression(1, 2, 3), "Jude", "Hey");
-			p = new Pattern(new SymbolVariable("s.1"), new ExpressionVariable("e.1"), new SymbolVariable("s.1"));
-			TestPatternMatching(ex, p);
-
-//			Console.ReadLine();
-		}
-
-		static void TestPatternMatching(PassiveExpression ex, Pattern p)
-		{
-			Console.WriteLine("--------------------");
-
-			if (Match(ex, p))
-			{
-				foreach (string name in p.Variables.Keys)
-				{
-					Console.WriteLine("{0} = {1}", name, p.GetVariable(name));
-				}
-			}
-			else
-			{
-				Console.WriteLine("Expression don't match the pattern");
-			}
-		}
-
-		static bool Match(PassiveExpression expression, Pattern pattern)
+		public static bool Match(PassiveExpression expression, Pattern pattern)
 		{
 			bool match = true;
 			Stack rollBackStack = new Stack();
@@ -78,6 +32,10 @@ namespace Refal.Runtime
 							{
 								exIndex++; patIndex++;
 								continue;
+							}
+							else
+							{
+								needRollback = true;
 							}
 						}
 
@@ -113,18 +71,26 @@ namespace Refal.Runtime
 							if (patIndex == var.FirstOccurance)
 							{
 								if (var.Expression == null)
+								{
+									// start with empty expression
 									var.Expression = new PassiveExpression();
+									RollbackInfo info = new RollbackInfo();
+									info.exIndex = exIndex;
+									info.patIndex = patIndex;
+									rollBackStack.Push(info);
+								}
+								else
+								{
+									// continue adding terms to expression
+									var.Expression.Add(ex);
+									RollbackInfo info = new RollbackInfo();
+									info.exIndex = exIndex + 1;
+									info.patIndex = patIndex;
+									rollBackStack.Push(info);
+									exIndex++; 
+								}
 
-								var.Expression.Add(ex);
-
-								RollbackInfo info = new RollbackInfo();
-								info.exIndex = exIndex + 1;
-								info.patIndex = patIndex;
-								rollBackStack.Push(info);
-
-								// expression variable can eat the rest of expression
-								exIndex++; patIndex++;
-
+								patIndex++;
 								continue;
 							}
 							else if (ex.Equals(var.Expression))
@@ -210,17 +176,26 @@ namespace Refal.Runtime
 							if (patIndex == var.FirstOccurance)
 							{
 								if (var.Expression == null)
+								{
+									// start with empty expression
 									var.Expression = new PassiveExpression();
+									RollbackInfo info = new RollbackInfo();
+									info.exIndex = exIndex;
+									info.patIndex = patIndex;
+									rollBackStack.Push(info);
+								}
+								else
+								{
+									// continue adding elements to expression
+									var.Expression.Add(ex);
+									RollbackInfo info = new RollbackInfo();
+									info.exIndex = exIndex + 1;
+									info.patIndex = patIndex;
+									rollBackStack.Push(info);
+									exIndex++; 
+								}
 
-								var.Expression.Add(ex);
-
-								RollbackInfo info = new RollbackInfo();
-								info.exIndex = exIndex + 1;
-								info.patIndex = patIndex;
-								rollBackStack.Push(info);
-
-								exIndex++; patIndex++;
-
+								patIndex++;
 								continue;
 							}
 							else if (ex.Equals(var.Expression))
@@ -257,6 +232,9 @@ namespace Refal.Runtime
 							RollbackInfo info = (RollbackInfo)rollBackStack.Pop();
 							exIndex = info.exIndex;
 							patIndex = info.patIndex;
+
+							// clear values of all bound variables starting later than patIndex
+							ClearBoundValues(pattern, patIndex);
 						}
 					} // if (needRollback)
 
@@ -267,13 +245,36 @@ namespace Refal.Runtime
 
 				// if can roll back, try once more
 				if (rollBackStack.Count == 0)
+				{
+					// check for special case: expression has ended, but pattern contains a few expression variables
+					// in that case, matching should succeed, with all remaining variables taking empty values
+					if (match && exIndex >= expression.Count && patIndex < pattern.Count)
+					{
+						while (patIndex < pattern.Count)
+						{
+							object pat = pattern[patIndex++];
+							if (!(pat is ExpressionVariable))
+								return false;
+
+							ExpressionVariable var = (ExpressionVariable)pat;
+							var.Expression = new PassiveExpression();
+						}
+
+						return true;
+					}
+
+					// nothing to roll back => matching has failed
 					return false;
+				}
 				else
 				{
 					// restore state up to the last expression variable and iterate once more!
 					RollbackInfo info = (RollbackInfo)rollBackStack.Pop();
 					exIndex = info.exIndex;
 					patIndex = info.patIndex;
+
+					// clear values of all bound variables starting later than patIndex
+					ClearBoundValues(pattern, patIndex);
 				}
 			}
 		}
@@ -283,5 +284,63 @@ namespace Refal.Runtime
 			public int exIndex;
 			public int patIndex; 
 		}
+
+		private static void ClearBoundValues(Pattern pattern, int startFromIndex)
+		{
+			foreach (string name in pattern.Variables.Keys)
+			{
+				Variable var = (Variable)pattern.Variables[name];
+
+				if (var.FirstOccurance > startFromIndex) // not >=!
+					var.Value = null;
+			}
+		}
+
+/*		// kept for test purposes only
+		static void Main()
+		{
+			PassiveExpression ex = new PassiveExpression("Hello", "Dirty", "World");
+			Pattern p = new Pattern("Hello", new SymbolVariable("s.1"), "World");
+			TestPatternMatching(ex, p);
+
+			ex = new PassiveExpression(1, "World");
+			p = new Pattern(new SymbolVariable("s.1"), new SymbolVariable("s.1"));
+			TestPatternMatching(ex, p);
+
+			ex = new PassiveExpression(1, 2, "World");
+			p = new Pattern(new SymbolVariable("s.1"), new TermVariable("t.1"), new SymbolVariable("s.2"));
+			TestPatternMatching(ex, p);
+
+			ex = new PassiveExpression("Hey", new PassiveExpression(1, 2, 3), "Jude");
+			p = new Pattern(new SymbolVariable("s.1"), new TermVariable("t.1"), new SymbolVariable("s.2"));
+			TestPatternMatching(ex, p);
+
+			ex = new PassiveExpression("Hey", new PassiveExpression(1, 2, 3), "Jude");
+			p = new Pattern(new ExpressionVariable("e.1"));
+			TestPatternMatching(ex, p);
+
+			ex = new PassiveExpression("Hey", 1, 3, new PassiveExpression(1, 2, 3), "Jude", "Hey");
+			p = new Pattern(new SymbolVariable("s.1"), new ExpressionVariable("e.1"), new SymbolVariable("s.1"));
+			TestPatternMatching(ex, p);
+
+//			Console.ReadLine();
+		}
+
+		static void TestPatternMatching(PassiveExpression ex, Pattern p)
+		{
+			Console.WriteLine("--------------------");
+
+			if (Match(ex, p))
+			{
+				foreach (string name in p.Variables.Keys)
+				{
+					Console.WriteLine("{0} = {1}", name, p.GetVariable(name));
+				}
+			}
+			else
+			{
+				Console.WriteLine("Expression don't match the pattern");
+			}
+		}*/
 	}
 }

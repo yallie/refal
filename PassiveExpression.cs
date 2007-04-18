@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections;
 
 namespace Refal.Runtime
@@ -14,6 +15,9 @@ namespace Refal.Runtime
 
 	public class PassiveExpression : CollectionBase
 	{
+		// mustFlatten indicates that Build() method should flatten this expression while adding
+		bool mustFlatten = true;
+
 		public PassiveExpression()
 		{
 		}
@@ -22,6 +26,32 @@ namespace Refal.Runtime
 		{
 			foreach (object symbol in symbols)
 				Add(symbol);
+		}
+
+		public static PassiveExpression Build(params object[] objects)
+		{
+			PassiveExpression result = new PassiveExpression();
+
+			// flatten expressions, if needed
+			foreach (object obj in objects)
+			{
+				if (obj is PassiveExpression && ((PassiveExpression)obj).mustFlatten)
+				{
+					foreach (object symbol in (PassiveExpression)obj)
+						result.Add(symbol);
+				}
+				else
+					result.Add(obj);
+			}
+
+			return result;
+		}
+
+		public static PassiveExpression CreateSubexpression(params object[] symbols)
+		{
+			PassiveExpression result = new PassiveExpression(symbols);
+			result.mustFlatten = false;
+			return result;
 		}
 
 		public object this[int index]
@@ -101,6 +131,28 @@ namespace Refal.Runtime
 
 			// ex
 			return false;
+		}
+
+		public override string ToString()
+		{
+			return ToStringBuilder().ToString();
+		}
+
+		private StringBuilder ToStringBuilder()
+		{
+			StringBuilder sb = new StringBuilder();
+			
+			foreach (object value in this)
+			{
+				if (value is PassiveExpression)
+					sb.AppendFormat("({0}) ", (value as PassiveExpression).ToStringBuilder().ToString());
+				else if (value is char)
+					sb.AppendFormat("{0}", value);
+				else
+					sb.AppendFormat("{0} ", value);
+			}
+
+			return sb;
 		}
 
 /*		public void Print()
