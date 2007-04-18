@@ -33,10 +33,10 @@ namespace Refal.Runtime
 			Pattern pattern3 = new Pattern(new SymbolVariable("s.1"), new SymbolVariable("s.2"));
 			if (RefalBase.Match(expression, pattern3))
 			{
-				PassiveExpression expression4 = PassiveExpression.Build(Alphabet(PassiveExpression.Build()));
+				expression = PassiveExpression.Build(Alphabet(PassiveExpression.Build()));
 				Pattern pattern4 = new Pattern(new ExpressionVariable("e.A"), new SymbolVariable("s.1"), new ExpressionVariable("e.B"), new SymbolVariable("s.2"), new ExpressionVariable("e.C"));
 				pattern4.BindVariables(pattern3);
-				if (RefalBase.Match(expression4, pattern4))
+				if (RefalBase.Match(expression, pattern4))
 				{
 					return PassiveExpression.Build(true);
 				}

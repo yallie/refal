@@ -128,7 +128,7 @@ namespace Refal.Runtime
 		public override void VisitConditions(Conditions conditions)
 		{
 			Indent(indentLevel);
-			sb.AppendFormat("PassiveExpression expression{0} = PassiveExpression.Build(", currentPatternIndex + 1);
+			sb.Append("expression = PassiveExpression.Build(");
 			conditions.Expression.Accept(this);
 			sb.Append(");\r\n");
 
@@ -145,7 +145,7 @@ namespace Refal.Runtime
 				sb.AppendFormat("pattern{0}.BindVariables(pattern{1});\r\n", currentPatternIndex, currentPatternIndex - 1);
 
 				Indent(indentLevel);
-				sb.AppendFormat("if (RefalBase.Match(expression{0}, pattern{0}))\r\n", currentPatternIndex);
+				sb.AppendFormat("if (RefalBase.Match(expression, pattern{0}))\r\n", currentPatternIndex);
 				Indent(indentLevel);
 				sb.Append("{\r\n");
 				indentLevel++;

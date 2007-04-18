@@ -1,4 +1,8 @@
 
+ 13-Jun-2006 04:45:00 yallie
+  CSharpVisitor.cs
+   Minor changes in expression generation for where-clause
+
  13-Jun-2006 03:25:03 yallie
   CSharpVisitor.cs, Refal.atg, Syntax.cs, test24.*
    Improved where-clauses support
