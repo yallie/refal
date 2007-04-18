@@ -24,7 +24,7 @@ namespace Refal.Runtime
 			if (expression == null)
 				return null;
 
-			Console.WriteLine("{0}", ExpressionToString(expression, 0));
+			Console.WriteLine("{0}", expression.ToStringBuilder(0));
 
 			return expression;
 		}
@@ -34,25 +34,9 @@ namespace Refal.Runtime
 			if (expression == null)
 				return null;
 
-			Console.WriteLine("{0}", ExpressionToString(expression, 0));
+			Console.WriteLine("{0}", expression.ToStringBuilder(0));
 
 			return null;
-		}
-
-		protected static string ExpressionToString(PassiveExpression expression, int startIndex)
-		{
-			StringBuilder sb = new StringBuilder();
-
-			for (int i = startIndex; i < expression.Count; i++)
-			{
-				object value = expression[i];
-				sb.Append(value.ToString());
-
-				if (!(value is char))
-					sb.Append(' ');
-			}
-
-			return sb.ToString();
 		}
 
 		public static PassiveExpression _Card(PassiveExpression expression)
@@ -80,7 +64,7 @@ namespace Refal.Runtime
 			// fileName can be omitted
 			if (expression.Count > 2)
 			{
-				fileName = ExpressionToString(expression, 2);
+				fileName = expression.ToStringBuilder(2).ToString();
 			}
 
 			// R - read, W - write, A - append
@@ -132,7 +116,7 @@ namespace Refal.Runtime
 			if (sw == null)
 				return _Prout(expression);
 
-			sw.WriteLine(ExpressionToString(expression, 1)); // sw Console
+			sw.WriteLine("{0}", expression.ToStringBuilder(1));
 
 			PassiveExpression result = PassiveExpression.Build(expression);
 			result.Remove(result[0]);

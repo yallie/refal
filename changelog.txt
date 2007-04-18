@@ -1,4 +1,8 @@
 
+ 15-Jun-2006 22:41:06 yallie
+  PassiveExpression.cs, RefalBase.cs, CSharpVisitor.cs
+   Moved ExpressionToString() method from RefalBase to PassiveExpression class
+
  15-Jun-2006 22:30:23 yallie
   CSharpVisitor.cs, RefalBase.cs
    Removed static Match() method from RefalBase class

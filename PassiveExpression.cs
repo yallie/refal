@@ -130,17 +130,19 @@ namespace Refal.Runtime
 
 		public override string ToString()
 		{
-			return ToStringBuilder().ToString();
+			return ToStringBuilder(0).ToString();
 		}
 
-		private StringBuilder ToStringBuilder()
+		public StringBuilder ToStringBuilder(int startIndex)
 		{
 			StringBuilder sb = new StringBuilder();
 			
-			foreach (object value in this)
+			for (int i = startIndex; i < Count; i++)
 			{
+				object value = this[i];
+
 				if (value is PassiveExpression)
-					sb.AppendFormat("({0}) ", (value as PassiveExpression).ToStringBuilder().ToString());
+					sb.AppendFormat("({0}) ", (value as PassiveExpression).ToStringBuilder(0).ToString());
 				else if (value is char)
 					sb.AppendFormat("{0}", value);
 				else
