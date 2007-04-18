@@ -31,7 +31,9 @@ namespace Refal.Runtime
 
 				// index variables by names
 				variables[variable.Name] = variable;
-				return base.Add(variable);
+				int index = base.Add(variable);
+				variable.FirstOccurance = index;
+				return index;
 			}
 
 			return base.Add(symbol);
@@ -54,6 +56,7 @@ namespace Refal.Runtime
 	public abstract class Variable
 	{
 		string name;
+		int firstOccurance = -1;
 		object boundValue = null;
 
 		public Variable()
@@ -69,6 +72,12 @@ namespace Refal.Runtime
 		{
 			get { return name; }
 			set { name = value; }
+		}
+
+		public int FirstOccurance
+		{
+			get { return firstOccurance; }
+			set { firstOccurance = value; }
 		}
 
 		public object Value

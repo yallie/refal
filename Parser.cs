@@ -230,6 +230,8 @@ static bool IsSentence()
 				expression.Terms.Add(call); 
 			} else if (la.kind == 31 || la.kind == 32 || la.kind == 33) {
 				Variable(out variable);
+				// expression can not contain free variables
+				variable.IsBound = true;
 				expression.Terms.Add(variable); 
 			} else if (StartOf(2)) {
 				Symbol(out symbol);
