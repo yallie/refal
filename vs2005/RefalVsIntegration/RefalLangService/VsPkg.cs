@@ -1,5 +1,15 @@
-﻿// VsPkg.cs : Implementation of RefalLangService
-//
+﻿
+/*-------------------------------------------------------------------------*/
+/*                                                                         */
+/*      RefalLangServicePackage, Refal5.NET language service package       */
+/*      This file is a part of Refal5.NET project                          */
+/*      Project license: http://www.gnu.org/licenses/lgpl.html             */
+/*      Written by Y [21-04-06] <yallie@yandex.ru>                         */
+/*                                                                         */
+/*      Copyright (c) 2006-2007 Alexey Yakovlev                            */
+/*      All Rights Reserved                                                */
+/*                                                                         */
+/*-------------------------------------------------------------------------*/
 
 using System;
 using System.Diagnostics;

@@ -1,4 +1,8 @@
 
+ 21-Apr-2007 14:57:00 yallie
+  RefalLanguageService.cs, RefalScanner.cs
+   Added classes needed for language service implementation
+
  21-Apr-2007 14:24:00 yallie
   Started working on the Visual Studio 2005 integration
   Added Refal5 Language Service project folder
