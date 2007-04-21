@@ -1,8 +1,0 @@
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\yallie.RefalLangService.Resources.resources
-obj\Debug\yallie.RefalLangService.VSPackage.resources
-obj\Debug\RefalLangService.csproj.GenerateResource.Cache
-bin\Debug\RefalLangService.dll
-bin\Debug\RefalLangService.pdb
-obj\Debug\RefalLangService.dll
-obj\Debug\RefalLangService.pdb

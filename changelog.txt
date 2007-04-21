@@ -1,4 +1,9 @@
 
+ 22-Apr-2007 18:21:00 yallie
+  RefalScanner.cs
+   Added token recognition
+   Syntax highlighting now basically works
+
  21-Apr-2007 18:21:00 yallie
   VsPkg.cs
    Added service registration, initialization and cleanup
