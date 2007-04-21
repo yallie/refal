@@ -1,4 +1,8 @@
 
+ 21-Apr-2007 14:24:00 yallie
+  Started working on the Visual Studio 2005 integration
+  Added Refal5 Language Service project folder
+  
  18-Apr-2007 01:56:59 yallie
   Cleaned up directory structure
   Added copyright banners to all source files
