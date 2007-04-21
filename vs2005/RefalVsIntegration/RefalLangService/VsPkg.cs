@@ -54,19 +54,18 @@ namespace yallie.RefalLangService
 	// package has a load key embedded in its resources.
 	[ProvideLoadKey("Standard", "0.00 Alpha", "Refal5 Language Service", "yallie, inc.", 1)]
 
-	/*    // This attribute is used to associate the ".rgx" file extension with a language service
-		[ProvideLanguageExtension(typeof(RefalLanguageService), ".ref")]
+	// This attribute is used to associate the ".rgx" file extension with a language service
+	[ProvideLanguageExtension(typeof(RefalLanguageService), ".ref")]
 
-		// This attribute is needed to indicate that the type proffers a service
-		[ProvideService(typeof(RefalLanguageService))]
+	// This attribute is needed to indicate that the type proffers a service
+	[ProvideService(typeof(RefalLanguageService))]
 
-		// Indicates that this managed type is visible to COM
-		[ComVisible(true)]
-	*/
-
+	// Indicates that this managed type is visible to COM
+	[ComVisible(true)]
 	[Guid(GuidList.guidRefalLangServicePkgString)]
 	public sealed class RefalLangServicePackage : Package, IDisposable
 	{
+		RefalLanguageService langService;
 
 		/// <summary>
 		/// Default constructor of the package.
@@ -86,11 +85,11 @@ namespace yallie.RefalLangService
 			{
 				if (disposing)
 				{
-					/*/ TODO: dispose managed resources
+					// dispose managed resources
 					if (langService != null)
 					{
 						langService.Dispose();
-					}*/
+					}
 				}
 			}
 			finally
@@ -110,6 +109,14 @@ namespace yallie.RefalLangService
 		{
 			Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
 			base.Initialize();
+
+			// create new instance of language service
+			langService = new RefalLanguageService();
+			langService.SetSite(this);
+
+			// add service to VSPackage service container
+			IServiceContainer sc = (IServiceContainer)this;
+			sc.AddService(typeof(RefalLanguageService), langService, true);
 		}
 
 		#endregion

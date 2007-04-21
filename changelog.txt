@@ -1,4 +1,12 @@
 
+ 21-Apr-2007 18:21:00 yallie
+  VsPkg.cs
+   Added service registration, initialization and cleanup
+
+  RefalLanguageService.cs, RefalScanner.cs
+   Forgot to include these files in the last checkin
+   Started writing scanner
+   
  21-Apr-2007 14:57:00 yallie
   RefalLanguageService.cs, RefalScanner.cs
    Added classes needed for language service implementation
