@@ -41,6 +41,10 @@ namespace yallie.RefalLangService
 			// whitespace
 			new TokenTableEntry(ScanContext.Default, ScanContext.Default, @"\G\s*", TokenColor.Text),
 
+			// braces
+			new TokenTableEntry(ScanContext.Default, ScanContext.Default, @"\G\(", TokenColor.Keyword), //TokenTriggers.MatchBraces | TokenTriggers.ParameterStart),
+			new TokenTableEntry(ScanContext.Default, ScanContext.Default, @"\G\)", TokenColor.Keyword), //TokenTriggers.MatchBraces | TokenTriggers.ParameterEnd),
+
 			// strings
 			new TokenTableEntry(ScanContext.Default, ScanContext.Default, @"\G\""(\\.|[^""\\])*?\""", TokenColor.String),
 			new TokenTableEntry(ScanContext.Default, ScanContext.Default, @"\G\'(\\.|[^'\\])*?\'", TokenColor.String),
@@ -84,6 +88,7 @@ namespace yallie.RefalLangService
 					{
 						tokenInfo.Color = t.TokenColor;
 						tokenInfo.Type = TokenType.Text;
+//						tokenInfo.Trigger = t.TokenTriggers;
 						tokenInfo.StartIndex = offset;
 						tokenInfo.EndIndex = offset + match.Length - 1;
 					}
@@ -99,6 +104,7 @@ namespace yallie.RefalLangService
 			{
 				tokenInfo.Color = TokenColor.Text;
 				tokenInfo.Type = TokenType.Text;
+//				tokenInfo.Trigger = TokenTriggers.None;
 				tokenInfo.StartIndex = offset;
 				tokenInfo.EndIndex = offset + 1;
 			}
@@ -136,13 +142,20 @@ namespace yallie.RefalLangService
 		readonly ScanContext inputContext, outputContext;
 		readonly Regex regExpression;
 		readonly TokenColor tokenColor;
+		readonly TokenTriggers tokenTriggers;
 
-		public TokenTableEntry(ScanContext inputContext, ScanContext outputContext, string pattern, TokenColor color)
+		public TokenTableEntry(ScanContext inputContext, ScanContext outputContext, string pattern, TokenColor color, TokenTriggers triggers)
 		{
 			this.inputContext = inputContext;
 			this.outputContext = outputContext;
 			this.regExpression = new Regex(/*"\\G" + */ pattern); // \G = "anchor to the current position"
 			this.tokenColor = color;
+			this.tokenTriggers = triggers;
+		}
+
+		public TokenTableEntry(ScanContext inputContext, ScanContext outputContext, string pattern, TokenColor color)
+			: this(inputContext, outputContext, pattern, color, TokenTriggers.None)
+		{
 		}
 
 		public ScanContext InputContext
@@ -163,6 +176,11 @@ namespace yallie.RefalLangService
 		public TokenColor TokenColor
 		{
 			get { return tokenColor; }
+		}
+
+		public TokenTriggers TokenTriggers
+		{
+			get { return TokenTriggers; }
 		}
 	}
 }

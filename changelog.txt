@@ -1,4 +1,8 @@
 
+ 22-Apr-2007 04:33:08 yallie
+  RefalScanner.cs
+   Tried to figure out token triggers mechanics
+  
  22-Apr-2007 18:21:00 yallie
   RefalScanner.cs
    Added token recognition
