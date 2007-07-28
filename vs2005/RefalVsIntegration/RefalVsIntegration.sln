@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefalLangService", "RefalLangService\RefalLangService.csproj", "{003FC191-BCA3-4B9D-AFFB-1DF0D8B84C4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefalProject", "RefalProject\RefalProject.csproj", "{4919433A-E4B7-473D-9607-6CEC0EE1838B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{003FC191-BCA3-4B9D-AFFB-1DF0D8B84C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{003FC191-BCA3-4B9D-AFFB-1DF0D8B84C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{003FC191-BCA3-4B9D-AFFB-1DF0D8B84C4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4919433A-E4B7-473D-9607-6CEC0EE1838B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4919433A-E4B7-473D-9607-6CEC0EE1838B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4919433A-E4B7-473D-9607-6CEC0EE1838B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4919433A-E4B7-473D-9607-6CEC0EE1838B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,6 @@
+
+* Refal5 application
+
+$ENTRY Go {
+	= <Prout 'Hello, World!'>;
+}
