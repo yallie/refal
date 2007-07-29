@@ -21,7 +21,7 @@ namespace yallie.RefalProject
 
 		public override string ProjectType
 		{
-			get { return "Refal5Project"; }
+			get { return "Refal5 Project"; }
 		}
 	}
 }

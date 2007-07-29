@@ -6,6 +6,18 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefalProject", "RefalProject\RefalProject.csproj", "{4919433A-E4B7-473D-9607-6CEC0EE1838B}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs02.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = RefalLangService\\RefalLangService.csproj
+		SccProjectName1 = RefalLangService
+		SccLocalPath1 = RefalLangService
+		SccProjectUniqueName2 = RefalProject\\RefalProject.csproj
+		SccProjectName2 = RefalProject
+		SccLocalPath2 = RefalProject
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

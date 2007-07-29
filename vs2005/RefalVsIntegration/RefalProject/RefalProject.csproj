@@ -11,6 +11,10 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <ProjectGuid>{4919433A-E4B7-473D-9607-6CEC0EE1838B}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,16 +82,16 @@
   </ItemGroup>
   <ItemGroup>
     <ZipProject Include="Templates\Projects\ConsoleApp\Ref5ConsoleApp.vstemplate">
-    	<OutputSubPath>Windows</OutputSubPath>
+      <OutputSubPath>Windows</OutputSubPath>
     </ZipProject>
     <ZipProject Include="Templates\Projects\ConsoleApp\TemplateIcon.ico">
-    	<OutputSubPath>Windows</OutputSubPath>
+      <OutputSubPath>Windows</OutputSubPath>
     </ZipProject>
     <ZipProject Include="Templates\Projects\ConsoleApp\Program.ref">
-    	<OutputSubPath>Windows</OutputSubPath>
+      <OutputSubPath>Windows</OutputSubPath>
     </ZipProject>
     <ZipProject Include="Templates\Projects\ConsoleApp\Ref5ConsoleApp.refproj">
-    	<OutputSubPath>Windows</OutputSubPath>
+      <OutputSubPath>Windows</OutputSubPath>
     </ZipProject>
   </ItemGroup>
   <PropertyGroup>

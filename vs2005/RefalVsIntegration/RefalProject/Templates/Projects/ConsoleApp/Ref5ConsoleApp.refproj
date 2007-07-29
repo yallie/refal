@@ -24,7 +24,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <!--Reference Include="IronPython">
+    <!--Reference Include="RefalRuntime">
     </Reference-->
   </ItemGroup>
 
@@ -32,5 +32,5 @@
     <Compile Include="Program.ref" />
   </ItemGroup>
 
-  <!--Import Project="$(MSBuildExtensionsPath)\Microsoft\IronPython\1.0\IronPython.targets" /-->
+  <!--Import Project="$(MSBuildExtensionsPath)\Refal5\Refal5.targets" /-->
 </Project>
