@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using Irony.Ast;
 using Irony.Parsing;
 using System.Collections.Generic;
@@ -23,7 +22,7 @@ namespace Refal
 			}
 		}
 
-		public override IEnumerable GetChildNodes()
+		public override System.Collections.IEnumerable GetChildNodes()
 		{
 			foreach (Term term in Terms)
 				yield return term;
@@ -52,7 +51,7 @@ namespace Refal
 				term.Evaluate(context, mode);
 
 			// build passive expression from terms
-			var args = new ArrayList();
+			var args = new List<object>();
 			while (context.Data.Count > initialCount)
 				args.Add(context.Data.Pop());
 

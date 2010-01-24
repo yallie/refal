@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using Irony.Ast;
 using Irony.Parsing;
 using System.Collections.Generic;
@@ -10,8 +9,8 @@ namespace Refal
 {
 	public class Program : SyntaxNode
 	{
-		IDictionary functions = new Hashtable();
-		ArrayList functionList = new ArrayList();
+		IDictionary<string, Function> functions = new Dictionary<string, Function>();
+		IList<Function> functionList = new List<Function>();
 		Function entryPoint = null;
 		string name = "Program";
 
@@ -38,18 +37,18 @@ namespace Refal
 			}
 		}
 
-		public override IEnumerable GetChildNodes()
+		public override System.Collections.IEnumerable GetChildNodes()
 		{
-			foreach (Function fun in FunctionList)
+			foreach (var fun in FunctionList)
 				yield return fun;
 		}
 
-		public IDictionary Functions
+		public IDictionary<string, Function> Functions
 		{
 			get { return functions; }
 		}
 
-		public ArrayList FunctionList
+		public IList<Function> FunctionList
 		{
 			get { return functionList; }
 		}

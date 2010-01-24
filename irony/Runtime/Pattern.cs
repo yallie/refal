@@ -3,17 +3,16 @@
 // http://refal.codeplex.com
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Refal.Runtime
 {
-	/* Pattern is much like expression, but it can include free variables.
-	   Patterns containing parentheses () presented via nested patterns.
-	*/
-
+	/// <summary>
+	/// Pattern is much like expression, but it can include free variables.
+	/// </summary>
 	public class Pattern : PassiveExpression
 	{
-		IDictionary variables = new Hashtable();
+		IDictionary<string, Variable> variables = new Dictionary<string, Variable>();
 
 		public Pattern()
 		{
@@ -35,7 +34,7 @@ namespace Refal.Runtime
 			{
 				// don't add duplicate variables, add same instances instead
 				Variable variable = (Variable)symbol;
-				if (variables.Contains(variable.Name))
+				if (variables.ContainsKey(variable.Name))
 					return base.Add(variables[variable.Name]);
 
 				// index variables by names
@@ -62,7 +61,7 @@ namespace Refal.Runtime
 			return base.Add(new Symbol(symbol));
 		}
 
-		public IDictionary Variables
+		public IDictionary<string, Variable> Variables
 		{
 			get { return variables; }
 		}
@@ -79,7 +78,7 @@ namespace Refal.Runtime
 		{
 			foreach (string name in pattern.Variables.Keys)
 			{
-				if (variables.Contains(name))
+				if (variables.ContainsKey(name))
 				{
 					Variable var = (Variable)variables[name];
 					var.Value = pattern.GetVariable(name);
@@ -139,7 +138,7 @@ namespace Refal.Runtime
 		}
 
 		// stack holding positions of the last expression variables
-		Stack rollBackStack = null;
+		Stack<RollbackInfo> rollBackStack = null;
 
 		struct RollbackInfo
 		{
@@ -154,7 +153,7 @@ namespace Refal.Runtime
 			info.patIndex = patIndex;
 
 			if (rollBackStack == null)
-				rollBackStack = new Stack();
+				rollBackStack = new Stack<RollbackInfo>();
 
 			rollBackStack.Push(info);
 		}
@@ -165,7 +164,7 @@ namespace Refal.Runtime
 				return false;
 
 			// restore state up to the last expression variable
-			RollbackInfo info = (RollbackInfo)rollBackStack.Pop();
+			var info = rollBackStack.Pop();
 			exIndex = info.exIndex;
 			patIndex = info.patIndex;
 

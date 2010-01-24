@@ -4,20 +4,19 @@
 
 using System;
 using System.Text;
-using System.Collections;
 
 namespace Refal.Runtime
 {
-	/* Passive expression is expression that don't contain
-	   execution braces: <>
-
-	   It is basically a collection of symbols (single characters,
-	   strings - called 'compound characters' and treated as symbols,
-	   macrodigits and identifiers, which can be thought of as a
-	   special case of compound characters)
-	*/
-
-	public class PassiveExpression : CollectionBase
+	/// <summary>
+	/// Passive expression is expression that don't contain 
+	/// execution braces: &lt;&gt;
+	/// 
+	/// It is basically a collection of symbols (single characters,
+	/// strings - called 'compound characters' and treated as symbols,
+	/// macrodigits and identifiers, which can be thought of as a
+	/// special case of compound characters)
+	/// </summary>
+	public class PassiveExpression : System.Collections.CollectionBase
 	{
 		public PassiveExpression()
 		{

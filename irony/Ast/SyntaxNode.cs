@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using Irony.Ast;
 using Irony.Parsing;
 using System.Collections.Generic;
@@ -27,7 +26,7 @@ namespace Refal
 			get { return span.Location;}
 		}
 
-		public abstract IEnumerable GetChildNodes();
+		public abstract System.Collections.IEnumerable GetChildNodes();
 
 		public virtual SourceLocation GetErrorAnchor()
 		{
@@ -43,7 +42,7 @@ namespace Refal
 			Evaluate(context, mode);
 
 			// get terms from evaluation stack
-			var args = new ArrayList();
+			var args = new List<object>();
 			while (context.Data.Count > initialCount)
 				args.Add(context.Data.Pop());
 

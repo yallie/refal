@@ -3,14 +3,13 @@
 // http://refal.codeplex.com
 
 using System;
-using System.Collections;
 
 namespace Refal.Runtime
 {
-	/* Pattern contains pattern items of three types: symbols, braces and variables.
-		Pattern items can match given expression
-	*/
-
+	/// <summary>
+	/// Pattern contains pattern items of three types: symbols, braces and variables.
+	/// Pattern items can match given expression
+	/// </summary>
 	public abstract class PatternItem
 	{
 		public PatternItem()

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using Irony.Ast;
 using Irony.Parsing;
 using System.Collections.Generic;
@@ -33,7 +32,7 @@ namespace Refal
 			}
 		}
 
-		public override IEnumerable GetChildNodes()
+		public override System.Collections.IEnumerable GetChildNodes()
 		{
 			return Expression.GetChildNodes();
 		}
@@ -66,8 +65,15 @@ namespace Refal
 				if (function == null)
 					context.ThrowError(this, "This identifier cannot be called: {0}", FunctionName);
 
-				function.Call(context);
-				return;
+				try
+				{
+					function.Call(context);
+					return;
+				}
+				catch (Exception ex)
+				{
+					context.ThrowError(this, ex.Message);
+				}
 			}
 
 			context.ThrowError(this, "Unknown identifier: {0}", FunctionName);

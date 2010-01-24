@@ -1,18 +1,18 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Irony.Ast;
 using Irony.Parsing;
-using System.Collections.Generic;
 using Irony.Interpreter;
 using Refal.Runtime;
 
 namespace Refal
 {
+	using IEnumerable = System.Collections.IEnumerable;
+
 	public class Pattern : SyntaxNode
 	{
 		public const string LastPattern = "last-pattern";
 		List<Term> terms = new List<Term>();
-		private Runtime.Pattern pattern;
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{

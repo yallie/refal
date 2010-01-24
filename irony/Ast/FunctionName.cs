@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using Irony.Ast;
 using Irony.Parsing;
 using System.Collections.Generic;
@@ -41,7 +40,7 @@ namespace Refal
 			}
 		}
 
-		public override IEnumerable GetChildNodes()
+		public override System.Collections.IEnumerable GetChildNodes()
 		{
 			yield break;
 		}

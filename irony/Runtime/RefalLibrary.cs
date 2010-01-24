@@ -5,7 +5,6 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections;
 using Irony.Ast;
 using Irony.Interpreter;
 using System.Reflection;
@@ -16,11 +15,11 @@ namespace Refal.Runtime
 	public class RefalLibrary
 	{
 		// Refal file I/O support hash: handle -> StreamReader/StreamWriter
-		private Hashtable openFiles = new Hashtable();
+		private IDictionary<string, object> openFiles = new Dictionary<string, object>();
 
 		// bury/dig functions global expression storage
-		protected Hashtable buriedKeys = new Hashtable();
-		protected Hashtable buriedValues = new Hashtable();
+		protected IDictionary<string, PassiveExpression> buriedKeys = new Dictionary<string, PassiveExpression>();
+		protected IDictionary<string, PassiveExpression> buriedValues = new Dictionary<string, PassiveExpression>();
 
 		// command line arguments
 		protected string[] commandLineArguments = null;
@@ -87,9 +86,13 @@ namespace Refal.Runtime
 
 			// R - read, W - write, A - append
 			if (mode.StartsWith("R"))
+			{
 				openFiles[handle] = new StreamReader(File.OpenRead(fileName));
+			}
 			else if (mode.StartsWith("W"))
+			{
 				openFiles[handle] = new StreamWriter(File.Create(fileName));
+			}
 			else if (mode.StartsWith("A"))
 			{
 				openFiles[handle] = File.AppendText(fileName);
@@ -203,7 +206,7 @@ namespace Refal.Runtime
 
 		public PassiveExpression Dgall(PassiveExpression expression)
 		{
-			ArrayList result = new ArrayList();
+			List<object> result = new List<object>();
 			foreach (string strKey in buriedKeys.Keys)
 			{
 				result.AddRange(new object[] {new OpeningBrace(), buriedKeys[strKey], '=', buriedValues[strKey], new ClosingBrace()});
@@ -211,7 +214,7 @@ namespace Refal.Runtime
 				buriedValues[strKey] = null;
 			}
 
-			return PassiveExpression.Build((object[])result.ToArray(typeof(object)));
+			return PassiveExpression.Build(result.ToArray());
 		}
 
 		// extract arguments specified as <Function t.1 e.2>
@@ -365,7 +368,7 @@ namespace Refal.Runtime
 
 		public PassiveExpression Chr(PassiveExpression expression)
 		{
-			var args = new ArrayList();
+			var args = new List<object>();
 
 			foreach (object o in expression)
 			{
@@ -378,7 +381,7 @@ namespace Refal.Runtime
 
 		public PassiveExpression Ord(PassiveExpression expression)
 		{
-			var args = new ArrayList();
+			var args = new List<object>();
 
 			foreach (object o in expression)
 			{

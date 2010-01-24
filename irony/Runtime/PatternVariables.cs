@@ -3,14 +3,13 @@
 // http://refal.codeplex.com
 
 using System;
-using System.Collections;
 
 namespace Refal.Runtime
 {
-	/* Pattern variables is a special kind of pattern items
-		They can be bound to expressions
-	*/
-
+	/// <summary>
+	/// Pattern variables is a special kind of pattern items 
+	/// They can be bound to expressions
+	/// </summary>
 	public abstract class Variable : PatternItem
 	{
 		string name;

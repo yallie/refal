@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using Irony.Ast;
 using Irony.Parsing;
 using System.Collections.Generic;
@@ -30,7 +29,7 @@ namespace Refal
 			return string.Format("\"{0}\"", symValue);
 		}
 
-		public override void  Evaluate(EvaluationContext context, AstMode mode)
+		public override void Evaluate(EvaluationContext context, AstMode mode)
 		{
 			context.Data.Push(Value);
 		}

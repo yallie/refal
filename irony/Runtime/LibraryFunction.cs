@@ -5,7 +5,6 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections;
 using Irony.Ast;
 using Irony.Interpreter;
 using System.Reflection;
