@@ -1,68 +1,73 @@
-
-/*-------------------------------------------------------------------------*/
-/*                                                                         */
-/*      RefalBase, base class for Refal5.NET application                   */
-/*      This file is a part of Refal5.NET project runtime library          */
-/*      Project license: http://www.gnu.org/licenses/lgpl.html             */
-/*      Written by Y [11-06-06] <yallie@yandex.ru>                         */
-/*                                                                         */
-/*      Copyright (c) 2006-2007 Alexey Yakovlev                            */
-/*      All Rights Reserved                                                */
-/*                                                                         */
-/*-------------------------------------------------------------------------*/
+// Refal5.NET runtime
+// Written by Alexey Yakovlev <yallie@yandex.ru>
+// http://refal.codeplex.com
 
 using System;
 using System.IO;
 using System.Text;
 using System.Collections;
+using Irony.Ast;
+using Irony.Interpreter;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace Refal.Runtime
 {
-	public class RefalBase
+	public class RefalLibrary
 	{
 		// Refal file I/O support hash: handle -> StreamReader/StreamWriter
-		private static Hashtable openFiles = new Hashtable();
+		private Hashtable openFiles = new Hashtable();
 
 		// bury/dig functions global expression storage
-		protected static Hashtable buriedKeys = new Hashtable();
-		protected static Hashtable buriedValues = new Hashtable();
+		protected Hashtable buriedKeys = new Hashtable();
+		protected Hashtable buriedValues = new Hashtable();
 
 		// command line arguments
-		protected static string[] commandLineArguments = null;
+		protected string[] commandLineArguments = null;
+
+		public EvaluationContext EvaluationContext { get; private set; }
+		
+		public RefalLibrary(EvaluationContext ctx)
+		{
+			EvaluationContext = ctx;
+		}
 
 		// Standard RTL routines
-
-		public static PassiveExpression _Print(PassiveExpression expression)
+		public PassiveExpression Print(PassiveExpression expression)
 		{
 			if (expression == null)
 				return null;
 
-			Console.WriteLine("{0}", expression.ToStringBuilder(0));
+			//Console.WriteLine("{0}", expression.ToStringBuilder(0));
+			EvaluationContext.Write(expression.ToStringBuilder(0).ToString() + Environment.NewLine);
 
 			return expression;
 		}
 
-		public static PassiveExpression _Prout(PassiveExpression expression)
+		public PassiveExpression Prout(PassiveExpression expression)
 		{
 			if (expression == null)
 				return null;
 
-			Console.WriteLine("{0}", expression.ToStringBuilder(0));
+			//Console.WriteLine("{0}", expression.ToStringBuilder(0));
+			EvaluationContext.Write(expression.ToStringBuilder(0).ToString() + Environment.NewLine);
 
 			return null;
 		}
 
-		public static PassiveExpression _Card(PassiveExpression expression)
+		public PassiveExpression Card(PassiveExpression expression)
 		{
-			string s = Console.ReadLine();
+			throw new NotSupportedException();
+
+			/*string s = Console.ReadLine();
 
 			if (s != null)
 				return PassiveExpression.Build(s.ToCharArray());
 			else
-				return PassiveExpression.Build(0);
+				return PassiveExpression.Build(0);*/
 		}
 
-		public static PassiveExpression _Open(PassiveExpression expression)
+		public PassiveExpression Open(PassiveExpression expression)
 		{
 			// <Open s.Mode s.D e.File-name>
 			if (expression == null || expression.Count < 1)
@@ -98,16 +103,16 @@ namespace Refal.Runtime
 			return null;
 		}
 
-		public static PassiveExpression _Get(PassiveExpression expression)
+		public PassiveExpression Get(PassiveExpression expression)
 		{
 			if (expression == null || expression.IsEmpty)
-				return _Card(expression);
+				return Card(expression);
 
 			string handle = expression[0].ToString();
 			StreamReader sr = openFiles[handle] as StreamReader;
 
 			if (sr == null)
-				return _Card(expression);
+				return Card(expression);
 
 			string s = sr.ReadLine();
 			if (s != null)
@@ -116,18 +121,16 @@ namespace Refal.Runtime
 				return PassiveExpression.Build(0);
 		}
 
-		public static PassiveExpression _Put(PassiveExpression expression)
+		public PassiveExpression Put(PassiveExpression expression)
 		{
-//			return Prout(expression);
-
 			if (expression == null || expression.IsEmpty)
-				return _Prout(expression);
+				return Prout(expression);
 
 			string handle = expression[0].ToString();
 			StreamWriter sw = openFiles[handle] as StreamWriter;
 
 			if (sw == null)
-				return _Prout(expression);
+				return Prout(expression);
 
 			sw.WriteLine("{0}", expression.ToStringBuilder(1));
 
@@ -136,7 +139,7 @@ namespace Refal.Runtime
 			return result;
 		}
 
-		protected static void CloseFiles()
+		protected void CloseFiles()
 		{
 			foreach (object o in openFiles.Values)
 			{
@@ -147,13 +150,13 @@ namespace Refal.Runtime
 			}
 		}
 
-		protected static string[] CommandLineArguments
+		protected string[] CommandLineArguments
 		{
 			get { return commandLineArguments; }
 			set { commandLineArguments = value; }
 		}
 
-		public static PassiveExpression _Arg(PassiveExpression expression)
+		public PassiveExpression Arg(PassiveExpression expression)
 		{
 			if (expression == null || expression.IsEmpty || commandLineArguments == null)
 				return new PassiveExpression();
@@ -168,7 +171,7 @@ namespace Refal.Runtime
 			return PassiveExpression.Build(commandLineArguments[index].ToCharArray());
 		}
 
-		public static PassiveExpression _Br(PassiveExpression expression)
+		public PassiveExpression Br(PassiveExpression expression)
 		{
 			// <Br e.N '=' e.Expr>, where e.N is expression which does not
 			// include '=' on the upper level of the bracket's structure
@@ -186,7 +189,7 @@ namespace Refal.Runtime
 			throw new RecognitionImpossibleException("<Br e.N '=' e.Expr>: unexpected arguments");
 		}
 
-		public static PassiveExpression _Dg(PassiveExpression expression)
+		public PassiveExpression Dg(PassiveExpression expression)
 		{
 			// <Dg e.N>
 			string strKey = expression.ToString();
@@ -198,7 +201,7 @@ namespace Refal.Runtime
 			return result;
 		}
 
-		public static PassiveExpression _Dgall(PassiveExpression expression)
+		public PassiveExpression Dgall(PassiveExpression expression)
 		{
 			ArrayList result = new ArrayList();
 			foreach (string strKey in buriedKeys.Keys)
@@ -211,17 +214,70 @@ namespace Refal.Runtime
 			return PassiveExpression.Build((object[])result.ToArray(typeof(object)));
 		}
 
-		public static PassiveExpression _Cp(PassiveExpression expression)
+		// extract arguments specified as <Function t.1 e.2>
+		void GetArguments(PassiveExpression expression, out object arg1, out object arg2)
+		{
+			var p = new Pattern(new TermVariable("t.1"), new ExpressionVariable("e.2"));
+			if (p.Match(expression))
+			{
+				arg1 = p.GetVariable("t.1");
+				arg2 = p.GetVariable("e.2");
+				return;
+			}
+
+			// can't find match
+			throw new RecognitionImpossibleException();
+		}
+
+		int ToInt32(object expression)
+		{
+			string s = expression.ToString().Trim(" \t\r\n()".ToCharArray());
+			return Convert.ToInt32(s);
+		}
+
+		public PassiveExpression Add(PassiveExpression expression)
+		{
+			object op1, op2;
+			GetArguments(expression, out op1, out op2);
+
+			return PassiveExpression.Build(ToInt32(op1) + ToInt32(op2));
+		}
+
+		public PassiveExpression Sub(PassiveExpression expression)
+		{
+			object op1, op2;
+			GetArguments(expression, out op1, out op2);
+
+			return PassiveExpression.Build(ToInt32(op1) - ToInt32(op2));
+		}
+
+		public PassiveExpression Mul(PassiveExpression expression)
+		{
+			object op1, op2;
+			GetArguments(expression, out op1, out op2);
+
+			return PassiveExpression.Build(ToInt32(op1) * ToInt32(op2));
+		}
+
+		public PassiveExpression Div(PassiveExpression expression)
+		{
+			object op1, op2;
+			GetArguments(expression, out op1, out op2);
+
+			return PassiveExpression.Build(ToInt32(op1) / ToInt32(op2));
+		}
+
+		public PassiveExpression Cp(PassiveExpression expression)
 		{
 			throw new NotImplementedException();
 		}
 
-		public static PassiveExpression _Rp(PassiveExpression expression)
+		public PassiveExpression Rp(PassiveExpression expression)
 		{
 			throw new NotImplementedException();
 		}
 
-		public static PassiveExpression _Type(PassiveExpression expression)
+		public PassiveExpression Type(PassiveExpression expression)
 		{
 			if (expression == null || expression.IsEmpty)
 				return PassiveExpression.Build('*', 0, expression);
@@ -266,37 +322,35 @@ namespace Refal.Runtime
 			return PassiveExpression.Build('P', 'l', expression);
 		}
 
-		public static PassiveExpression _Mu(PassiveExpression expression)
+		public PassiveExpression Mu(PassiveExpression expression)
 		{
 			throw new NotImplementedException();
 		}
 
-		public static PassiveExpression _Implode_Ext(PassiveExpression expression)
+		public PassiveExpression Implode_Ext(PassiveExpression expression)
 		{
 			throw new NotImplementedException();
 		}
 
-		public static PassiveExpression _Implode(PassiveExpression expression)
+		public PassiveExpression Implode(PassiveExpression expression)
+		{
+			string s = expression.ToString().Trim();
+
+			int index = 0;
+			while (index < s.Length && (char.IsLetterOrDigit(s[index]) || "-_".IndexOf(s[index]) >= 0))
+			{
+				index++;
+			}
+
+			return PassiveExpression.Build(s.Substring(0, index));
+		}
+
+		public PassiveExpression Explode(PassiveExpression expression)
 		{
 			throw new NotImplementedException();
 		}
 
-		public static PassiveExpression _Explode(PassiveExpression expression)
-		{
-			throw new NotImplementedException();
-		}
-
-		public static PassiveExpression _Add(PassiveExpression expression)
-		{
-			throw new NotImplementedException();
-		}
-
-		public static PassiveExpression _Mul(PassiveExpression expression)
-		{
-			throw new NotImplementedException();
-		}
-
-		public static PassiveExpression _Numb(PassiveExpression expression)
+		public PassiveExpression Numb(PassiveExpression expression)
 		{
 			if (expression == null || expression.IsEmpty)
 				return new PassiveExpression();
@@ -304,45 +358,50 @@ namespace Refal.Runtime
 		   return PassiveExpression.Build(Convert.ToInt32(expression.ToString()));
 		}
 
-		public static PassiveExpression _Symb(PassiveExpression expression)
+		public PassiveExpression Symb(PassiveExpression expression)
 		{
 			throw new NotImplementedException();
 		}
 
-		public static PassiveExpression _Chr(PassiveExpression expression)
+		public PassiveExpression Chr(PassiveExpression expression)
+		{
+			var args = new ArrayList();
+
+			foreach (object o in expression)
+			{
+				var v = (o is int) ? (char)Convert.ToByte(o) : o;
+				args.Add(v);
+			}
+
+			return PassiveExpression.Build(args.ToArray());
+		}
+
+		public PassiveExpression Ord(PassiveExpression expression)
+		{
+			var args = new ArrayList();
+
+			foreach (object o in expression)
+			{
+				var v = (o is char) ? Convert.ToInt32(o) : o;
+				args.Add(v);
+			}
+
+			return PassiveExpression.Build(args.ToArray());
+		}
+
+		public PassiveExpression Divmod(PassiveExpression expression)
 		{
 			throw new NotImplementedException();
 		}
 
-		public static PassiveExpression _Ord(PassiveExpression expression)
+		public PassiveExpression First(PassiveExpression expression)
 		{
 			throw new NotImplementedException();
 		}
 
-		public static PassiveExpression _Divmod(PassiveExpression expression)
+		public PassiveExpression Putout(PassiveExpression expression)
 		{
 			throw new NotImplementedException();
-		}
-
-		public static PassiveExpression _First(PassiveExpression expression)
-		{
-			throw new NotImplementedException();
-		}
-
-		public static PassiveExpression _Putout(PassiveExpression expression)
-		{
-			throw new NotImplementedException();
-		}
-	}
-
-	public class RecognitionImpossibleException : Exception
-	{
-		public RecognitionImpossibleException() : base()
-		{
-		}
-
-		public RecognitionImpossibleException(string msg) : base(msg)
-		{
 		}
 	}
 }

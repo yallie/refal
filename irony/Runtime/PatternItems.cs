@@ -1,15 +1,6 @@
-
-/*-------------------------------------------------------------------------*/
-/*                                                                         */
-/*      PatternItems, static elements of the pattern                       */
-/*      This file is a part of Refal5.NET project runtime library          */
-/*      Project license: http://www.gnu.org/licenses/lgpl.html             */
-/*      Written by Y [11-06-06] <yallie@yandex.ru>                         */
-/*                                                                         */
-/*      Copyright (c) 2006-2007 Alexey Yakovlev                            */
-/*      All Rights Reserved                                                */
-/*                                                                         */
-/*-------------------------------------------------------------------------*/
+// Refal5.NET runtime
+// Written by Alexey Yakovlev <yallie@yandex.ru>
+// http://refal.codeplex.com
 
 using System;
 using System.Collections;
@@ -95,12 +86,22 @@ namespace Refal.Runtime
 		public OpeningBrace()
 		{
 		}
+
+		public override string ToString()
+		{
+			return "(";
+		}
 	}
 
 	public class ClosingBrace : StructureBrace
 	{
 		public ClosingBrace()
 		{
+		}
+
+		public override string ToString()
+		{
+			return ")";
 		}
 	}
 }

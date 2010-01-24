@@ -1,15 +1,6 @@
-
-/*-------------------------------------------------------------------------*/
-/*                                                                         */
-/*      PassiveExpression, an expression without execution braces          */
-/*      This file is a part of Refal5.NET project runtime library          */
-/*      Project license: http://www.gnu.org/licenses/lgpl.html             */
-/*      Written by Y [11-06-06] <yallie@yandex.ru>                         */
-/*                                                                         */
-/*      Copyright (c) 2006-2007 Alexey Yakovlev                            */
-/*      All Rights Reserved                                                */
-/*                                                                         */
-/*-------------------------------------------------------------------------*/
+// Refal5.NET runtime
+// Written by Alexey Yakovlev <yallie@yandex.ru>
+// http://refal.codeplex.com
 
 using System;
 using System.Text;
@@ -156,10 +147,14 @@ namespace Refal.Runtime
 
 				if (value is PassiveExpression)
 					sb.AppendFormat("({0}) ", (value as PassiveExpression).ToStringBuilder(0).ToString());
-				else if (value is char)
+				else //if (value is char || value is string)
 					sb.AppendFormat("{0}", value);
-				else
-					sb.AppendFormat("{0} ", value);
+				/*else
+				{
+					sb.AppendFormat("{0}", value);
+					if (i < Count - 1)
+						sb.Append(" ");
+				}*/
 			}
 
 			return sb;
