@@ -7,31 +7,27 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Character is enclosed in single quotes: 'sample'
+	/// It is treated as a sequence of symbols
+	/// </summary>
 	public class Character : Symb
 	{
-		// character is enclosed in single quotes: 'sample'
-		// it is treated as a sequence of symbols
-		string charValue;
+		public string Value { get; set; }
 
 		public Character(string value)
 		{
-			charValue = value;
-		}
-
-		public string Value
-		{
-			get { return charValue; }
-			set { charValue = value; }
-		}
-
-		public override string ToString()
-		{
-			return string.Format("'{0}'", charValue);
+			Value = value;
 		}
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)
 		{
 			context.Data.Push(Value.ToCharArray());
+		}
+
+		public override string ToString()
+		{
+			return string.Format("'{0}'", Value);
 		}
 	}
 }

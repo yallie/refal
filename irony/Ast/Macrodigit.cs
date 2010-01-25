@@ -7,33 +7,26 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Macrodigit is an integer number in the range of 0 to 2^32
+	/// </summary>
 	public class Macrodigit : Symb
 	{
-		int digitValue;
-
-		public Macrodigit()
-		{
-		}
+		public int Value { get; private set; }
 
 		public Macrodigit(int value)
 		{
-			digitValue = value;
-		}
-
-		public int Value
-		{
-			get { return digitValue; }
-			set { digitValue = value; }
-		}
-
-		public override string ToString()
-		{
-			return Value.ToString();
+			Value = value;
 		}
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)
 		{
 			context.Data.Push(Value);
+		}
+
+		public override string ToString()
+		{
+			return Value.ToString();
 		}
 	}
 }

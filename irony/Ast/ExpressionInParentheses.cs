@@ -7,9 +7,12 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Expression in structure braces ()
+	/// </summary>
 	public class ExpressionInParentheses : Term
 	{
-		Expression expression;
+		public Expression Expression { get; private set; }
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -18,7 +21,7 @@ namespace Refal
 			foreach (ParseTreeNode node in parseNode.ChildNodes)
 			{
 				if (node.AstNode is Expression)
-					expression = (node.AstNode as Expression);
+					Expression = (node.AstNode as Expression);
 			}
 		}
 
@@ -27,21 +30,16 @@ namespace Refal
 			return Expression.GetChildNodes();
 		}
 
-		public Expression Expression
-		{
-			get { return expression; }
-		}
-
-		public override string ToString()
-		{
-			return "(expression)";
-		}
-
 		public override void Evaluate(EvaluationContext context, AstMode mode)
 		{
 			context.Data.Push(new OpeningBrace());
 			Expression.Evaluate(context, mode);
 			context.Data.Push(new ClosingBrace());
+		}
+
+		public override string ToString()
+		{
+			return "(expression)";
 		}
 	}
 }

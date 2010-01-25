@@ -7,14 +7,19 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// FunctionName is helper node used internally
+	/// It is not used in the AST
+	/// </summary>
 	public class FunctionName : SyntaxNode
 	{
 		public string Name { get; private set;}
+
 		static IDictionary<string, string> Operations { get; set; }
-		
+
 		static FunctionName()
 		{
-			// arithmetic operations, see http://refal.ru/refer_r5.html#C
+			// setup arithmetic operations, see http://refal.ru/refer_r5.html#C
 			Operations = new Dictionary<string, string>();
 			Operations["+"] = "Add";
 			Operations["-"] = "Sub";

@@ -7,9 +7,18 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// IdentifierList is a helper node used internally
+	/// It is not used in AST
+	/// </summary>
 	public class IdentifierList : SyntaxNode
 	{
-		List<IdentifierNode> identifiers = new List<IdentifierNode>();
+		public IList<IdentifierNode> Identifiers { get; private set; }
+
+		public IdentifierList()
+		{
+			Identifiers = new List<IdentifierNode>();
+		}
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -22,11 +31,6 @@ namespace Refal
 					Identifiers.Add(node.AstNode as IdentifierNode);
 				}
 			}
-		}
-
-		public IList<IdentifierNode> Identifiers
-		{
-			get { return identifiers; }
 		}
 
 		public override System.Collections.IEnumerable GetChildNodes()

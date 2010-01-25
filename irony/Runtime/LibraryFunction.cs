@@ -12,38 +12,32 @@ using System.Collections.Generic;
 
 namespace Refal.Runtime
 {
+	/// <summary>
+	/// LibraryFunction is a function defined in the standard library and available to Refal program
+	/// </summary>
 	public class LibraryFunction : ICallTarget
 	{
-		readonly string name;
-		readonly LibraryDelegate function;
+		public string Name { get; private set; }
+
+		private LibraryDelegate Function { get; set; }
 
 		delegate PassiveExpression LibraryDelegate(PassiveExpression value);
 
 		private LibraryFunction(string n, LibraryDelegate fun)
 		{
-			name = n;
-			function = fun;
-		}
-
-		public string Name
-		{
-			get { return name; }
+			Name = n;
+			Function = fun;
 		}
 
 		public void Call(EvaluationContext context)
 		{
-			context.PushFrame(name, null, context.CurrentFrame);
+			context.PushFrame(Name, null, context.CurrentFrame);
 
-			var ex = function(context.Data.Pop() as PassiveExpression);
+			var ex = Function(context.Data.Pop() as PassiveExpression);
 			if (ex != null)
 				context.Data.Push(ex);
 
 			context.PopFrame();
-		}
-
-		public override string ToString()
-		{
-			return "refal function: " + Name;
 		}
 
 		public static LibraryFunction[] ExtractLibraryFunctions(object instance)
@@ -64,6 +58,11 @@ namespace Refal.Runtime
 			}
 
 			return list.ToArray();
+		}
+
+		public override string ToString()
+		{
+			return "refal function: " + Name;
 		}
 	}
 }

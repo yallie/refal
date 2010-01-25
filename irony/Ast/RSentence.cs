@@ -7,11 +7,16 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// RSentence is a helper class used internally
+	/// It is not used in the AST
+	/// </summary>
 	public class RSentence : SyntaxNode
 	{
-		Conditions conditions;
-		Expression expression;
-		
+		public Conditions Conditions { get; private set; }
+
+		public Expression Expression { get; private set; }
+
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
 			base.Init(context, parseNode);
@@ -20,23 +25,13 @@ namespace Refal
 			{
 				if (node.AstNode is Expression)
 				{
-					expression = node.AstNode as Expression;
+					Expression = node.AstNode as Expression;
 				}
 				else if (node.AstNode is Conditions)
 				{
-					conditions = node.AstNode as Conditions;
+					Conditions = node.AstNode as Conditions;
 				}
 			}
-		}
-
-		public Conditions Conditions
-		{
-			get { return conditions; }
-		}
-
-		public Expression Expression
-		{
-			get { return expression; }
 		}
 
 		public override System.Collections.IEnumerable GetChildNodes()

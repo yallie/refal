@@ -12,41 +12,23 @@ namespace Refal.Runtime
 	/// </summary>
 	public abstract class Variable : PatternItem
 	{
-		string name;
-		int firstOccurance = -1;
-		object boundValue = null;
+		public string Name { get; private set; }
 
-		public Variable()
-		{
-		}
+		public int FirstOccurance { get; set; }
+
+		public object Value { get; set; }
 
 		public Variable(string name)
 		{
-			this.name = name;
-		}
-
-		public string Name
-		{
-			get { return name; }
-			set { name = value; }
-		}
-
-		public int FirstOccurance
-		{
-			get { return firstOccurance; }
-			set { firstOccurance = value; }
-		}
-
-		public object Value
-		{
-			get { return boundValue; }
-			set { boundValue = value; }
+			Name = name;
+			FirstOccurance = -1;
+			Value = null;
 		}
 
 		public override MatchResult Match(PassiveExpression expression, ref int exIndex, int patIndex)
 		{
 			// if it's the first occurance of the variable, it can match any value
-			if (patIndex == firstOccurance)
+			if (patIndex == FirstOccurance)
 				return MatchAny(expression, ref exIndex);
 
 			// if it's not the first, it can match only the same value as before
@@ -58,6 +40,9 @@ namespace Refal.Runtime
 		protected abstract MatchResult MatchSame(PassiveExpression expression, ref int exIndex);
 	}
 
+	/// <summary>
+	/// SymbolVariable matches single symbol
+	/// </summary>
 	public class SymbolVariable : Variable
 	{
 		public SymbolVariable(string name) : base(name)
@@ -68,11 +53,6 @@ namespace Refal.Runtime
 		{
 			get { return base.Value; }
 			set { base.Value = value; }
-		}
-
-		public override string ToString()
-		{
-			return string.Format("SymbolVariable {0}, value = {1}", Name, Value);
 		}
 
 		protected override MatchResult MatchAny(PassiveExpression expression, ref int exIndex)
@@ -103,11 +83,19 @@ namespace Refal.Runtime
 
 			return MatchResult.Failure;
 		}
+
+		public override string ToString()
+		{
+			return string.Format("SymbolVariable {0}, value = {1}", Name, Value);
+		}
 	}
 
+	/// <summary>
+	/// TermVariable matches either single symbol of expression in a structure braces
+	/// </summary>
 	public class TermVariable : Variable
 	{
-		// term is either a symbol or an expression in structure brackets
+		// term is either a symbol or an expression in structure braces
 		public TermVariable(string name) : base(name)
 		{
 		}
@@ -124,11 +112,6 @@ namespace Refal.Runtime
 		{
 			get { return base.Value as PassiveExpression; }
 			set { base.Value = value; }
-		}
-
-		public override string ToString()
-		{
-			return string.Format("TermVariable {0}, value = {1}", Name, Value);
 		}
 
 		protected override MatchResult MatchAny(PassiveExpression expression, ref int exIndex)
@@ -196,8 +179,16 @@ namespace Refal.Runtime
 
 			return MatchResult.Failure;
 		}
+
+		public override string ToString()
+		{
+			return string.Format("TermVariable {0}, value = {1}", Name, Value);
+		}
 	}
 
+	/// <summary>
+	/// ExpressionVariable matches any expression
+	/// </summary>
 	public class ExpressionVariable : Variable
 	{
 		public ExpressionVariable(string name) : base(name)
@@ -208,11 +199,6 @@ namespace Refal.Runtime
 		{
 			get { return base.Value as PassiveExpression; }
 			set { base.Value = value; }
-		}
-
-		public override string ToString()
-		{
-			return string.Format("ExpressionVariable {0}, value = {1}", Name, Value);
 		}
 
 		protected override MatchResult MatchAny(PassiveExpression expression, ref int exIndex)
@@ -273,6 +259,11 @@ namespace Refal.Runtime
 			}
 
 			return MatchResult.Failure;
+		}
+
+		public override string ToString()
+		{
+			return string.Format("ExpressionVariable {0}, value = {1}", Name, Value);
 		}
 	}
 }

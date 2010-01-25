@@ -7,12 +7,15 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Variable of form e.X that can be bound to any expression
+	/// </summary>
 	public class ExpressionVariable : Variable
 	{
 		public override string Index
 		{
 			get { return base.Index; }
-			set { base.Index = "e." + value; }
+			protected set { base.Index = "e." + value; }
 		}
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)

@@ -7,12 +7,19 @@ using Refal.Runtime;
 
 namespace Refal
 {
-	using IEnumerable = System.Collections.IEnumerable;
-
+	/// <summary>
+	/// Pattern is a passive expression that may contain free variables
+	/// </summary>
 	public class Pattern : SyntaxNode
 	{
 		public const string LastPattern = "last-pattern";
-		List<Term> terms = new List<Term>();
+
+		public IList<Term> Terms { get; private set; }
+
+		public bool IsEmpty
+		{
+			get { return Terms.Count == 0; }
+		}
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -25,25 +32,10 @@ namespace Refal
 			}
 		}
 
-		public override IEnumerable GetChildNodes()
+		public override System.Collections.IEnumerable GetChildNodes()
 		{
 			foreach (Term term in Terms)
 				yield return term;
-		}
-
-		public IList<Term> Terms
-		{
-			get { return terms; }
-		}
-
-		public bool IsEmpty
-		{
-			get { return terms.Count == 0; }
-		}
-
-		public override string ToString()
-		{
-			return "pattern";
 		}
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)
@@ -58,6 +50,11 @@ namespace Refal
 		{
 			// evaluate pattern and instantiate Runtime.Pattern
 			return new Runtime.Pattern(EvaluateTerms(context, mode));
+		}
+
+		public override string ToString()
+		{
+			return "pattern";
 		}
 	}
 }

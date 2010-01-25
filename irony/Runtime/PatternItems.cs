@@ -20,26 +20,34 @@ namespace Refal.Runtime
 		public abstract MatchResult Match(PassiveExpression expression, ref int exIndex, int patIndex);
 	}
 
+	/// <summary>
+	/// MatchResult represents result of matching operation
+	/// </summary>
 	public enum MatchResult
 	{
-		Failure, // expression item don't match pattern item
-		Success, // item matches unambiguously
-		PartialSuccess // item matches ambiguously (can find another match)
+		/// <summary>
+		/// Failure means than expression item don't match pattern item
+		/// </summary>
+		Failure,
+
+		/// <summary>
+		/// Success means that item matches unambiguously
+		/// </summary>
+		Success,
+
+		/// <summary>
+		/// PartialSuccess means that item matches ambiguously (can possibly find another match)
+		/// </summary>
+		PartialSuccess
 	}
 
 	public class Symbol : PatternItem
 	{
-		object value = null;
+		object Value { get; set; }
 
 		public Symbol(object value)
 		{
-			this.value = value;
-		}
-
-		public object Value
-		{
-			get { return value; }
-			set { this.value = value; }
+			Value = value;
 		}
 
 		public override MatchResult Match(PassiveExpression expression, ref int exIndex, int patIndex)

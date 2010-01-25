@@ -7,12 +7,15 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Variable of form s.X that can be bound to single symbol
+	/// </summary>
 	public class SymbolVariable : Variable
 	{
 		public override string Index
 		{
 			get { return base.Index; }
-			set { base.Index = "s." + value; }
+			protected set { base.Index = "s." + value; }
 		}
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)

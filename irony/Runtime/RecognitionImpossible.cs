@@ -12,6 +12,9 @@ using System.Collections.Generic;
 
 namespace Refal.Runtime
 {
+	/// <summary>
+	/// RecognitionImpossibleException means that the current function cannot be aplied to input expression
+	/// </summary>
 	public class RecognitionImpossibleException : Exception
 	{
 		public RecognitionImpossibleException() : base()

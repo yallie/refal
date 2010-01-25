@@ -7,11 +7,18 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// RConditions is a helper class used internally
+	/// It is not used in the final AST
+	/// </summary>
 	public class RConditions : SyntaxNode
 	{
 		public Pattern Pattern { get; private set; }
+
 		public Block Block { get; private set; }
+
 		public Conditions MoreConditions { get; private set; }
+
 		public Expression ResultExpression { get; private set; }
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)

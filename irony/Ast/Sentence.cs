@@ -7,13 +7,21 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Sentence is an element of a function.
+	/// There are two possible forms of sentences:
+	/// 1) pattern { conditions } = expression;
+	/// 2) pattern conditions block;
+	/// </summary>
 	public class Sentence : SyntaxNode
 	{
-		// pattern { conditions } = expression;
-		// or pattern conditions block;
-		Pattern pattern;
-		Conditions conditions;
-		Expression expression;
+		public Pattern Pattern { get; private set; }
+
+		public Conditions Conditions { get; private set; }
+
+		public Expression Expression { get; private set; }
+
+		public Runtime.Pattern BlockPattern { get; set; }
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -23,12 +31,12 @@ namespace Refal
 			{
 				if (node.AstNode is Pattern)
 				{
-					pattern = node.AstNode as Pattern;
+					Pattern = node.AstNode as Pattern;
 				}
 				else if (node.AstNode is RSentence)
 				{
-					conditions = (node.AstNode as RSentence).Conditions;
-					expression = (node.AstNode as RSentence).Expression;
+					Conditions = (node.AstNode as RSentence).Conditions;
+					Expression = (node.AstNode as RSentence).Expression;
 				}
 			}
 		}
@@ -43,29 +51,6 @@ namespace Refal
 			if (Expression != null)
 				yield return Expression;
 		}
-
-		public Pattern Pattern
-		{
-			get { return pattern; }
-			set { pattern = value; }
-		}
-
-		public Conditions Conditions
-		{
-			get { return conditions; }
-		}
-
-		public Expression Expression
-		{
-			get { return expression; }
-		}
-
-		public override string ToString()
-		{
-			return "match";
-		}
-
-		public Runtime.Pattern BlockPattern { get; set; }
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)
 		{
@@ -112,6 +97,11 @@ namespace Refal
 			// push expression back for the next sentence
 			context.Data.Push(expr);
 			context.Data.Push(false); // match failed
+		}
+
+		public override string ToString()
+		{
+			return "match";
 		}
 	}
 }

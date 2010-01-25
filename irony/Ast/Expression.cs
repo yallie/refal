@@ -7,9 +7,17 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Expression is a sequence of symbols, macrodigits, bound variables and function calls
+	/// </summary>
 	public class Expression : SyntaxNode
 	{
-		List<Term> terms = new List<Term>();
+		public IList<Term> Terms { get; private set; }
+
+		public Expression()
+		{
+			Terms = new List<Term>();
+		}
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -28,19 +36,9 @@ namespace Refal
 				yield return term;
 		}
 
-		public IList<Term> Terms
-		{
-			get { return terms; }
-		}
-
 		public bool IsEmpty
 		{
-			get { return terms.Count == 0; }
-		}
-
-		public override string ToString()
-		{
-			return "expression";
+			get { return Terms.Count == 0; }
 		}
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)
@@ -58,6 +56,11 @@ namespace Refal
 			// build expression and push onto stack
 			args.Reverse();
 			context.Data.Push(PassiveExpression.Build(args.ToArray()));
+		}
+
+		public override string ToString()
+		{
+			return "expression";
 		}
 	}
 }

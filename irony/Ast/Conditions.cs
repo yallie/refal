@@ -7,13 +7,20 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Where- and When-clauses
+	/// </summary>
 	public class Conditions : SyntaxNode
 	{
-		Expression expression;
-		Pattern pattern;
-		Block block;
-		Conditions moreConditions;
-		Expression resultExpression;
+		public Expression Expression { get; private set; }
+
+		public Pattern Pattern { get; private set; }
+
+		public Conditions MoreConditions { get; private set; }
+
+		public Expression ResultExpression { get; private set; }
+
+		public Block Block { get; private set; }
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -23,15 +30,15 @@ namespace Refal
 			{
 				if (node.AstNode is Expression)
 				{
-					expression = (node.AstNode as Expression);
+					Expression = (node.AstNode as Expression);
 				}
 				else if (node.AstNode is RConditions)
 				{
 					var rc = node.AstNode as RConditions;
-					pattern = rc.Pattern;
-					block = rc.Block;
-					moreConditions = rc.MoreConditions;
-					resultExpression = rc.ResultExpression;
+					Pattern = rc.Pattern;
+					Block = rc.Block;
+					MoreConditions = rc.MoreConditions;
+					ResultExpression = rc.ResultExpression;
 				}
 			}
 		}
@@ -51,36 +58,6 @@ namespace Refal
 
 			if (MoreConditions != null)
 				yield return MoreConditions;
-		}
-
-		public Expression Expression
-		{
-			get { return expression; }
-			set { expression = value; }
-		}
-
-		public Pattern Pattern
-		{
-			get { return pattern; }
-			set { pattern = value; }
-		}
-
-		public Conditions MoreConditions
-		{
-			get { return moreConditions; }
-			set { moreConditions = value; }
-		}
-
-		public Expression ResultExpression
-		{
-			get { return resultExpression; }
-			set { resultExpression = value; }
-		}
-
-		public Block Block
-		{
-			get { return block; }
-			set { block = value; }
 		}
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)

@@ -7,13 +7,17 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// ExtenalFunctionList is a helper AST Node used to build list of ExternalFunctions
+	/// It is not used in the final AST
+	/// </summary>
 	public class ExternalFunctionList : SyntaxNode
 	{
-		List<IdentifierNode> identifiers = new List<IdentifierNode>();
+		public IList<IdentifierNode> Identifiers { get; private set; }
 
-		public IList<IdentifierNode> Identifiers
+		public ExternalFunctionList()
 		{
-			get { return identifiers; }
+			Identifiers = new List<IdentifierNode>();
 		}
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)

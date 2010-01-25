@@ -7,10 +7,14 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// DefinedFunction is a function defined in the current compulation unit
+	/// </summary>
 	public class DefinedFunction : Function
 	{
-		Block block;
-		bool isPublic = false;
+		public Block Block { get; private set; }
+
+		public bool IsPublic { get; private set; }
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -18,7 +22,6 @@ namespace Refal
 
 			foreach (ParseTreeNode node in parseNode.ChildNodes)
 			{
-				// it's better to rely on node type than node order
 				if (node.AstNode is IdentifierNode)
 				{
 					Name = (node.AstNode as IdentifierNode).Symbol;
@@ -39,28 +42,16 @@ namespace Refal
 			return Block.GetChildNodes();
 		}
 
-		public Block Block
-		{
-			get { return block; }
-			set { block = value; }
-		}
-
-		public bool IsPublic
-		{
-			get { return isPublic; }
-			set { isPublic = value; }
-		}
-
-		public override string ToString()
-		{
-			return (IsPublic ? "public " : "private ") + Name;
-		}
-
 		public override void Call(EvaluationContext context)
 		{
 			context.PushFrame(Name, null, context.CurrentFrame); // AstNode argument
 			Block.Evaluate(context, AstMode.None);
 			context.PopFrame();
+		}
+
+		public override string ToString()
+		{
+			return (IsPublic ? "public " : "private ") + Name;
 		}
 	}
 }

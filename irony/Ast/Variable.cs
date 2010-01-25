@@ -7,10 +7,14 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Variable is a part of refal expression that can be bound to a value
+	/// Being part of a pattern is not bound to a value and is called "free variable"
+	/// In an expression to the right of "=" variable is bound to a value
+	/// </summary>
 	public abstract class Variable : Term
 	{
-		string index;
-		bool isBound = false;
+		public virtual string Index { get; protected set; }
 
 		public static void CreateVariableNode(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -61,25 +65,8 @@ namespace Refal
 				}
 			}
 
-			varNode.span = parseNode.Span;
+			varNode.Span = parseNode.Span;
 			parseNode.AstNode = varNode;
-		}
-
-		public virtual string Index
-		{
-			get { return index; }
-			set { index = value; }
-		}
-
-		public bool IsBound
-		{
-			get { return isBound; }
-			set { isBound = value; }
-		}
-
-		public override string ToString()
-		{
-			return Index;
 		}
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)
@@ -94,6 +81,11 @@ namespace Refal
 				var pattern = (Runtime.Pattern)context.CurrentFrame.Values[Pattern.LastPattern];
 				context.Data.Push(pattern.GetVariable(Index));
 			}
+		}
+
+		public override string ToString()
+		{
+			return Index;
 		}
 	}
 }

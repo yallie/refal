@@ -12,14 +12,16 @@ namespace Refal.Runtime
 	/// </summary>
 	public class Pattern : PassiveExpression
 	{
-		IDictionary<string, Variable> variables = new Dictionary<string, Variable>();
+		public IDictionary<string, Variable> Variables { get; private set; }
 
 		public Pattern()
 		{
+			Variables = new Dictionary<string, Variable>();
 		}
 
 		public Pattern(params object[] terms) : base(terms)
 		{
+			Variables = new Dictionary<string, Variable>();
 		}
 
 		public new PatternItem this[int index]
@@ -34,11 +36,11 @@ namespace Refal.Runtime
 			{
 				// don't add duplicate variables, add same instances instead
 				Variable variable = (Variable)symbol;
-				if (variables.ContainsKey(variable.Name))
-					return base.Add(variables[variable.Name]);
+				if (Variables.ContainsKey(variable.Name))
+					return base.Add(Variables[variable.Name]);
 
 				// index variables by names
-				variables[variable.Name] = variable;
+				Variables[variable.Name] = variable;
 				int index = base.Add(variable);
 				variable.FirstOccurance = index;
 				return index;
@@ -61,26 +63,21 @@ namespace Refal.Runtime
 			return base.Add(new Symbol(symbol));
 		}
 
-		public IDictionary<string, Variable> Variables
-		{
-			get { return variables; }
-		}
-
 		public object GetVariable(string name)
 		{
-			if (variables[name] == null)
+			if (Variables[name] == null)
 				return null;
 
-			return ((Variable)variables[name]).Value;
+			return (Variables[name]).Value;
 		}
 
 		public void CopyBoundVariables(Pattern pattern)
 		{
 			foreach (string name in pattern.Variables.Keys)
 			{
-				if (variables.ContainsKey(name))
+				if (Variables.ContainsKey(name))
 				{
-					Variable var = (Variable)variables[name];
+					Variable var = Variables[name];
 					var.Value = pattern.GetVariable(name);
 					// first occurance of the variable is in another pattern
 					var.FirstOccurance = -1;
@@ -88,8 +85,8 @@ namespace Refal.Runtime
 				else
 				{
 					// copy bound variable from another pattern
-					Variable var = (Variable)pattern.Variables[name];
-					variables[name] = var;
+					Variable var = pattern.Variables[name];
+					Variables[name] = var;
 					var.FirstOccurance = -1;
 				}
 			}
@@ -99,7 +96,7 @@ namespace Refal.Runtime
 		{
 			foreach (string name in Variables.Keys)
 			{
-				Variable var = (Variable)Variables[name];
+				Variable var = Variables[name];
 
 				if (var.FirstOccurance > startFromIndex) // not >=!
 					var.Value = null;

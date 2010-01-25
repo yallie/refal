@@ -12,26 +12,44 @@ using System.Collections.Generic;
 
 namespace Refal.Runtime
 {
+	/// <summary>
+	/// Run-time library
+	/// </summary>
 	public class RefalLibrary
 	{
-		// Refal file I/O support hash: handle -> StreamReader/StreamWriter
-		private IDictionary<string, object> openFiles = new Dictionary<string, object>();
-
-		// bury/dig functions global expression storage
-		protected IDictionary<string, PassiveExpression> buriedKeys = new Dictionary<string, PassiveExpression>();
-		protected IDictionary<string, PassiveExpression> buriedValues = new Dictionary<string, PassiveExpression>();
-
-		// command line arguments
-		protected string[] commandLineArguments = null;
-
+		/// <summary>
+		/// Irony interpreter evaluation context
+		/// </summary>
 		public EvaluationContext EvaluationContext { get; private set; }
-		
+
+		/// <summary>
+		/// File I/O support: handle (expression) -> StreamReader/StreamWriter
+		/// </summary>
+		IDictionary<string, object> OpenFiles { get; set; }
+
+		/// <summary>
+		/// Bury/Dig functions expression storage
+		/// </summary>
+		IDictionary<string, PassiveExpression> BuriedKeys { get; set; }
+
+		IDictionary<string, PassiveExpression> BuriedValues { get; set; }
+
+		/// <summary>
+		/// Command line arguments
+		/// </summary>
+		protected string[] CommandLineArguments { get; set; }
+
 		public RefalLibrary(EvaluationContext ctx)
 		{
 			EvaluationContext = ctx;
+			OpenFiles = new Dictionary<string, object>();
+			BuriedKeys = new Dictionary<string, PassiveExpression>();
+			BuriedValues = new Dictionary<string, PassiveExpression>();
+			CommandLineArguments = null;
 		}
 
 		// Standard RTL routines
+
 		public PassiveExpression Print(PassiveExpression expression)
 		{
 			if (expression == null)
@@ -87,15 +105,15 @@ namespace Refal.Runtime
 			// R - read, W - write, A - append
 			if (mode.StartsWith("R"))
 			{
-				openFiles[handle] = new StreamReader(File.OpenRead(fileName));
+				OpenFiles[handle] = new StreamReader(File.OpenRead(fileName));
 			}
 			else if (mode.StartsWith("W"))
 			{
-				openFiles[handle] = new StreamWriter(File.Create(fileName));
+				OpenFiles[handle] = new StreamWriter(File.Create(fileName));
 			}
 			else if (mode.StartsWith("A"))
 			{
-				openFiles[handle] = File.AppendText(fileName);
+				OpenFiles[handle] = File.AppendText(fileName);
 			}
 			else
 			{
@@ -112,7 +130,7 @@ namespace Refal.Runtime
 				return Card(expression);
 
 			string handle = expression[0].ToString();
-			StreamReader sr = openFiles[handle] as StreamReader;
+			StreamReader sr = OpenFiles[handle] as StreamReader;
 
 			if (sr == null)
 				return Card(expression);
@@ -130,7 +148,7 @@ namespace Refal.Runtime
 				return Prout(expression);
 
 			string handle = expression[0].ToString();
-			StreamWriter sw = openFiles[handle] as StreamWriter;
+			StreamWriter sw = OpenFiles[handle] as StreamWriter;
 
 			if (sw == null)
 				return Prout(expression);
@@ -144,7 +162,7 @@ namespace Refal.Runtime
 
 		protected void CloseFiles()
 		{
-			foreach (object o in openFiles.Values)
+			foreach (object o in OpenFiles.Values)
 			{
 				if (o is StreamWriter)
 					(o as StreamWriter).Close();
@@ -153,25 +171,19 @@ namespace Refal.Runtime
 			}
 		}
 
-		protected string[] CommandLineArguments
-		{
-			get { return commandLineArguments; }
-			set { commandLineArguments = value; }
-		}
-
 		public PassiveExpression Arg(PassiveExpression expression)
 		{
-			if (expression == null || expression.IsEmpty || commandLineArguments == null)
+			if (expression == null || expression.IsEmpty || CommandLineArguments == null)
 				return new PassiveExpression();
 
 			int index = Convert.ToInt32(expression[0]) - 1; // in Refal, index is 1-based
 
-			if (index >= commandLineArguments.Length)
+			if (index >= CommandLineArguments.Length)
 			{
 				return new PassiveExpression();
 			}
 
-			return PassiveExpression.Build(commandLineArguments[index].ToCharArray());
+			return PassiveExpression.Build(CommandLineArguments[index].ToCharArray());
 		}
 
 		public PassiveExpression Br(PassiveExpression expression)
@@ -185,8 +197,8 @@ namespace Refal.Runtime
 				PassiveExpression value = (PassiveExpression)pattern.GetVariable("Value");
 				string strKey = key.ToString();
 
-				buriedKeys[strKey] = key;
-				buriedValues[strKey] = value;
+				BuriedKeys[strKey] = key;
+				BuriedValues[strKey] = value;
 			}
 
 			throw new RecognitionImpossibleException("<Br e.N '=' e.Expr>: unexpected arguments");
@@ -196,10 +208,10 @@ namespace Refal.Runtime
 		{
 			// <Dg e.N>
 			string strKey = expression.ToString();
-			PassiveExpression result = PassiveExpression.Build(buriedValues[strKey] as PassiveExpression);
+			PassiveExpression result = PassiveExpression.Build(BuriedValues[strKey] as PassiveExpression);
 
-			buriedValues[strKey] = null;
-			buriedKeys[strKey] = null;
+			BuriedValues[strKey] = null;
+			BuriedKeys[strKey] = null;
 
 			return result;
 		}
@@ -207,11 +219,11 @@ namespace Refal.Runtime
 		public PassiveExpression Dgall(PassiveExpression expression)
 		{
 			List<object> result = new List<object>();
-			foreach (string strKey in buriedKeys.Keys)
+			foreach (string strKey in BuriedKeys.Keys)
 			{
-				result.AddRange(new object[] {new OpeningBrace(), buriedKeys[strKey], '=', buriedValues[strKey], new ClosingBrace()});
-				buriedKeys[strKey] = null;
-				buriedValues[strKey] = null;
+				result.AddRange(new object[] {new OpeningBrace(), BuriedKeys[strKey], '=', BuriedValues[strKey], new ClosingBrace()});
+				BuriedKeys[strKey] = null;
+				BuriedValues[strKey] = null;
 			}
 
 			return PassiveExpression.Build(result.ToArray());

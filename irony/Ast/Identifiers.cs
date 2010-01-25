@@ -7,6 +7,9 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Any identifier
+	/// </summary>
 	public class Identifier : CompoundSymbol
 	{
 		public Identifier(string value) : base(value)
@@ -14,6 +17,9 @@ namespace Refal
 		}
 	}
 
+	/// <summary>
+	/// Same as "True" compound symbol
+	/// </summary>
 	public class TrueIdentifier : Identifier
 	{
 		public TrueIdentifier() : base("True")
@@ -21,6 +27,9 @@ namespace Refal
 		}
 	}
 
+	/// <summary>
+	/// Same as "False" compound symbol
+	/// </summary>
 	public class FalseIdentifier : Identifier
 	{
 		public FalseIdentifier() : base("False")

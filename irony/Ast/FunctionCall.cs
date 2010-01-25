@@ -7,11 +7,22 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Function call
+	/// </summary>
 	public class FunctionCall : Term
 	{
-		string functionName;
-		Expression expression;
-		SourceSpan? nameSpan;
+		string _functionName;
+
+		public string FunctionName
+		{
+			get { return _functionName; }
+			private set { _functionName = value.Replace("-", "__"); }
+		}
+
+		public Expression Expression { get; private set; }
+
+		private SourceSpan? NameSpan { get; set; }
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -23,7 +34,7 @@ namespace Refal
 				{
 					var fn = node.AstNode as FunctionName;
 					FunctionName = fn.Name;
-					nameSpan = fn.Span;
+					NameSpan = fn.Span;
 				}
 				else if (node.AstNode is Expression)
 				{
@@ -35,23 +46,6 @@ namespace Refal
 		public override System.Collections.IEnumerable GetChildNodes()
 		{
 			return Expression.GetChildNodes();
-		}
-
-		public string FunctionName
-		{
-			get { return functionName; }
-			set { functionName = value.Replace("-", "__"); }
-		}
-
-		public Expression Expression
-		{
-			get { return expression; }
-			set { expression = value; }
-		}
-
-		public override string ToString()
-		{
-			return "call " + FunctionName;
 		}
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)
@@ -81,7 +75,12 @@ namespace Refal
 
 		public override SourceLocation GetErrorAnchor()
 		{
-			return (nameSpan != null ? nameSpan.Value : Span).Location;
+			return (NameSpan != null ? NameSpan.Value : Span).Location;
+		}
+
+		public override string ToString()
+		{
+			return "call " + FunctionName;
 		}
 	}
 }

@@ -7,9 +7,12 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Pattern enclosed in structure braces ()
+	/// </summary>
 	public class PatternInParentheses : Term
 	{
-		Pattern pattern;
+		public Pattern Pattern { get; private set; }
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -18,7 +21,7 @@ namespace Refal
 			foreach (ParseTreeNode node in parseNode.ChildNodes)
 			{
 				if (node.AstNode is Pattern)
-					pattern = (node.AstNode as Pattern);
+					Pattern = (node.AstNode as Pattern);
 			}
 		}
 
@@ -27,21 +30,16 @@ namespace Refal
 			return Pattern.GetChildNodes();
 		}
 
-		public Pattern Pattern
-		{
-			get { return pattern; }
-		}
-
-		public override string ToString()
-		{
-			return "(pattern)";
-		}
-
 		public override void Evaluate(EvaluationContext context, AstMode mode)
 		{
 			context.Data.Push(new OpeningBrace());
 			Pattern.Evaluate(context, mode);
 			context.Data.Push(new ClosingBrace());
+		}
+
+		public override string ToString()
+		{
+			return "(pattern)";
 		}
 	}
 }

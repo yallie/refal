@@ -7,6 +7,9 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Symbol is an elementary part of an expression: macrodigit, character, compound symbol (string, identifier)
+	/// </summary>
 	public abstract class Symb : Term
 	{
 		public static void CreateSymbolNode(ParsingContext context, ParseTreeNode parseNode)
@@ -59,7 +62,7 @@ namespace Refal
 				}
 			}
 
-			symNode.span = parseNode.Span;
+			symNode.Span = parseNode.Span;
 			parseNode.AstNode = symNode;
 		}
 	}

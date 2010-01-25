@@ -7,9 +7,18 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// SentenceList is a helper class used internally
+	/// It is not used in the AST
+	/// </summary>
 	public class SentenceList : SyntaxNode
 	{
-		List<Sentence> sentences = new List<Sentence>();
+		public IList<Sentence> Sentences { get; private set; }
+
+		public SentenceList()
+		{
+			Sentences = new List<Sentence>();
+		}
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -25,11 +34,6 @@ namespace Refal
 		public override System.Collections.IEnumerable GetChildNodes()
 		{
 			throw new NotImplementedException();
-		}
-		
-		public IList<Sentence> Sentences
-		{
-			get { return sentences; }
 		}
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)

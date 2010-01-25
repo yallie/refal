@@ -188,20 +188,5 @@ namespace Refal.Runtime
 
 			return true;
 		}
-
-/*		public void Print()
-		{
-			foreach (object value in this)
-			{
-				Console.WriteLine("-> {0}", value);
-			}
-		}
-
-		static void Main()
-		{
-			PassiveExpression ex = new PassiveExpression("Hello".ToCharArray(), 1, 2, 3, "World");
-			ex.Print();
-		}
-*/
 	}
 }

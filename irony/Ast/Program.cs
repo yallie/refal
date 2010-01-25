@@ -7,12 +7,23 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Program is a list of functions
+	/// </summary>
 	public class Program : SyntaxNode
 	{
-		IDictionary<string, Function> functions = new Dictionary<string, Function>();
-		IList<Function> functionList = new List<Function>();
-		Function entryPoint = null;
-		string name = "Program";
+		public IDictionary<string, Function> Functions { get; private set; }
+
+		public IList<Function> FunctionList { get; private set; }
+
+		public Function EntryPoint { get; private set; }
+
+		public Program()
+		{
+			Functions = new Dictionary<string, Function>();
+			FunctionList = new List<Function>();
+			EntryPoint = null;
+		}
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -43,43 +54,14 @@ namespace Refal
 				yield return fun;
 		}
 
-		public IDictionary<string, Function> Functions
-		{
-			get { return functions; }
-		}
-
-		public IList<Function> FunctionList
-		{
-			get { return functionList; }
-		}
-
-		public Function EntryPoint
-		{
-			get { return entryPoint; }
-			set { entryPoint = value; }
-		}
-
 		public void AddFunction(Function function)
 		{
-			functions[function.Name] = function;
-			functionList.Add(function);
+			Functions[function.Name] = function;
+			FunctionList.Add(function);
 			
 			if (function.Name == "Go")
 			{
-				entryPoint = function;
-			}
-		}
-
-		public string Name
-		{
-			get { return name; }
-			set
-			{
-				if (value != null && value.IndexOf(".") >= 0)
-					value = value.Substring(0, value.IndexOf("."));
-
-				if (value != null && value.Length > 0)
-					name = value;
+				EntryPoint = function;
 			}
 		}
 

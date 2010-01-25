@@ -7,9 +7,19 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	/// <summary>
+	/// Block is a sequence of sentences
+	/// </summary>
 	public class Block : SyntaxNode
 	{
-		List<Sentence> sentences = new List<Sentence>();
+		public IList<Sentence> Sentences { get; private set; }
+
+		public Runtime.Pattern BlockPattern { get; set; }
+
+		public Block()
+		{
+			Sentences = new List<Sentence>();
+		}
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
@@ -32,13 +42,6 @@ namespace Refal
 			foreach (Sentence s in Sentences)
 				yield return s;
 		}
-
-		public IList<Sentence> Sentences
-		{
-			get { return sentences; }
-		}
-
-		public Runtime.Pattern BlockPattern { get; set; }
 
 		public override void Evaluate(EvaluationContext context, AstMode mode)
 		{
