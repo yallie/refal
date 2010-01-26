@@ -18,14 +18,8 @@ namespace Refal.Runtime
 	/// </summary>
 	public class PassiveExpression : System.Collections.CollectionBase
 	{
-		public PassiveExpression()
+		protected PassiveExpression()
 		{
-		}
-
-		public PassiveExpression(params object[] symbols)
-		{
-			foreach (object symbol in symbols)
-				Add(symbol);
 		}
 
 		public static PassiveExpression Build(params object[] objects)

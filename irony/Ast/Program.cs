@@ -7,20 +7,28 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	using IronySymbol = Irony.Parsing.Symbol;
+
 	/// <summary>
 	/// Program is a list of functions
 	/// </summary>
 	public class Program : SyntaxNode
 	{
-		public IDictionary<string, Function> Functions { get; private set; }
+		public IDictionary<IronySymbol, Function> Functions { get; private set; }
 
 		public IList<Function> FunctionList { get; private set; }
 
 		public Function EntryPoint { get; private set; }
 
+		/// <summary>
+		/// EvaluationContext.Symbols != ParsingContext.Symbols
+		/// So trying to get value from EvaluationContext by giving key from ParsingContext results in an error :)
+		/// </summary>
+		private SymbolTable ParserSymbolTable { get; set; }
+
 		public Program()
 		{
-			Functions = new Dictionary<string, Function>();
+			Functions = new Dictionary<IronySymbol, Function>();
 			FunctionList = new List<Function>();
 			EntryPoint = null;
 		}
@@ -28,6 +36,8 @@ namespace Refal
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
 			base.Init(context, parseNode);
+
+			ParserSymbolTable = context.Symbols;
 
 			foreach (ParseTreeNode node in parseNode.ChildNodes)
 			{
@@ -59,7 +69,7 @@ namespace Refal
 			Functions[function.Name] = function;
 			FunctionList.Add(function);
 			
-			if (function.Name == "Go")
+			if (function.Name.Text == "Go")
 			{
 				EntryPoint = function;
 			}
@@ -68,10 +78,10 @@ namespace Refal
 		public override void Evaluate(EvaluationContext context, AstMode mode)
 		{
 			if (EntryPoint == null)
-				context.ThrowError(this, "No entry point defined (entry point is a function named «Go»)");
+				context.ThrowError("No entry point defined (entry point is a function named «Go»)");
 
 			// load standard run-time library functions
-			var libraryFunctions = LibraryFunction.ExtractLibraryFunctions(new RefalLibrary(context));
+			var libraryFunctions = LibraryFunction.ExtractLibraryFunctions(ParserSymbolTable, context, new RefalLibrary(context));
 			foreach (LibraryFunction libFun in libraryFunctions)
 			{
 				context.SetValue(libFun.Name, libFun);

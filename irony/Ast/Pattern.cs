@@ -12,13 +12,16 @@ namespace Refal
 	/// </summary>
 	public class Pattern : SyntaxNode
 	{
-		public const string LastPattern = "last-pattern";
-
 		public IList<Term> Terms { get; private set; }
 
 		public bool IsEmpty
 		{
 			get { return Terms.Count == 0; }
+		}
+
+		public Pattern()
+		{
+			Terms = new List<Term>();
 		}
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)

@@ -12,18 +12,21 @@ using System.Collections.Generic;
 
 namespace Refal.Runtime
 {
+	using IronySymbol = Irony.Parsing.Symbol;
+	using Irony.Parsing;
+
 	/// <summary>
 	/// LibraryFunction is a function defined in the standard library and available to Refal program
 	/// </summary>
 	public class LibraryFunction : ICallTarget
 	{
-		public string Name { get; private set; }
+		public IronySymbol Name { get; private set; }
 
 		private LibraryDelegate Function { get; set; }
 
 		delegate PassiveExpression LibraryDelegate(PassiveExpression value);
 
-		private LibraryFunction(string n, LibraryDelegate fun)
+		private LibraryFunction(IronySymbol n, LibraryDelegate fun)
 		{
 			Name = n;
 			Function = fun;
@@ -31,7 +34,7 @@ namespace Refal.Runtime
 
 		public void Call(EvaluationContext context)
 		{
-			context.PushFrame(Name, null, context.CurrentFrame);
+			context.PushFrame(Name.Text, null, context.CurrentFrame);
 
 			var ex = Function(context.Data.Pop() as PassiveExpression);
 			if (ex != null)
@@ -40,7 +43,7 @@ namespace Refal.Runtime
 			context.PopFrame();
 		}
 
-		public static LibraryFunction[] ExtractLibraryFunctions(object instance)
+		public static LibraryFunction[] ExtractLibraryFunctions(SymbolTable symbols, EvaluationContext context, object instance)
 		{
 			if (instance == null)
 				return new LibraryFunction[0];
@@ -53,7 +56,9 @@ namespace Refal.Runtime
 				LibraryDelegate fun = (LibraryDelegate)Delegate.CreateDelegate(typeof(LibraryDelegate), instance, method.Name, false, false);
 				if (fun != null)
 				{
-					list.Add(new LibraryFunction(method.Name, fun));
+					IronySymbol name = symbols.TextToSymbol(method.Name);
+					name = context.LanguageCaseSensitive ? name : name.LowerSymbol;
+					list.Add(new LibraryFunction(name, fun));
 				}
 			}
 

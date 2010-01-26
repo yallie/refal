@@ -174,13 +174,13 @@ namespace Refal.Runtime
 		public PassiveExpression Arg(PassiveExpression expression)
 		{
 			if (expression == null || expression.IsEmpty || CommandLineArguments == null)
-				return new PassiveExpression();
+				return PassiveExpression.Build();
 
 			int index = Convert.ToInt32(expression[0]) - 1; // in Refal, index is 1-based
 
 			if (index >= CommandLineArguments.Length)
 			{
-				return new PassiveExpression();
+				return PassiveExpression.Build();
 			}
 
 			return PassiveExpression.Build(CommandLineArguments[index].ToCharArray());
@@ -368,7 +368,7 @@ namespace Refal.Runtime
 		public PassiveExpression Numb(PassiveExpression expression)
 		{
 			if (expression == null || expression.IsEmpty)
-				return new PassiveExpression();
+				return PassiveExpression.Build();
 			
 		   return PassiveExpression.Build(Convert.ToInt32(expression.ToString()));
 		}

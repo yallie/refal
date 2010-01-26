@@ -44,7 +44,7 @@ namespace Refal
 
 		public override void Call(EvaluationContext context)
 		{
-			context.PushFrame(Name, null, context.CurrentFrame); // AstNode argument
+			context.PushFrame(Name.Text, null, context.CurrentFrame); // AstNode argument
 			Block.Evaluate(context, AstMode.None);
 			context.PopFrame();
 		}

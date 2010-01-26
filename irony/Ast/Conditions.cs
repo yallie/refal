@@ -66,7 +66,7 @@ namespace Refal
 			Expression.Evaluate(context, AstMode.Read);
 
 			// extract last recognized pattern (it contains bound variables)
-			var lastPattern = context.CurrentFrame.Values[Pattern.LastPattern] as Runtime.Pattern;
+			var lastPattern = context.CurrentFrame.GetLastPattern();
 			if (lastPattern == null)
 			{
 				context.ThrowError("Internal error: last recognized pattern is lost");
@@ -101,7 +101,7 @@ namespace Refal
 			if (result)
 			{
 				// store last recognized pattern as a local variable
-				context.CurrentFrame.Values[Pattern.LastPattern] = patt;
+				context.CurrentFrame.SetLastPattern(patt);
 
 				// match succeeded, return true
 				if (ResultExpression != null)

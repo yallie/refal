@@ -25,7 +25,7 @@ namespace Refal
 
 		public override void Call(EvaluationContext context)
 		{
-			context.ThrowError(this, "Calling external function is not supported");
+			context.ThrowError("Calling external function is not supported");
 		}
 
 		public override string ToString()

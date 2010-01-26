@@ -14,14 +14,12 @@ namespace Refal.Runtime
 	{
 		public IDictionary<string, Variable> Variables { get; private set; }
 
-		public Pattern()
+		public Pattern(params object[] terms)
 		{
 			Variables = new Dictionary<string, Variable>();
-		}
 
-		public Pattern(params object[] terms) : base(terms)
-		{
-			Variables = new Dictionary<string, Variable>();
+			foreach (object term in terms)
+				Add(term);
 		}
 
 		public new PatternItem this[int index]

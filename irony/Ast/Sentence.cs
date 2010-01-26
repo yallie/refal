@@ -69,7 +69,7 @@ namespace Refal
 			if (result)
 			{
 				// store last recognized pattern as a local variable
-				context.CurrentFrame.Values[Pattern.LastPattern] = patt;
+				context.CurrentFrame.SetLastPattern(patt);
 
 				// match succeeded, return expression
 				if (Expression != null)

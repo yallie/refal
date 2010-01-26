@@ -129,7 +129,7 @@ namespace Refal.Runtime
 			// match subexpression
 			else if (expression[exIndex] is OpeningBrace)
 			{
-				this.Expression = new PassiveExpression();
+				this.Expression = PassiveExpression.Build();
 				this.Expression.Add(expression[exIndex++]);
 
 				// extract subexpression within the structure braces
@@ -206,7 +206,7 @@ namespace Refal.Runtime
 			if (this.Expression == null)
 			{
 				// start with empty expression, don't advance exIndex
-				this.Expression = new PassiveExpression();
+				this.Expression = PassiveExpression.Build();
 				return MatchResult.PartialSuccess;
 			}
 			else

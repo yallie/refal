@@ -42,7 +42,7 @@ namespace Refal
 				}
 				else if (node.AstNode is IdentifierNode)
 				{
-					symNode = new Identifier((node.AstNode as IdentifierNode).Symbol);
+					symNode = new Identifier((node.AstNode as IdentifierNode).Symbol.Text);
 				}
 				else
 				{

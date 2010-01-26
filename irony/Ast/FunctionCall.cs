@@ -7,18 +7,14 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	using IronySymbol = Irony.Parsing.Symbol;
+
 	/// <summary>
 	/// Function call
 	/// </summary>
 	public class FunctionCall : Term
 	{
-		string _functionName;
-
-		public string FunctionName
-		{
-			get { return _functionName; }
-			private set { _functionName = value.Replace("-", "__"); }
-		}
+		public IronySymbol FunctionName { get; private set; } // TODO: value.Replace("-", "__") on set
 
 		public Expression Expression { get; private set; }
 
@@ -27,7 +23,7 @@ namespace Refal
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
 			base.Init(context, parseNode);
-			
+
 			foreach (ParseTreeNode node in parseNode.ChildNodes)
 			{
 				if (node.AstNode is FunctionName)
@@ -57,7 +53,7 @@ namespace Refal
 			{
 				ICallTarget function = value as ICallTarget;
 				if (function == null)
-					context.ThrowError(this, "This identifier cannot be called: {0}", FunctionName);
+					context.ThrowError("This identifier cannot be called: {0}", FunctionName);
 
 				try
 				{
@@ -66,11 +62,11 @@ namespace Refal
 				}
 				catch (Exception ex)
 				{
-					context.ThrowError(this, ex.Message);
+					context.ThrowError(ex.Message);
 				}
 			}
 
-			context.ThrowError(this, "Unknown identifier: {0}", FunctionName);
+			context.ThrowError("Unknown identifier: {0}", FunctionName.Text);
 		}
 
 		public override SourceLocation GetErrorAnchor()

@@ -60,7 +60,7 @@ namespace Refal
 					}
 					else if (node.AstNode is IdentifierNode)
 					{
-						varNode.Index = (node.AstNode as IdentifierNode).Symbol;
+						varNode.Index = (node.AstNode as IdentifierNode).Symbol.Text;
 					}
 				}
 			}
@@ -74,11 +74,11 @@ namespace Refal
 			// read variable from last recognized pattern
 			if (mode == AstMode.Read)
 			{
-				if (context.CurrentFrame.Values[Pattern.LastPattern] == null)
-					context.ThrowError(this, "No pattern recognized");
+				if (context.CurrentFrame.GetLastPattern() == null)
+					context.ThrowError("No pattern recognized");
 
 				// push variable contents onto stack
-				var pattern = (Runtime.Pattern)context.CurrentFrame.Values[Pattern.LastPattern];
+				var pattern = context.CurrentFrame.GetLastPattern();
 				context.Data.Push(pattern.GetVariable(Index));
 			}
 		}

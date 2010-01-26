@@ -7,24 +7,27 @@ using Refal.Runtime;
 
 namespace Refal
 {
+	using IronySymbol = Irony.Parsing.Symbol;
+
 	/// <summary>
 	/// FunctionName is helper node used internally
 	/// It is not used in the AST
 	/// </summary>
 	public class FunctionName : SyntaxNode
 	{
-		public string Name { get; private set;}
+		public IronySymbol Name { get; private set;}
 
-		static IDictionary<string, string> Operations { get; set; }
-
-		static FunctionName()
+		private IDictionary<string, IronySymbol> GetOperationsTable(ParsingContext context)
 		{
-			// setup arithmetic operations, see http://refal.ru/refer_r5.html#C
-			Operations = new Dictionary<string, string>();
-			Operations["+"] = "Add";
-			Operations["-"] = "Sub";
-			Operations["*"] = "Mul";
-			Operations["/"] = "Div";
+			var operations = new Dictionary<string, IronySymbol>();
+
+			// register arithmetic operations, see http://refal.ru/refer_r5.html#C
+			operations["+"] = context.Symbols.TextToSymbol("Add");
+			operations["-"] = context.Symbols.TextToSymbol("Sub");
+			operations["*"] = context.Symbols.TextToSymbol("Mul");
+			operations["/"] = context.Symbols.TextToSymbol("Div");
+
+			return operations;
 		}
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
@@ -40,7 +43,7 @@ namespace Refal
 				else
 				{
 					// convert standard arithmetic operation name
-					Name = Operations[node.Term.Name];
+					Name = GetOperationsTable(context)[node.Term.Name];
 				}
 			}
 		}
