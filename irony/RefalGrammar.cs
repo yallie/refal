@@ -99,8 +99,8 @@ namespace Irony.Samples
 
 			// Punctuation, braces, transient terms, options
 
-			RegisterPunctuation("(", ")");
-			RegisterPunctuation("{", "}");
+			MarkPunctuation("(", ")");
+			MarkPunctuation("{", "}");
 
 			RegisterBracePair("(", ")");
 			RegisterBracePair("<", ">");

@@ -74,11 +74,11 @@ namespace Refal
 			// read variable from last recognized pattern
 			if (mode == AstMode.Read)
 			{
-				if (context.CurrentFrame.GetLastPattern() == null)
+				if (context.GetLastPattern() == null)
 					context.ThrowError("No pattern recognized");
 
 				// push variable contents onto stack
-				var pattern = context.CurrentFrame.GetLastPattern();
+				var pattern = context.GetLastPattern();
 				context.Data.Push(pattern.GetVariable(Index));
 			}
 		}
