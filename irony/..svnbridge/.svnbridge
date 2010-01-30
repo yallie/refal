@@ -3,4 +3,8 @@ obj
 </Value></Property><Property><Name>svn:ignore</Name><Value>*.cache
 *.suo
 obj
+</Value></Property><Property><Name>svn:ignore</Name><Value>*.cache
+*.suo
+*.user
+obj
 </Value></Property></Properties></ItemProperties>

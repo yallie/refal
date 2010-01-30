@@ -22,14 +22,14 @@ namespace Irony.Samples
 
 			var Number = new NumberLiteral("Number");
 			Number.DefaultIntTypes = new TypeCode[] { TypeCode.Int32, TypeCode.Int64 };
-			Number.AddPrefix("0x", NumberFlags.Hex);
+			Number.AddPrefix("0x", NumberOptions.Hex);
 			Number.AddSuffix("u", TypeCode.UInt32);
 			Number.AddSuffix("l", TypeCode.Int64);
 			Number.AddSuffix("ul", TypeCode.UInt64);
-			Number.Flags |= NumberFlags.AllowSign;
+			Number.Options |= NumberOptions.AllowSign;
 
-			var CharLiteral = new StringLiteral("Char", "'", StringFlags.AllowsAllEscapes);
-			var StringLiteral = new StringLiteral("String", "\"", StringFlags.AllowsAllEscapes);
+			var CharLiteral = new StringLiteral("Char", "'", StringOptions.AllowsAllEscapes);
+			var StringLiteral = new StringLiteral("String", "\"", StringOptions.AllowsAllEscapes);
 			var Identifier = new IdentifierTerminal("Identifier", "_-", "");
 
 			var LineComment = new CommentTerminal("LineComment", "*", "\n", "\r") { Priority = -1000 };

@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Refal.Block" Collapsed="true">
+    <Position X="1.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAEAAAAAgAAAAAAAAAAAAACAIAQAAA=</HashCode>
+      <FileName>Refal\Ast\Block.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Character">
+    <Position X="1.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAgAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\Character.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.CompoundSymbol">
+    <Position X="2.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAgAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\CompoundSymbol.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Conditions" Collapsed="true">
+    <Position X="6.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAEAAAAAgAQAAABAAAQAAACAIAAAIA=</HashCode>
+      <FileName>Refal\Ast\Conditions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.DefinedFunction" Collapsed="true">
+    <Position X="8.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEQAAAAAAAAAAEAAAAAAAAACAAAAAAAAACAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\DefinedFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Expression" Collapsed="true">
+    <Position X="5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABACAAAAAAAAAAEAAAAAgAAAAAAAAAAAAACAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\Expression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.ExpressionInParentheses">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAgAAAAAAAAAQAAACAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\ExpressionInParentheses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.ExpressionVariable" Collapsed="true">
+    <Position X="7.25" Y="9.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\ExpressionVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.ExternalFunction" Collapsed="true">
+    <Position X="8.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\ExternalFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.ExternalFunctionList" Collapsed="true">
+    <Position X="6.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAACAIIAAAA=</HashCode>
+      <FileName>Refal\Ast\ExternalFunctionsList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Function">
+    <Position X="7.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\Function.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Refal.FunctionCall">
+    <Position X="4.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAEAAACAgAAAAAAAAAQAAACAIAQAAA=</HashCode>
+      <FileName>Refal\Ast\FunctionCall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.FunctionName" Collapsed="true">
+    <Position X="1.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgQAAAAAAAAIAAACAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\FunctionName.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.IdentifierList" Collapsed="true">
+    <Position X="5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAACAIIAAAA=</HashCode>
+      <FileName>Refal\Ast\IdentifierList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Identifier" Collapsed="true">
+    <Position X="2.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\Identifiers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.TrueIdentifier" Collapsed="true">
+    <Position X="1.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\Identifiers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.FalseIdentifier" Collapsed="true">
+    <Position X="3.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\Identifiers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Macrodigit">
+    <Position X="3.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAgAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\Macrodigit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Pattern" Collapsed="true">
+    <Position X="3.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABACAAAAAAAAAAEAAQAAgAAAAAAAAAAAAACAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\Pattern.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.PatternInParentheses">
+    <Position X="5.25" Y="10.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAgAQAAAAAAAAAAACAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\PatternInParentheses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Program" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAQAAAAAAAEAAAAIgIAAAAAAAAAAAADAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.RConditions" Collapsed="true">
+    <Position X="8.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAgAQAAABAAAAAAACAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\RConditions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.RSentence" Collapsed="true">
+    <Position X="8.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAgAAAAAAAAAQAAACAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\RSentence.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Sentence" Collapsed="true">
+    <Position X="3.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEABAAAgAQAAAAAAAQAAACAIAQAAA=</HashCode>
+      <FileName>Refal\Ast\Sentence.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.SentenceList" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAACAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\SentenceList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.StackFrameExtensions">
+    <Position X="7.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Refal\Ast\StackFrameExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Symb" Collapsed="true">
+    <Position X="2.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\Symbol.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.SymbolVariable" Collapsed="true">
+    <Position X="8.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\SymbolVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.SyntaxNode" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAgAAIAAgAAAAAAAAAAAAACAIIAAAA=</HashCode>
+      <FileName>Refal\Ast\SyntaxNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Refal.Term" Collapsed="true">
+    <Position X="1.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAIAAAAA=</HashCode>
+      <FileName>Refal\Ast\Term.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.TermVariable" Collapsed="true">
+    <Position X="6.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\TermVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Refal.Variable">
+    <Position X="6.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAgAAAAAAAAAIAAEAAAAAAAA=</HashCode>
+      <FileName>Refal\Ast\Variable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

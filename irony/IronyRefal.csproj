@@ -69,6 +69,7 @@
     <Compile Include="Ast\RSentence.cs" />
     <Compile Include="Ast\Sentence.cs" />
     <Compile Include="Ast\SentenceList.cs" />
+    <Compile Include="Ast\StackFrameExtensions.cs" />
     <Compile Include="Ast\Symbol.cs" />
     <Compile Include="Ast\SymbolVariable.cs" />
     <Compile Include="Ast\SyntaxNode.cs" />
@@ -86,6 +87,9 @@
     <Compile Include="Runtime\RefalLibrary.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="IronyAstBase.cd" />
+    <None Include="IronyAstNodes.cd" />
+    <None Include="RefalAstNodes.cd" />
     <None Include="Samples\99-bottles-v1.ref" />
     <None Include="Samples\binary.ref" />
     <None Include="Samples\change-v2.ref" />
