@@ -29,7 +29,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.DefinedFunction" Collapsed="true">
-    <Position X="7.75" Y="7.75" Width="1.5" />
+    <Position X="7" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEQAAAAAAAAAAEAAAAAAAAACAAAAAAAAACAIAAAAA=</HashCode>
       <FileName>Refal\Ast\DefinedFunction.cs</FileName>
@@ -57,7 +57,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.ExternalFunction" Collapsed="true">
-    <Position X="7.75" Y="8.75" Width="1.5" />
+    <Position X="8.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
       <FileName>Refal\Ast\ExternalFunction.cs</FileName>
