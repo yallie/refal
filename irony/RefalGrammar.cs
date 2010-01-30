@@ -38,7 +38,6 @@ namespace Irony.Samples
 			NonGrammarTerminals.Add(BlockComment);
 
 			// Non-terminals
-
 			var Program = new NonTerminal("Program", typeof(Program));
 			var Definition = new NonTerminal("Definition");
 			var Function = new NonTerminal("Function", typeof(DefinedFunction));
@@ -55,10 +54,13 @@ namespace Irony.Samples
 			var ExpressionItem = new NonTerminal("ExpressionItem");
 			var ExpressionInParentheses = new NonTerminal("(Expression)", typeof(ExpressionInParentheses));
 			var Var = new NonTerminal("Variable", Variable.CreateVariableNode);
+			var VarPrefix = new NonTerminal("VariablePrefix");
+			var VarIndex = new NonTerminal("VariableIndex");
 			var Symbol = new NonTerminal("Symbol", Symb.CreateSymbolNode);
 			var Call = new NonTerminal("Call", typeof(FunctionCall));
 			var FunctionName = new NonTerminal("FunctionName", typeof(FunctionName));
 			var WhereOrWithClause = new NonTerminal("WhereOrWithClause", typeof(Conditions));
+			var CommaOrAmpersand = new NonTerminal("CommaOrAmpersand");
 			var RWhereOrWithClause = new NonTerminal("RWhereOrWithClause", typeof(RConditions));
 
 			var SemicolonOpt = new NonTerminal("[;]", Empty | ";");
@@ -66,7 +68,6 @@ namespace Irony.Samples
 			var Extern = new NonTerminal("Extern", ToTerm("$EXTRN") | "$EXTERN" | "$EXTERNAL");
 
 			// Rules
-
 			Root = Program;
 
 			Program.Rule = MakePlusRule(Program, Definition);
@@ -79,7 +80,7 @@ namespace Irony.Samples
 			SentenceList.Rule = MakePlusRule(SentenceList, ToTerm(";"), Sentence);
 
 			Sentence.Rule = Pattern + RSentence;
-			RSentence.Rule = ToTerm("=") + Expression | WhereOrWithClause;
+			RSentence.Rule = "=" + Expression | WhereOrWithClause;
 			Pattern.Rule = MakeStarRule(Pattern, PatternItem);
 			PatternItem.Rule = Var | Symbol | PatternInParentheses;
 			PatternInParentheses.Rule = "(" + Pattern + ")";
@@ -87,18 +88,20 @@ namespace Irony.Samples
 			ExpressionItem.Rule = Call | Var | Symbol | ExpressionInParentheses;
 			ExpressionInParentheses.Rule = "(" + Expression + ")";
 
-			Var.Rule = (ToTerm("e") | "s" | "t") + "." + (Number | Identifier);
+			Var.Rule = VarPrefix + "." + VarIndex;
+			VarPrefix.Rule = ToTerm("e") | "s" | "t";
+			VarIndex.Rule = Number | Identifier;
 			Symbol.Rule = StringLiteral | CharLiteral | Number | "True" | "False" | Identifier;
-			Call.Rule = ToTerm("<") + FunctionName + Expression + ">";
+			Call.Rule = "<" + FunctionName + Expression + ">";
 			FunctionName.Rule = Identifier | "+" | "-" | "*" | "/";
 
-			WhereOrWithClause.Rule = (ToTerm(",") | "&") + Expression + ":" + RWhereOrWithClause;
+			WhereOrWithClause.Rule = CommaOrAmpersand + Expression + ":" + RWhereOrWithClause;
+			CommaOrAmpersand.Rule = ToTerm(",") | "&";
 			RWhereOrWithClause.Rule = Block // with-clause
 				| Pattern + // where-clause
 				(ToTerm("=") + Expression | WhereOrWithClause);
 
 			// Punctuation, braces, transient terms, options
-
 			MarkPunctuation("(", ")");
 			MarkPunctuation("{", "}");
 
@@ -106,7 +109,7 @@ namespace Irony.Samples
 			RegisterBracePair("<", ">");
 			RegisterBracePair("{", "}");
 
-			MarkTransient(Definition, PatternItem, ExpressionItem, SemicolonOpt, EntryOpt);
+			MarkTransient(Definition, PatternItem, ExpressionItem, SemicolonOpt, EntryOpt, Extern, CommaOrAmpersand, VarPrefix, VarIndex);
 			LanguageFlags = LanguageFlags.CreateAst | LanguageFlags.CanRunSample | LanguageFlags.TailRecursive;
 		}
 	}

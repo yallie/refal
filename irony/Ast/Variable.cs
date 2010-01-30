@@ -25,25 +25,22 @@ namespace Refal
 				// (e | s | t)
 				if (varNode == null)
 				{
-					foreach (ParseTreeNode node in nt.ChildNodes)
+					switch (nt.Term.Name)
 					{
-						switch (node.Term.Name)
-						{
-							case "s":
-								varNode = new SymbolVariable();
-								break;
+						case "s":
+							varNode = new SymbolVariable();
+							break;
 
-							case "e":
-								varNode = new ExpressionVariable();
-								break;
+						case "e":
+							varNode = new ExpressionVariable();
+							break;
 
-							case "t":
-								varNode = new TermVariable();
-								break;
+						case "t":
+							varNode = new TermVariable();
+							break;
 
-							default:
-								throw new ArgumentOutOfRangeException("Unknown variable type: " + node.Term.Name);
-						}
+						default:
+							throw new ArgumentOutOfRangeException("Unknown variable type: " + nt.Term.Name);
 					}
 					continue;
 				}
@@ -52,16 +49,13 @@ namespace Refal
 					continue;
 
 				// Number | Identifier
-				foreach (ParseTreeNode node in nt.ChildNodes)
+				if (nt.AstNode is LiteralValueNode)
 				{
-					if (node.AstNode is LiteralValueNode)
-					{
-						varNode.Index = (node.AstNode as LiteralValueNode).Value.ToString();
-					}
-					else if (node.AstNode is IdentifierNode)
-					{
-						varNode.Index = (node.AstNode as IdentifierNode).Symbol.Text;
-					}
+					varNode.Index = (nt.AstNode as LiteralValueNode).Value.ToString();
+				}
+				else if (nt.AstNode is IdentifierNode)
+				{
+					varNode.Index = (nt.AstNode as IdentifierNode).Symbol.Text;
 				}
 			}
 
