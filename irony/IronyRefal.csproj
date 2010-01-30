@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ast\AuxiliaryNode.cs" />
     <Compile Include="Ast\Block.cs" />
     <Compile Include="Ast\Character.cs" />
     <Compile Include="Ast\CompoundSymbol.cs" />

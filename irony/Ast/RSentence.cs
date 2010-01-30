@@ -11,7 +11,7 @@ namespace Refal
 	/// RSentence is a helper class used internally
 	/// It is not used in the AST
 	/// </summary>
-	public class RSentence : SyntaxNode
+	public class RSentence : AuxiliaryNode
 	{
 		public Conditions Conditions { get; private set; }
 
@@ -32,16 +32,6 @@ namespace Refal
 					Conditions = node.AstNode as Conditions;
 				}
 			}
-		}
-
-		public override System.Collections.IEnumerable GetChildNodes()
-		{
-			yield break; // never goes to the final AST
-		}
-
-		public override void Evaluate(EvaluationContext context, AstMode mode)
-		{
-			throw new NotImplementedException(); // never evaluates
 		}
 	}
 }

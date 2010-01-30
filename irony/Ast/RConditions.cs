@@ -11,7 +11,7 @@ namespace Refal
 	/// RConditions is a helper class used internally
 	/// It is not used in the final AST
 	/// </summary>
-	public class RConditions : SyntaxNode
+	public class RConditions : AuxiliaryNode
 	{
 		public Pattern Pattern { get; private set; }
 
@@ -50,16 +50,6 @@ namespace Refal
 					}
 				}
 			}
-		}
-
-		public override System.Collections.IEnumerable GetChildNodes()
-		{
-			yield break; // this node never goes to final AST
-		}
-
-		public override void Evaluate(EvaluationContext context, AstMode mode)
-		{
-			// do nothing
 		}
 	}
 }

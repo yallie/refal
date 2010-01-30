@@ -11,7 +11,7 @@ namespace Refal
 	/// IdentifierList is a helper node used internally
 	/// It is not used in AST
 	/// </summary>
-	public class IdentifierList : SyntaxNode
+	public class IdentifierList : AuxiliaryNode
 	{
 		public IList<IdentifierNode> Identifiers { get; private set; }
 
@@ -31,16 +31,6 @@ namespace Refal
 					Identifiers.Add(node.AstNode as IdentifierNode);
 				}
 			}
-		}
-
-		public override System.Collections.IEnumerable GetChildNodes()
-		{
-			yield break; // never goes to the final AST
-		}
-
-		public override void Evaluate(EvaluationContext context, AstMode mode)
-		{
-			throw new NotImplementedException(); // never evaluates
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace Refal
 	/// FunctionName is helper node used internally
 	/// It is not used in the AST
 	/// </summary>
-	public class FunctionName : SyntaxNode
+	public class FunctionName : AuxiliaryNode
 	{
 		public IronySymbol Name { get; private set;}
 
@@ -46,16 +46,6 @@ namespace Refal
 					Name = GetOperationsTable(context)[node.Term.Name];
 				}
 			}
-		}
-
-		public override System.Collections.IEnumerable GetChildNodes()
-		{
-			yield break;
-		}
-
-		public override void Evaluate(EvaluationContext context, AstMode mode)
-		{
-			// nothing
 		}
 	}
 }
