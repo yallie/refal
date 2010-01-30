@@ -10,7 +10,7 @@ namespace Refal
 	/// <summary>
 	/// Expression is a sequence of symbols, macrodigits, bound variables and function calls
 	/// </summary>
-	public class Expression : SyntaxNode
+	public class Expression : AstNode
 	{
 		public IList<Term> Terms { get; private set; }
 
@@ -41,7 +41,7 @@ namespace Refal
 			get { return Terms.Count == 0; }
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			// evaluate terms
 			var initialCount = context.Data.Count;

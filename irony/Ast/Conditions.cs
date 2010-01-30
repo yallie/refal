@@ -10,7 +10,7 @@ namespace Refal
 	/// <summary>
 	/// Where- and When-clauses
 	/// </summary>
-	public class Conditions : SyntaxNode
+	public class Conditions : AstNode
 	{
 		public Expression Expression { get; private set; }
 
@@ -60,7 +60,7 @@ namespace Refal
 				yield return MoreConditions;
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			// evaluate expression
 			Expression.Evaluate(context, AstMode.Read);

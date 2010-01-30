@@ -20,7 +20,7 @@ namespace Refal
 			Value = value;
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			context.Data.Push(Value.ToCharArray());
 		}

@@ -12,7 +12,7 @@ namespace Refal
 	/// <summary>
 	/// Program is a list of functions
 	/// </summary>
-	public class Program : SyntaxNode
+	public class Program : AstNode
 	{
 		public IDictionary<IronySymbol, Function> Functions { get; private set; }
 
@@ -75,7 +75,7 @@ namespace Refal
 			}
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			if (EntryPoint == null)
 				context.ThrowError("No entry point defined (entry point is a function named «Go»)");

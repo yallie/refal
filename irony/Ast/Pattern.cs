@@ -10,7 +10,7 @@ namespace Refal
 	/// <summary>
 	/// Pattern is a passive expression that may contain free variables
 	/// </summary>
-	public class Pattern : SyntaxNode
+	public class Pattern : AstNode
 	{
 		public IList<Term> Terms { get; private set; }
 
@@ -41,7 +41,7 @@ namespace Refal
 				yield return term;
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			foreach (Term term in Terms)
 			{
@@ -49,6 +49,22 @@ namespace Refal
 			}
 		}
 
+		private object[] EvaluateTerms(EvaluationContext context, AstMode mode)
+		{
+			// save initial stack position
+			var initialCount = context.Data.Count;
+			Evaluate(context, mode);
+
+			// get terms from evaluation stack
+			var args = new List<object>();
+			while (context.Data.Count > initialCount)
+				args.Add(context.Data.Pop());
+
+			// restore original order
+			args.Reverse();
+			return args.ToArray();
+		}
+		
 		public Runtime.Pattern Instantiate(EvaluationContext context, AstMode mode)
 		{
 			// evaluate pattern and instantiate Runtime.Pattern

@@ -30,7 +30,7 @@ namespace Refal
 			return Expression.GetChildNodes();
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			context.Data.Push(new OpeningBrace());
 			Expression.Evaluate(context, mode);

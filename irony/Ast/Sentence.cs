@@ -13,7 +13,7 @@ namespace Refal
 	/// 1) pattern { conditions } = expression;
 	/// 2) pattern conditions block;
 	/// </summary>
-	public class Sentence : SyntaxNode
+	public class Sentence : AstNode
 	{
 		public Pattern Pattern { get; private set; }
 
@@ -52,7 +52,7 @@ namespace Refal
 				yield return Expression;
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			// evaluate pattern and copy bound variables of the current block
 			var patt = Pattern.Instantiate(context, mode);

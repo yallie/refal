@@ -18,11 +18,11 @@ namespace Refal
 			protected set { base.Index = "t." + value; }
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			if (mode == AstMode.Read)
 			{
-				base.Evaluate(context, mode);
+				base.EvaluateNode(context, mode);
 				return;
 			}
 

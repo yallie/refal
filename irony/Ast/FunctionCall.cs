@@ -44,7 +44,7 @@ namespace Refal
 			return Expression.GetChildNodes();
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			Expression.Evaluate(context, mode);
 
@@ -55,15 +55,8 @@ namespace Refal
 				if (function == null)
 					context.ThrowError("This identifier cannot be called: {0}", FunctionName);
 
-				try
-				{
-					function.Call(context);
-					return;
-				}
-				catch (Exception ex)
-				{
-					context.ThrowError(ex.Message);
-				}
+				function.Call(context);
+				return;
 			}
 
 			context.ThrowError("Unknown identifier: {0}", FunctionName.Text);

@@ -10,7 +10,7 @@ namespace Refal
 	/// <summary>
 	/// Block is a sequence of sentences
 	/// </summary>
-	public class Block : SyntaxNode
+	public class Block : AstNode
 	{
 		public IList<Sentence> Sentences { get; private set; }
 
@@ -43,7 +43,7 @@ namespace Refal
 				yield return s;
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			foreach (Sentence sentence in Sentences)
 			{

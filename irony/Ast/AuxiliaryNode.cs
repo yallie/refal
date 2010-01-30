@@ -12,14 +12,14 @@ namespace Refal
 	/// Temporary AST nodes are used internally
 	/// They don't appear in the final AST
 	/// </summary>
-	public abstract class AuxiliaryNode : SyntaxNode
+	public abstract class AuxiliaryNode : AstNode
 	{
 		public override System.Collections.IEnumerable GetChildNodes()
 		{
-			throw new NotImplementedException("Auxiliary nodes should not appear nin the final AST");
+			throw new NotImplementedException("Auxiliary nodes should not appear in the final AST");
 		}
 
-		public override void Evaluate(EvaluationContext context, AstMode mode)
+		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
 			throw new NotImplementedException("Auxiliary node cannot be interpreted");
 		}
