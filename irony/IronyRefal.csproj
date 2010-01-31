@@ -52,6 +52,7 @@
     <Compile Include="Ast\CompoundSymbol.cs" />
     <Compile Include="Ast\Conditions.cs" />
     <Compile Include="Ast\DefinedFunction.cs" />
+    <Compile Include="Ast\EvaluationContextExtensions.cs" />
     <Compile Include="Ast\Expression.cs" />
     <Compile Include="Ast\ExpressionInParentheses.cs" />
     <Compile Include="Ast\ExpressionVariable.cs" />
@@ -70,15 +71,14 @@
     <Compile Include="Ast\RSentence.cs" />
     <Compile Include="Ast\Sentence.cs" />
     <Compile Include="Ast\SentenceList.cs" />
-    <Compile Include="Ast\StackFrameExtensions.cs" />
     <Compile Include="Ast\Symbol.cs" />
     <Compile Include="Ast\SymbolVariable.cs" />
-    <Compile Include="Ast\SyntaxNode.cs" />
     <Compile Include="Ast\Term.cs" />
     <Compile Include="Ast\TermVariable.cs" />
     <Compile Include="Ast\Variable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefalGrammar.cs" />
+    <Compile Include="Runtime\FunctionNameAttribute.cs" />
     <Compile Include="Runtime\LibraryFunction.cs" />
     <Compile Include="Runtime\PassiveExpression.cs" />
     <Compile Include="Runtime\Pattern.cs" />
@@ -86,18 +86,26 @@
     <Compile Include="Runtime\PatternVariables.cs" />
     <Compile Include="Runtime\RecognitionImpossible.cs" />
     <Compile Include="Runtime\RefalLibrary.cs" />
+    <Compile Include="Runtime\ReflectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IronyAstBase.cd" />
     <None Include="IronyAstNodes.cd" />
     <None Include="RefalAstNodes.cd" />
     <None Include="Samples\99-bottles-v1.ref" />
+    <None Include="Samples\99-bottles-v2.ref" />
     <None Include="Samples\binary.ref" />
+    <None Include="Samples\change-v1.ref" />
     <None Include="Samples\change-v2.ref" />
-    <None Include="Samples\change.ref" />
     <None Include="Samples\factorial.ref" />
     <None Include="Samples\hello.ref" />
+    <None Include="Samples\italian.ref" />
+    <None Include="Samples\order-v1.ref" />
+    <None Include="Samples\order-v2.ref" />
     <None Include="Samples\palyndrome.ref" />
+    <None Include="Samples\quine-plain.ref" />
+    <None Include="Samples\quine-simple.ref" />
+    <None Include="Samples\quine-xplained.ref" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

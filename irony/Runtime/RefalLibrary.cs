@@ -250,6 +250,7 @@ namespace Refal.Runtime
 			return Convert.ToInt32(s);
 		}
 
+		[FunctionName("+")]
 		public PassiveExpression Add(PassiveExpression expression)
 		{
 			object op1, op2;
@@ -258,6 +259,7 @@ namespace Refal.Runtime
 			return PassiveExpression.Build(ToInt32(op1) + ToInt32(op2));
 		}
 
+		[FunctionName("-")]
 		public PassiveExpression Sub(PassiveExpression expression)
 		{
 			object op1, op2;
@@ -266,6 +268,7 @@ namespace Refal.Runtime
 			return PassiveExpression.Build(ToInt32(op1) - ToInt32(op2));
 		}
 
+		[FunctionName("*")]
 		public PassiveExpression Mul(PassiveExpression expression)
 		{
 			object op1, op2;
@@ -274,6 +277,7 @@ namespace Refal.Runtime
 			return PassiveExpression.Build(ToInt32(op1) * ToInt32(op2));
 		}
 
+		[FunctionName("/")]
 		public PassiveExpression Div(PassiveExpression expression)
 		{
 			object op1, op2;
@@ -342,6 +346,7 @@ namespace Refal.Runtime
 			throw new NotImplementedException();
 		}
 
+		[FunctionName("Implode-Ext")]
 		public PassiveExpression Implode_Ext(PassiveExpression expression)
 		{
 			throw new NotImplementedException();

@@ -4,70 +4,70 @@
     <Position X="1.5" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QgAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACAIAQAAA=</HashCode>
-      <FileName>Refal\Ast\Block.cs</FileName>
+      <FileName>Ast\Block.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Character">
     <Position X="1.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\Character.cs</FileName>
+      <FileName>Ast\Character.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.CompoundSymbol">
     <Position X="2.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\CompoundSymbol.cs</FileName>
+      <FileName>Ast\CompoundSymbol.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Conditions" Collapsed="true">
     <Position X="6.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAEAAAAAAAAAAAEAAAAAAAQAAABAAAQAAACAIAAAIA=</HashCode>
-      <FileName>Refal\Ast\Conditions.cs</FileName>
+      <FileName>Ast\Conditions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.DefinedFunction" Collapsed="true">
     <Position X="7" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEQAAAAAAAAAAEAAAAAAAAACAAAAAAAAACAIAAAAA=</HashCode>
-      <FileName>Refal\Ast\DefinedFunction.cs</FileName>
+      <FileName>Ast\DefinedFunction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Expression" Collapsed="true">
     <Position X="5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QABACAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACAIAAAAA=</HashCode>
-      <FileName>Refal\Ast\Expression.cs</FileName>
+      <FileName>Ast\Expression.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.ExpressionInParentheses">
     <Position X="4.5" Y="5.5" Width="2" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAQAAACAIAAAAA=</HashCode>
-      <FileName>Refal\Ast\ExpressionInParentheses.cs</FileName>
+      <FileName>Ast\ExpressionInParentheses.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.ExpressionVariable" Collapsed="true">
     <Position X="5.75" Y="11.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\ExpressionVariable.cs</FileName>
+      <FileName>Ast\ExpressionVariable.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.ExternalFunction" Collapsed="true">
     <Position X="8.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
-      <FileName>Refal\Ast\ExternalFunction.cs</FileName>
+      <FileName>Ast\ExternalFunction.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.ExternalFunctionList" Collapsed="true">
     <Position X="6" Y="1.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAIAAAA=</HashCode>
-      <FileName>Refal\Ast\ExternalFunctionsList.cs</FileName>
+      <FileName>Ast\ExternalFunctionsList.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Function">
@@ -82,7 +82,7 @@
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>QAAAQAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\Function.cs</FileName>
+      <FileName>Ast\Function.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -90,105 +90,105 @@
     <Position X="0.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAEAAAEAAACAAAAAAAAAAAQAAACAIAQAAA=</HashCode>
-      <FileName>Refal\Ast\FunctionCall.cs</FileName>
+      <FileName>Ast\FunctionCall.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.FunctionName" Collapsed="true">
     <Position X="5" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAIAAACAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\FunctionName.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Ast\FunctionName.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.IdentifierList" Collapsed="true">
     <Position X="8.5" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAIAAAA=</HashCode>
-      <FileName>Refal\Ast\IdentifierList.cs</FileName>
+      <FileName>Ast\IdentifierList.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Identifier" Collapsed="true">
     <Position X="2.5" Y="10.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\Identifiers.cs</FileName>
+      <FileName>Ast\Identifiers.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.TrueIdentifier" Collapsed="true">
     <Position X="1.5" Y="11.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\Identifiers.cs</FileName>
+      <FileName>Ast\Identifiers.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.FalseIdentifier" Collapsed="true">
     <Position X="3.5" Y="11.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\Identifiers.cs</FileName>
+      <FileName>Ast\Identifiers.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Macrodigit">
     <Position X="3.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\Macrodigit.cs</FileName>
+      <FileName>Ast\Macrodigit.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Pattern" Collapsed="true">
     <Position X="3.25" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QABACAAAAAAAAAAkAAQAAAAAAAAAAAAAAAACAIAAAAA=</HashCode>
-      <FileName>Refal\Ast\Pattern.cs</FileName>
+      <FileName>Ast\Pattern.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.PatternInParentheses">
     <Position X="6.75" Y="5.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAEAAAAAAAQAAAAAAAAAAACAIAAAAA=</HashCode>
-      <FileName>Refal\Ast\PatternInParentheses.cs</FileName>
+      <FileName>Ast\PatternInParentheses.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Program" Collapsed="true">
     <Position X="1.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAEAAAQAAAAAAAEAAAAIAIAAAAAAAAAAAADAIAAAAA=</HashCode>
-      <FileName>Refal\Ast\Program.cs</FileName>
+      <FileName>Ast\Program.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.RConditions" Collapsed="true">
     <Position X="6.75" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAAAAAAAAAAAAAAAAAAAQAAABAAAAAAACAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\RConditions.cs</FileName>
+      <FileName>Ast\RConditions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.RSentence" Collapsed="true">
     <Position X="8.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAQAAACAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\RSentence.cs</FileName>
+      <FileName>Ast\RSentence.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Sentence" Collapsed="true">
     <Position X="3.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAEABAAAAAQAAAAAAAQAAACAIAQAAA=</HashCode>
-      <FileName>Refal\Ast\Sentence.cs</FileName>
+      <FileName>Ast\Sentence.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.SentenceList" Collapsed="true">
     <Position X="4.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\SentenceList.cs</FileName>
+      <FileName>Ast\SentenceList.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Symb" Collapsed="true">
     <Position X="2.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\Symbol.cs</FileName>
+      <FileName>Ast\Symbol.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.SymbolVariable" Collapsed="true">
@@ -203,14 +203,14 @@
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\SymbolVariable.cs</FileName>
+      <FileName>Ast\SymbolVariable.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Term" Collapsed="true">
     <Position X="1.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\Term.cs</FileName>
+      <FileName>Ast\Term.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.TermVariable" Collapsed="true">
@@ -225,7 +225,7 @@
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\TermVariable.cs</FileName>
+      <FileName>Ast\TermVariable.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.Variable">
@@ -240,14 +240,14 @@
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAEAAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\Variable.cs</FileName>
+      <FileName>Ast\Variable.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Refal.AuxiliaryNode" Collapsed="true">
     <Position X="7.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
-      <FileName>Refal\Ast\AuxiliaryNode.cs</FileName>
+      <FileName>Ast\AuxiliaryNode.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Irony.Ast.AstNode" Collapsed="true">
@@ -259,7 +259,7 @@
     <Position X="8" Y="8.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAgAAACAAABAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Refal\Ast\EvaluationContextExtensions.cs</FileName>
+      <FileName>Ast\EvaluationContextExtensions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Tahoma" Size="8.25" />

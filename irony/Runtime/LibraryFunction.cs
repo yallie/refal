@@ -53,10 +53,11 @@ namespace Refal.Runtime
 			MethodInfo[] methods = instance.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
 			foreach (MethodInfo method in methods)
 			{
-				LibraryDelegate fun = (LibraryDelegate)Delegate.CreateDelegate(typeof(LibraryDelegate), instance, method.Name, false, false);
+				var fun = method.CreateDelegate<LibraryDelegate>(instance, false);
 				if (fun != null)
 				{
-					IronySymbol name = symbols.TextToSymbol(method.Name);
+					var fname = method.GetCustomAttribute<FunctionNameAttribute>();
+					IronySymbol name = symbols.TextToSymbol(fname != null ? fname.Name : method.Name);
 					name = context.LanguageCaseSensitive ? name : name.LowerSymbol;
 					list.Add(new LibraryFunction(name, fun));
 				}

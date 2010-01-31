@@ -17,19 +17,6 @@ namespace Refal
 	{
 		public IronySymbol Name { get; private set;}
 
-		private IDictionary<string, IronySymbol> GetOperationsTable(ParsingContext context)
-		{
-			var operations = new Dictionary<string, IronySymbol>();
-
-			// register arithmetic operations, see http://refal.ru/refer_r5.html#C
-			operations["+"] = context.Symbols.TextToSymbol("Add");
-			operations["-"] = context.Symbols.TextToSymbol("Sub");
-			operations["*"] = context.Symbols.TextToSymbol("Mul");
-			operations["/"] = context.Symbols.TextToSymbol("Div");
-
-			return operations;
-		}
-
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
 			base.Init(context, parseNode);
@@ -40,10 +27,9 @@ namespace Refal
 				{
 					Name = (node.AstNode as IdentifierNode).Symbol;
 				}
-				else
+				else if (node.Term is KeyTerm)
 				{
-					// convert standard arithmetic operation name
-					Name = GetOperationsTable(context)[node.Term.Name];
+					Name = context.Symbols.TextToSymbol(node.Term.Name);
 				}
 			}
 		}
