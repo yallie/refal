@@ -31,23 +31,17 @@ namespace Refal
 				{
 					Pattern = (node.AstNode as Pattern);
 				}
-				if (node.AstNode is Block)
+				else if (node.AstNode is Block)
 				{
 					Block = (node.AstNode as Block);
 				}
-				else if (node.AstNode == null && node.ChildNodes.Count > 0)
+				else if (node.AstNode is Expression)
 				{
-					foreach (ParseTreeNode n in node.ChildNodes)
-					{
-						if (n.AstNode is Expression)
-						{
-							ResultExpression = (n.AstNode as Expression);
-						}
-						else if (n.AstNode is Conditions)
-						{
-							MoreConditions = (n.AstNode as Conditions);
-						}
-					}
+					ResultExpression = (node.AstNode as Expression);
+				}
+				else if (node.AstNode is Conditions)
+				{
+					MoreConditions = (node.AstNode as Conditions);
 				}
 			}
 		}

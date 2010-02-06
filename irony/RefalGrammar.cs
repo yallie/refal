@@ -62,6 +62,7 @@ namespace Irony.Samples
 			var WhereOrWithClause = new NonTerminal("WhereOrWithClause", typeof(Conditions));
 			var CommaOrAmpersand = new NonTerminal("CommaOrAmpersand");
 			var RWhereOrWithClause = new NonTerminal("RWhereOrWithClause", typeof(RConditions));
+			var RExpressionOrWhereOrWithClause = new NonTerminal("RExpressionOrWhereOrWithClause");
 
 			var SemicolonOpt = new NonTerminal("[;]", Empty | ";");
 			var EntryOpt = new NonTerminal("[ENTRY]", Empty | "$ENTRY");
@@ -98,18 +99,19 @@ namespace Irony.Samples
 			WhereOrWithClause.Rule = CommaOrAmpersand + Expression + ":" + RWhereOrWithClause;
 			CommaOrAmpersand.Rule = ToTerm(",") | "&";
 			RWhereOrWithClause.Rule = Block // with-clause
-				| Pattern + // where-clause
-				(ToTerm("=") + Expression | WhereOrWithClause);
+				| Pattern + RExpressionOrWhereOrWithClause; // where-clause
+			RExpressionOrWhereOrWithClause.Rule = ToTerm("=") + Expression | WhereOrWithClause;
 
 			// Punctuation, braces, transient terms, options
 			MarkPunctuation("(", ")");
 			MarkPunctuation("{", "}");
+			MarkPunctuation("=", ",", "&");
 
 			RegisterBracePair("(", ")");
 			RegisterBracePair("<", ">");
 			RegisterBracePair("{", "}");
 
-			MarkTransient(Definition, PatternItem, ExpressionItem, SemicolonOpt, EntryOpt, Extern, CommaOrAmpersand, VarPrefix, VarIndex);
+			MarkTransient(Definition, PatternItem, ExpressionItem, SemicolonOpt, EntryOpt, Extern, CommaOrAmpersand, VarPrefix, VarIndex, RExpressionOrWhereOrWithClause);
 			LanguageFlags = LanguageFlags.CreateAst | LanguageFlags.CanRunSample | LanguageFlags.TailRecursive;
 		}
 	}
