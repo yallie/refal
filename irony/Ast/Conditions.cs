@@ -1,7 +1,8 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Irony.Ast;
 using Irony.Parsing;
-using System.Collections.Generic;
 using Irony.Interpreter;
 using Refal.Runtime;
 
@@ -32,13 +33,13 @@ namespace Refal
 				{
 					Expression = (node.AstNode as Expression);
 				}
-				else if (node.AstNode is RConditions)
+				else if (node.AstNode is AuxiliaryNode)
 				{
-					var rc = node.AstNode as RConditions;
-					Pattern = rc.Pattern;
-					Block = rc.Block;
-					MoreConditions = rc.MoreConditions;
-					ResultExpression = rc.ResultExpression;
+					var nodes = (node.AstNode as AuxiliaryNode).ChildNodes;
+					Pattern = nodes.OfType<Pattern>().FirstOrDefault();
+					Block = nodes.OfType<Block>().FirstOrDefault();
+					MoreConditions = nodes.OfType<Conditions>().FirstOrDefault();
+					ResultExpression = nodes.OfType<Expression>().FirstOrDefault();
 				}
 			}
 		}

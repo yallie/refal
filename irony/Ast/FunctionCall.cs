@@ -1,7 +1,8 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Irony.Ast;
 using Irony.Parsing;
-using System.Collections.Generic;
 using Irony.Interpreter;
 using Refal.Runtime;
 
@@ -14,7 +15,7 @@ namespace Refal
 	/// </summary>
 	public class FunctionCall : Term
 	{
-		public IronySymbol FunctionName { get; private set; } // TODO: value.Replace("-", "__") on set
+		public IronySymbol FunctionName { get; private set; }
 
 		public Expression Expression { get; private set; }
 
@@ -26,11 +27,29 @@ namespace Refal
 
 			foreach (ParseTreeNode node in parseNode.ChildNodes)
 			{
-				if (node.AstNode is FunctionName)
+				if (node.AstNode is AuxiliaryNode)
 				{
-					var fn = node.AstNode as FunctionName;
-					FunctionName = fn.Name;
-					NameSpan = fn.Span;
+					var auxNode = node.AstNode as AuxiliaryNode;
+					NameSpan = auxNode.Span;
+
+					// function call can be either Identifier: <Prout e.1>
+					var identifier = auxNode.ChildNodes.OfType<IdentifierNode>().FirstOrDefault();
+					if (identifier != null)
+					{
+						FunctionName = identifier.Symbol;
+						continue;
+					}
+
+					// or symbol of arithmetic operation: <- s.1 1>
+					var pnode = auxNode.ChildParseNodes.Where(n => n.Term != null).FirstOrDefault();
+					if (pnode != null)
+					{
+						FunctionName = context.Symbols.TextToSymbol(pnode.Term.Name);
+						continue;
+					}
+
+					// and nothing else
+					throw new InvalidOperationException("Invalid function call");
 				}
 				else if (node.AstNode is Expression)
 				{

@@ -1,7 +1,8 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Irony.Ast;
 using Irony.Parsing;
-using System.Collections.Generic;
 using Irony.Interpreter;
 using Refal.Runtime;
 
@@ -45,9 +46,12 @@ namespace Refal
 				{
 					AddFunction(node.AstNode as Function);
 				}
-				else if (node.AstNode is ExternalFunctionList)
+				else if (node.AstNode is AuxiliaryNode)
 				{
-					foreach (IdentifierNode id in (node.AstNode as ExternalFunctionList).Identifiers)
+					var identifiers = (node.AstNode as AuxiliaryNode).ChildNodes.OfType<IdentifierNode>();
+
+					//foreach (IdentifierNode id in (node.AstNode as ExternalFunctionList).Identifiers)
+					foreach (var id in identifiers)
 					{
 						ExternalFunction ef = new ExternalFunction();
 						ef.SetSpan(id.Span);

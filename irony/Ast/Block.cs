@@ -1,7 +1,8 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Irony.Ast;
 using Irony.Parsing;
-using System.Collections.Generic;
 using Irony.Interpreter;
 using Refal.Runtime;
 
@@ -28,10 +29,11 @@ namespace Refal
 			foreach (ParseTreeNode node in parseNode.ChildNodes)
 			{
 				// copy sentences to block
-				if (node.AstNode is SentenceList)
+				if (node.AstNode is AuxiliaryNode)
 				{
-					SentenceList sl = node.AstNode as SentenceList;
-					foreach (Sentence s in sl.Sentences)
+					var auxNode = node.AstNode as AuxiliaryNode;
+					
+					foreach (var s in auxNode.ChildNodes.OfType<Sentence>())
 						Sentences.Add(s);
 				}
 			}

@@ -41,12 +41,12 @@ namespace Irony.Samples
 			var Program = new NonTerminal("Program", typeof(Program));
 			var Definition = new NonTerminal("Definition");
 			var Function = new NonTerminal("Function", typeof(DefinedFunction));
-			var External = new NonTerminal("External", typeof(ExternalFunctionList));
-			var IdentifierList = new NonTerminal("Identifier+", typeof(IdentifierList));
+			var External = new NonTerminal("External", typeof(AuxiliaryNode));
+			var IdentifierList = new NonTerminal("Identifier+", typeof(AuxiliaryNode));
 			var Block = new NonTerminal("Block", typeof(Block));
 			var Sentence = new NonTerminal("Sentence", typeof(Sentence));
-			var RSentence = new NonTerminal("RSentence", typeof(RSentence));
-			var SentenceList = new NonTerminal("Sentence+", typeof(SentenceList));
+			var RSentence = new NonTerminal("RSentence", typeof(AuxiliaryNode));
+			var SentenceList = new NonTerminal("Sentence+", typeof(AuxiliaryNode));
 			var Pattern = new NonTerminal("Pattern", typeof(Pattern));
 			var PatternItem = new NonTerminal("PatternItem");
 			var PatternInParentheses = new NonTerminal("(Pattern)", typeof(PatternInParentheses));
@@ -58,10 +58,10 @@ namespace Irony.Samples
 			var VarIndex = new NonTerminal("VariableIndex");
 			var Symbol = new NonTerminal("Symbol", Symb.CreateSymbolNode);
 			var Call = new NonTerminal("Call", typeof(FunctionCall));
-			var FunctionName = new NonTerminal("FunctionName", typeof(FunctionName));
+			var FunctionName = new NonTerminal("FunctionName", typeof(AuxiliaryNode));
 			var WhereOrWithClause = new NonTerminal("WhereOrWithClause", typeof(Conditions));
 			var CommaOrAmpersand = new NonTerminal("CommaOrAmpersand");
-			var RWhereOrWithClause = new NonTerminal("RWhereOrWithClause", typeof(RConditions));
+			var RWhereOrWithClause = new NonTerminal("RWhereOrWithClause", typeof(AuxiliaryNode));
 			var RExpressionOrWhereOrWithClause = new NonTerminal("RExpressionOrWhereOrWithClause");
 
 			var SemicolonOpt = new NonTerminal("[;]", Empty | ";");
@@ -105,7 +105,8 @@ namespace Irony.Samples
 			// Punctuation, braces, transient terms, options
 			MarkPunctuation("(", ")");
 			MarkPunctuation("{", "}");
-			MarkPunctuation("=", ",", "&");
+			MarkPunctuation("<", ">");
+			MarkPunctuation("=", ",", "&", ";");
 
 			RegisterBracePair("(", ")");
 			RegisterBracePair("<", ">");
