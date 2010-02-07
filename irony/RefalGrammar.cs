@@ -48,10 +48,10 @@ namespace Irony.Samples
 			var SentenceList = new NonTerminal("Sentence+", typeof(AuxiliaryNode));
 			var Pattern = new NonTerminal("Pattern", typeof(Pattern));
 			var PatternItem = new NonTerminal("PatternItem");
-			var PatternInParentheses = new NonTerminal("(Pattern)", typeof(PatternInParentheses));
+			var PatternInParentheses = new NonTerminal("(Pattern)", typeof(ExpressionInBraces));
 			var Expression = new NonTerminal("Expression", typeof(Expression));
 			var ExpressionItem = new NonTerminal("ExpressionItem");
-			var ExpressionInParentheses = new NonTerminal("(Expression)", typeof(ExpressionInParentheses));
+			var ExpressionInParentheses = new NonTerminal("(Expression)", typeof(ExpressionInBraces));
 			var Var = new NonTerminal("Variable", Variable.CreateVariableNode);
 			var VarPrefix = new NonTerminal("VariablePrefix");
 			var VarIndex = new NonTerminal("VariableIndex");

@@ -18,47 +18,28 @@ namespace Refal
 		/// </summary>
 		public static void InitNode(ParsingContext context, ParseTreeNode parseNode)
 		{
-			LiteralValueNode literal = null;
-
 			foreach (ParseTreeNode node in parseNode.ChildNodes)
 			{
 				if (node.AstNode is LiteralValueNode)
 				{
-					literal = node.AstNode as LiteralValueNode;
 					if (node.Term.Name == "Char")
 					{
+						var literal = node.AstNode as LiteralValueNode;
 						literal.Value = literal.Value.ToString().ToCharArray();
 					}
+
+					parseNode.AstNode = node.AstNode;
 				}
 				else
 				{
-					literal = new LiteralValueNode()
+					// identifiers in expressions are treated as strings (True is same as "True")
+					parseNode.AstNode = new LiteralValueNode()
 					{
+						Value = node.FindTokenAndGetText(),
 						Span = node.Span
 					};
-
-					if (node.AstNode is IdentifierNode)
-					{
-						var id = node.AstNode as IdentifierNode;
-						literal.Value = id.Symbol.Text;
-					}
-					else
-					{
-						switch (node.Term.Name)
-						{
-							case "True":
-							case "False":
-								literal.Value = node.Term.Name;
-								break;
-
-							default:
-								throw new ArgumentOutOfRangeException("Unknown keyword: " + node.Term.Name);
-						}
-					}
 				}
 			}
-
-			parseNode.AstNode = literal;
 		}
 	}
 }
