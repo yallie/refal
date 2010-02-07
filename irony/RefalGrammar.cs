@@ -19,7 +19,6 @@ namespace Irony.Samples
 			GrammarComments = "Refal-5 language interpreter based on Irony toolkit.";
 
 			// Terminals
-
 			var Number = new NumberLiteral("Number");
 			Number.DefaultIntTypes = new TypeCode[] { TypeCode.Int32, TypeCode.Int64 };
 			Number.AddPrefix("0x", NumberOptions.Hex);
