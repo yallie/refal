@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
 using Irony.Ast;
 using Irony.Parsing;
 
@@ -18,7 +18,7 @@ namespace Refal
 		/// </summary>
 		public static void InitNode(ParsingContext context, ParseTreeNode parseNode)
 		{
-			foreach (ParseTreeNode node in parseNode.ChildNodes)
+			foreach (var node in parseNode.ChildNodes)
 			{
 				if (node.AstNode is LiteralValueNode)
 				{

@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
-using Irony.Parsing;
+using System.Collections.Generic;
 using Irony.Ast;
+using Irony.Parsing;
 using Refal;
 
 namespace Irony.Samples
@@ -20,12 +20,12 @@ namespace Irony.Samples
 
 			// Terminals
 			var Number = new NumberLiteral("Number");
-			Number.DefaultIntTypes = new TypeCode[] { TypeCode.Int32, TypeCode.Int64 };
+			Number.DefaultIntTypes = new TypeCode[] { TypeCode.Int32, TypeCode.Int64, NumberLiteral.TypeCodeBigInt };
 			Number.AddPrefix("0x", NumberOptions.Hex);
 			Number.AddSuffix("u", TypeCode.UInt32);
 			Number.AddSuffix("l", TypeCode.Int64);
 			Number.AddSuffix("ul", TypeCode.UInt64);
-			Number.Options |= NumberOptions.AllowSign;
+			Number.Options |= NumberOptions.AllowSign | NumberOptions.IntOnly;
 
 			var CharLiteral = new StringLiteral("Char", "'", StringOptions.AllowsAllEscapes);
 			var StringLiteral = new StringLiteral("String", "\"", StringOptions.AllowsAllEscapes);

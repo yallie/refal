@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
 using Irony.Ast;
 using Irony.Parsing;
 using Irony.Interpreter;
@@ -26,18 +26,21 @@ namespace Refal
 			
 			foreach (var node in treeNode.ChildNodes)
 			{
-				// linearize AuxiliaryNode structure
+				// linearize AuxiliaryNode children
 				if (node.AstNode is AuxiliaryNode)
 				{
-					var auxNode = (AuxiliaryNode)node.AstNode;
+					var auxNode = node.AstNode as AuxiliaryNode;
+
 					foreach (var n in auxNode.ChildNodes)
 						ChildNodes.Add(n);
+
 					foreach (var n in auxNode.ChildParseNodes)
 						ChildParseNodes.Add(n);
+
 					continue;
 				}
 
-				// copy AST nodes
+				// copy AstNode nodes
 				if (node.AstNode is AstNode)
 				{
 					ChildNodes.Add(node.AstNode as AstNode);

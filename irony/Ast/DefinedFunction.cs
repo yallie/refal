@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Irony.Ast;
 using Irony.Parsing;
-using System.Collections.Generic;
 using Irony.Interpreter;
 using Refal.Runtime;
 
@@ -20,7 +20,7 @@ namespace Refal
 		{
 			base.Init(context, parseNode);
 
-			foreach (ParseTreeNode node in parseNode.ChildNodes)
+			foreach (var node in parseNode.ChildNodes)
 			{
 				if (node.AstNode is IdentifierNode)
 				{

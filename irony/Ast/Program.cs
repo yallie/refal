@@ -40,7 +40,7 @@ namespace Refal
 
 			ParserSymbolTable = context.Symbols;
 
-			foreach (ParseTreeNode node in parseNode.ChildNodes)
+			foreach (var node in parseNode.ChildNodes)
 			{
 				if (node.AstNode is Function)
 				{

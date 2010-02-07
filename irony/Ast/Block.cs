@@ -26,7 +26,7 @@ namespace Refal
 		{
 			base.Init(context, parseNode);
 
-			foreach (ParseTreeNode node in parseNode.ChildNodes)
+			foreach (var node in parseNode.ChildNodes)
 			{
 				// copy sentences to block
 				if (node.AstNode is AuxiliaryNode)

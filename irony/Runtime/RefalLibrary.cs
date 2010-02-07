@@ -5,10 +5,10 @@
 using System;
 using System.IO;
 using System.Text;
-using Irony.Ast;
-using Irony.Interpreter;
 using System.Reflection;
 using System.Collections.Generic;
+using Irony.Ast;
+using Irony.Interpreter;
 using BigInteger = Microsoft.Scripting.Math.BigInteger;
 
 namespace Refal.Runtime
@@ -245,6 +245,69 @@ namespace Refal.Runtime
 			throw new RecognitionImpossibleException();
 		}
 
+		// find the first numeric symbol in an expression and convert to BigInteger
+		BigInteger ToBigInteger(object value)
+		{
+			// try convert expression
+			var expr = value as PassiveExpression;
+			if (expr != null)
+			{
+				// warning: BigInteger doesn't support parsing strings
+				foreach (object o in expr)
+				{
+					if (o is StructureBrace)
+						continue;
+					if (o is int)
+						return BigInteger.Create((int)o);
+					if (o is long)
+						return BigInteger.Create((long)o);
+					if (o is BigInteger)
+						return (BigInteger)o;
+					if (o is string)
+						return BigInteger.Create(Convert.ToInt64(o));
+				}
+
+				return BigInteger.Zero;
+			}
+
+			// try convert single symbol
+			if (value is int)
+				return BigInteger.Create((int)value);
+			if (value is long)
+				return BigInteger.Create((long)value);
+			if (value is BigInteger)
+				return (BigInteger)value;
+			if (value is string)
+				return BigInteger.Create(Convert.ToInt64(value));
+			return BigInteger.Zero;
+		}
+
+		// extract arguments and convert to BigIntegers
+		void GetBigIntegerArguments(PassiveExpression expr, out BigInteger arg1, out BigInteger arg2)
+		{
+			object op1, op2;
+			GetArguments(expr, out op1, out op2);
+
+			arg1 = ToBigInteger(op1);
+			arg2 = ToBigInteger(op2);;
+		}
+
+		/// <summary>
+		/// Converts BigInteger to the minimal possible number type
+		/// </summary>
+		object MinimizeBigInteger(BigInteger bi)
+		{
+			int intValue;
+			if (bi.AsInt32(out intValue))
+				return intValue;
+
+			long longValue;
+			if (bi.AsInt64(out longValue))
+				return longValue;
+
+			return bi;
+		}
+
 		int ToInt32(object expression)
 		{
 			string s = expression.ToString().Trim(" \t\r\n()".ToCharArray());
@@ -254,37 +317,37 @@ namespace Refal.Runtime
 		[FunctionName("+")]
 		public PassiveExpression Add(PassiveExpression expression)
 		{
-			object op1, op2;
-			GetArguments(expression, out op1, out op2);
+			BigInteger op1, op2;
+			GetBigIntegerArguments(expression, out op1, out op2);
 
-			return PassiveExpression.Build(ToInt32(op1) + ToInt32(op2));
+			return PassiveExpression.Build(MinimizeBigInteger(op1 + op2));
 		}
 
 		[FunctionName("-")]
 		public PassiveExpression Sub(PassiveExpression expression)
 		{
-			object op1, op2;
-			GetArguments(expression, out op1, out op2);
+			BigInteger op1, op2;
+			GetBigIntegerArguments(expression, out op1, out op2);
 
-			return PassiveExpression.Build(ToInt32(op1) - ToInt32(op2));
+			return PassiveExpression.Build(MinimizeBigInteger(op1 - op2));
 		}
 
 		[FunctionName("*")]
 		public PassiveExpression Mul(PassiveExpression expression)
 		{
-			object op1, op2;
-			GetArguments(expression, out op1, out op2);
+			BigInteger op1, op2;
+			GetBigIntegerArguments(expression, out op1, out op2);
 
-			return PassiveExpression.Build(ToInt32(op1) * ToInt32(op2));
+			return PassiveExpression.Build(MinimizeBigInteger(op1 * op2));
 		}
 
 		[FunctionName("/")]
 		public PassiveExpression Div(PassiveExpression expression)
 		{
-			object op1, op2;
-			GetArguments(expression, out op1, out op2);
+			BigInteger op1, op2;
+			GetBigIntegerArguments(expression, out op1, out op2);
 
-			return PassiveExpression.Build(ToInt32(op1) / ToInt32(op2));
+			return PassiveExpression.Build(MinimizeBigInteger(op1 / op2));
 		}
 
 		public PassiveExpression Cp(PassiveExpression expression)
