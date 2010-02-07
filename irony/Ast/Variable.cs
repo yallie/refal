@@ -74,8 +74,17 @@ namespace Refal
 				// push variable contents onto stack
 				var pattern = context.GetLastPattern();
 				context.Data.Push(pattern.GetVariable(Index));
+				return;
 			}
+
+			// create variable for pattern matching
+			context.Data.Push(CreateVariable());
 		}
+
+		/// <summary>
+		/// Create pattern variable
+		/// </summary>
+		public abstract Runtime.Variable CreateVariable();
 
 		public override string ToString()
 		{

@@ -9,7 +9,7 @@ namespace Irony.Samples
 {
 	/// <summary>
 	/// Refal-5 Grammar
-	/// Written by Alexey Yakovlev <yallie@yandex.ru>
+	/// Written by Alexey Yakovlev, yallie@yandex.ru
 	/// </summary>
 	[Language("Refal5", "0.1 alpha", "Refal-5.NET language interpreter")]
 	public class RefalGrammar : Grammar

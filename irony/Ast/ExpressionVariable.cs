@@ -18,15 +18,9 @@ namespace Refal
 			protected set { base.Index = "e." + value; }
 		}
 
-		public override void EvaluateNode(EvaluationContext context, AstMode mode)
+		public override Runtime.Variable CreateVariable()
 		{
-			if (mode == AstMode.Read)
-			{
-				base.EvaluateNode(context, mode);
-				return;
-			}
-
-			context.Data.Push(new Runtime.ExpressionVariable(Index));
+			return new Runtime.ExpressionVariable(Index);
 		}
 	}
 }
