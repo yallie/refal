@@ -10,7 +10,7 @@ namespace Refal
 	/// <summary>
 	/// Expression in structure braces ()
 	/// </summary>
-	public class ExpressionInParentheses : Term
+	public class ExpressionInParentheses : AstNode
 	{
 		public Expression Expression { get; private set; }
 

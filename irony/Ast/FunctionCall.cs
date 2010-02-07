@@ -13,7 +13,7 @@ namespace Refal
 	/// <summary>
 	/// Function call
 	/// </summary>
-	public class FunctionCall : Term
+	public class FunctionCall : AstNode
 	{
 		public IronySymbol FunctionName { get; private set; }
 

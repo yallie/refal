@@ -9,6 +9,7 @@ using Irony.Ast;
 using Irony.Interpreter;
 using System.Reflection;
 using System.Collections.Generic;
+using BigInteger = Microsoft.Scripting.Math.BigInteger;
 
 namespace Refal.Runtime
 {

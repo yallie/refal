@@ -48,10 +48,9 @@ namespace Refal
 				}
 				else if (node.AstNode is AuxiliaryNode)
 				{
-					var identifiers = (node.AstNode as AuxiliaryNode).ChildNodes.OfType<IdentifierNode>();
+					var ids = (node.AstNode as AuxiliaryNode).ChildNodes.OfType<IdentifierNode>();
 
-					//foreach (IdentifierNode id in (node.AstNode as ExternalFunctionList).Identifiers)
-					foreach (var id in identifiers)
+					foreach (var id in ids)
 					{
 						ExternalFunction ef = new ExternalFunction();
 						ef.SetSpan(id.Span);

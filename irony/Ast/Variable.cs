@@ -12,7 +12,7 @@ namespace Refal
 	/// Being part of a pattern is not bound to a value and is called "free variable"
 	/// In an expression to the right of "=" variable is bound to a value
 	/// </summary>
-	public abstract class Variable : Term
+	public abstract class Variable : AstNode
 	{
 		public virtual string Index { get; protected set; }
 

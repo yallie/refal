@@ -11,7 +11,7 @@ namespace Irony.Samples
 	/// Refal-5 Grammar
 	/// Written by Alexey Yakovlev <yallie@yandex.ru>
 	/// </summary>
-	[Language("Refal5", "0.0 alpha", "Refal-5.NET language interpreter")]
+	[Language("Refal5", "0.1 alpha", "Refal-5.NET language interpreter")]
 	public class RefalGrammar : Grammar
 	{
 		public RefalGrammar() : base(true) // case sensitive
@@ -55,7 +55,7 @@ namespace Irony.Samples
 			var Var = new NonTerminal("Variable", Variable.CreateVariableNode);
 			var VarPrefix = new NonTerminal("VariablePrefix");
 			var VarIndex = new NonTerminal("VariableIndex");
-			var Symbol = new NonTerminal("Symbol", Symb.CreateSymbolNode);
+			var Symbol = new NonTerminal("Symbol", LiteralValueNodeHelper.InitNode);
 			var Call = new NonTerminal("Call", typeof(FunctionCall));
 			var FunctionName = new NonTerminal("FunctionName", typeof(AuxiliaryNode));
 			var WhereOrWithClause = new NonTerminal("WhereOrWithClause", typeof(Conditions));

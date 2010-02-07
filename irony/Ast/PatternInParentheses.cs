@@ -10,7 +10,7 @@ namespace Refal
 	/// <summary>
 	/// Pattern enclosed in structure braces ()
 	/// </summary>
-	public class PatternInParentheses : Term
+	public class PatternInParentheses : AstNode
 	{
 		public Pattern Pattern { get; private set; }
 
@@ -18,7 +18,7 @@ namespace Refal
 		{
 			base.Init(context, parseNode);
 
-			foreach (ParseTreeNode node in parseNode.ChildNodes)
+			foreach (var node in parseNode.ChildNodes)
 			{
 				if (node.AstNode is Pattern)
 					Pattern = (node.AstNode as Pattern);

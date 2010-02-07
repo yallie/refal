@@ -12,7 +12,7 @@ namespace Refal
 	/// </summary>
 	public class Pattern : AstNode
 	{
-		public IList<Term> Terms { get; private set; }
+		public IList<AstNode> Terms { get; private set; }
 
 		public bool IsEmpty
 		{
@@ -21,30 +21,32 @@ namespace Refal
 
 		public Pattern()
 		{
-			Terms = new List<Term>();
+			Terms = new List<AstNode>();
 		}
 
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
 			base.Init(context, parseNode);
 			
-			foreach (ParseTreeNode node in parseNode.ChildNodes)
+			foreach (var node in parseNode.ChildNodes)
 			{
-				if (node.AstNode is Term)
-					Terms.Add(node.AstNode as Term);
+				if (node.AstNode is AstNode)
+					Terms.Add(node.AstNode as AstNode);
 			}
 		}
 
 		public override System.Collections.IEnumerable GetChildNodes()
 		{
-			foreach (Term term in Terms)
+			foreach (var term in Terms)
 				yield return term;
 		}
 
 		public override void EvaluateNode(EvaluationContext context, AstMode mode)
 		{
-			foreach (Term term in Terms)
+			foreach (var term in Terms)
 			{
+				// in pattern, variables are never read
+				mode = term is Variable ? AstMode.None : AstMode.Read;
 				term.Evaluate(context, mode);
 			}
 		}

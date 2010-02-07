@@ -48,8 +48,6 @@
   <ItemGroup>
     <Compile Include="Ast\AuxiliaryNode.cs" />
     <Compile Include="Ast\Block.cs" />
-    <Compile Include="Ast\Character.cs" />
-    <Compile Include="Ast\CompoundSymbol.cs" />
     <Compile Include="Ast\Conditions.cs" />
     <Compile Include="Ast\DefinedFunction.cs" />
     <Compile Include="Ast\EvaluationContextExtensions.cs" />
@@ -59,15 +57,12 @@
     <Compile Include="Ast\ExternalFunction.cs" />
     <Compile Include="Ast\Function.cs" />
     <Compile Include="Ast\FunctionCall.cs" />
-    <Compile Include="Ast\Identifiers.cs" />
-    <Compile Include="Ast\Macrodigit.cs" />
+    <Compile Include="Ast\LiteralValueNodeHelper.cs" />
     <Compile Include="Ast\Pattern.cs" />
     <Compile Include="Ast\PatternInParentheses.cs" />
     <Compile Include="Ast\Program.cs" />
     <Compile Include="Ast\Sentence.cs" />
-    <Compile Include="Ast\Symbol.cs" />
     <Compile Include="Ast\SymbolVariable.cs" />
-    <Compile Include="Ast\Term.cs" />
     <Compile Include="Ast\TermVariable.cs" />
     <Compile Include="Ast\Variable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

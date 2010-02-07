@@ -5,7 +5,7 @@ $ENTRY Go { =
   <Prout <Fact 6>>;
 }
 
-Fact{
+Fact {
   0 = 1;
   s.N = <* s.N <Fact <- s.N 1>>>;
 }
