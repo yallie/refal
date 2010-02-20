@@ -7,9 +7,15 @@ using Refal.Runtime;
 
 namespace Irony.Tests
 {
+	/// <summary>
+	/// Refal runtime library tests
+	/// </summary>
 	[TestClass]
 	public class RefalLibraryTests
 	{
+		/// <summary>
+		/// Initialized by MSTest Framework
+		/// </summary>
 		public TestContext TestContext { get; set; }
 
 		// int32, int32 -> int32
