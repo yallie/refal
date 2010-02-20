@@ -69,6 +69,12 @@ namespace Irony.Tests
 		}
 
 		[TestMethod]
+		public void RefalTest_ArithmeticTranslator()
+		{
+			RunSampleAndCompareResults("arith.ref", "arith.txt");
+		}
+
+		[TestMethod]
 		public void RefalTest_QuinePlain()
 		{
 			RunSampleAndCompareResults("quine-plain.ref");

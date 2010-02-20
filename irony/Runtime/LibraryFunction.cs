@@ -56,10 +56,14 @@ namespace Refal.Runtime
 				var fun = method.CreateDelegate<LibraryDelegate>(instance, false);
 				if (fun != null)
 				{
-					var fname = method.GetCustomAttribute<FunctionNameAttribute>();
-					IronySymbol name = symbols.TextToSymbol(fname != null ? fname.Name : method.Name);
-					name = context.LanguageCaseSensitive ? name : name.LowerSymbol;
-					list.Add(new LibraryFunction(name, fun));
+					var fname = method.GetCustomAttribute<FunctionNamesAttribute>();
+					var names = (fname == null) ? new string[] { method.Name } : fname.Names;
+					foreach (var strName in names)
+					{
+						IronySymbol name = symbols.TextToSymbol(strName);
+						name = context.LanguageCaseSensitive ? name : name.LowerSymbol;
+						list.Add(new LibraryFunction(name, fun));
+					}
 				}
 			}
 

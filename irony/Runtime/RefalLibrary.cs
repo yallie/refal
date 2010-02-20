@@ -209,12 +209,16 @@ namespace Refal.Runtime
 		{
 			// <Dg e.N>
 			string strKey = expression.ToString();
-			PassiveExpression result = PassiveExpression.Build(BuriedValues[strKey] as PassiveExpression);
 
-			BuriedValues[strKey] = null;
-			BuriedKeys[strKey] = null;
+			if (BuriedValues.ContainsKey(strKey))
+			{
+				PassiveExpression result = PassiveExpression.Build(BuriedValues[strKey] as PassiveExpression);
+				BuriedValues[strKey] = null;
+				BuriedKeys[strKey] = null;
+				return result;
+			}
 
-			return result;
+			return PassiveExpression.Build();
 		}
 
 		public PassiveExpression Dgall(PassiveExpression expression)
@@ -340,7 +344,7 @@ namespace Refal.Runtime
 			return Convert.ToInt32(s);
 		}
 
-		[FunctionName("+")]
+		[FunctionNames("+", "Add")]
 		public PassiveExpression Add(PassiveExpression expression)
 		{
 			BigInteger op1, op2;
@@ -349,7 +353,7 @@ namespace Refal.Runtime
 			return PassiveExpression.Build(ConvertBigIntegerToRefalNumber(op1 + op2));
 		}
 
-		[FunctionName("-")]
+		[FunctionNames("-", "Sub")]
 		public PassiveExpression Sub(PassiveExpression expression)
 		{
 			BigInteger op1, op2;
@@ -358,7 +362,7 @@ namespace Refal.Runtime
 			return PassiveExpression.Build(ConvertBigIntegerToRefalNumber(op1 - op2));
 		}
 
-		[FunctionName("*")]
+		[FunctionNames("*", "Mul")]
 		public PassiveExpression Mul(PassiveExpression expression)
 		{
 			BigInteger op1, op2;
@@ -367,7 +371,7 @@ namespace Refal.Runtime
 			return PassiveExpression.Build(ConvertBigIntegerToRefalNumber(op1 * op2));
 		}
 
-		[FunctionName("/")]
+		[FunctionNames("/", "Div")]
 		public PassiveExpression Div(PassiveExpression expression)
 		{
 			BigInteger op1, op2;
@@ -436,7 +440,7 @@ namespace Refal.Runtime
 			throw new NotImplementedException();
 		}
 
-		[FunctionName("Implode-Ext")]
+		[FunctionNames("Implode-Ext")]
 		public PassiveExpression Implode_Ext(PassiveExpression expression)
 		{
 			throw new NotImplementedException();
@@ -457,20 +461,20 @@ namespace Refal.Runtime
 
 		public PassiveExpression Explode(PassiveExpression expression)
 		{
-			throw new NotImplementedException();
+			return PassiveExpression.Build(expression.ToString().ToCharArray());
 		}
 
 		public PassiveExpression Numb(PassiveExpression expression)
 		{
 			if (expression == null || expression.IsEmpty)
 				return PassiveExpression.Build();
-			
-		   return PassiveExpression.Build(Convert.ToInt32(expression.ToString()));
+
+			return PassiveExpression.Build(ConvertBigIntegerToRefalNumber(ToBigInteger(expression.ToString())));
 		}
 
 		public PassiveExpression Symb(PassiveExpression expression)
 		{
-			throw new NotImplementedException();
+			return PassiveExpression.Build(expression.ToString().ToCharArray());
 		}
 
 		public PassiveExpression Chr(PassiveExpression expression)
