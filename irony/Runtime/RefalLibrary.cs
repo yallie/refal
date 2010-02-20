@@ -252,19 +252,32 @@ namespace Refal.Runtime
 			var expr = value as PassiveExpression;
 			if (expr != null)
 			{
-				// warning: BigInteger doesn't support parsing strings
+				int sign = 1;
+
 				foreach (object o in expr)
 				{
 					if (o is StructureBrace)
 						continue;
+
+					if (o is char)
+					{
+						var c = (char)o;
+						if (c == '-')
+							sign *= -1;
+					}
+
 					if (o is int)
-						return BigInteger.Create((int)o);
+						return BigInteger.Create(sign * (int)o);
+
 					if (o is long)
-						return BigInteger.Create((long)o);
+						return BigInteger.Create(sign * (long)o);
+
 					if (o is BigInteger)
-						return (BigInteger)o;
+						return sign * (BigInteger)o;
+
+					// warning: BigInteger doesn't support parsing strings
 					if (o is string)
-						return BigInteger.Create(Convert.ToInt64(o));
+						return BigInteger.Create(sign * Convert.ToInt64(o));
 				}
 
 				return BigInteger.Zero;
@@ -294,18 +307,31 @@ namespace Refal.Runtime
 
 		/// <summary>
 		/// Converts BigInteger to the minimal possible number type
+		/// Negative numbers get converted to positive numbers prefixed with '-'
+		/// For example, -520582(BigInteger) -> '-'(char) 52082(int)
 		/// </summary>
-		object MinimizeBigInteger(BigInteger bi)
+		object[] ConvertBigIntegerToRefalNumber(BigInteger bigIntValue)
 		{
+			var negative = bigIntValue < 0;
+			var result = new object[negative ? 2 : 1];
+			var valueIndex = negative ? 1 : 0;
+			if (negative)
+			{
+				result[0] = '-';
+				bigIntValue = -bigIntValue;
+			}
+
 			int intValue;
-			if (bi.AsInt32(out intValue))
-				return intValue;
-
 			long longValue;
-			if (bi.AsInt64(out longValue))
-				return longValue;
 
-			return bi;
+			if (bigIntValue.AsInt32(out intValue))
+				result[valueIndex] = intValue;
+			else if (bigIntValue.AsInt64(out longValue))
+				result[valueIndex] = longValue;
+			else
+				result[valueIndex] = bigIntValue;
+
+			return result;
 		}
 
 		int ToInt32(object expression)
@@ -320,7 +346,7 @@ namespace Refal.Runtime
 			BigInteger op1, op2;
 			GetBigIntegerArguments(expression, out op1, out op2);
 
-			return PassiveExpression.Build(MinimizeBigInteger(op1 + op2));
+			return PassiveExpression.Build(ConvertBigIntegerToRefalNumber(op1 + op2));
 		}
 
 		[FunctionName("-")]
@@ -329,7 +355,7 @@ namespace Refal.Runtime
 			BigInteger op1, op2;
 			GetBigIntegerArguments(expression, out op1, out op2);
 
-			return PassiveExpression.Build(MinimizeBigInteger(op1 - op2));
+			return PassiveExpression.Build(ConvertBigIntegerToRefalNumber(op1 - op2));
 		}
 
 		[FunctionName("*")]
@@ -338,7 +364,7 @@ namespace Refal.Runtime
 			BigInteger op1, op2;
 			GetBigIntegerArguments(expression, out op1, out op2);
 
-			return PassiveExpression.Build(MinimizeBigInteger(op1 * op2));
+			return PassiveExpression.Build(ConvertBigIntegerToRefalNumber(op1 * op2));
 		}
 
 		[FunctionName("/")]
@@ -347,7 +373,7 @@ namespace Refal.Runtime
 			BigInteger op1, op2;
 			GetBigIntegerArguments(expression, out op1, out op2);
 
-			return PassiveExpression.Build(MinimizeBigInteger(op1 / op2));
+			return PassiveExpression.Build(ConvertBigIntegerToRefalNumber(op1 / op2));
 		}
 
 		public PassiveExpression Cp(PassiveExpression expression)
