@@ -140,14 +140,10 @@ namespace Refal.Runtime
 
 				if (value is PassiveExpression)
 					sb.AppendFormat("({0}) ", (value as PassiveExpression).ToStringBuilder(0).ToString());
-				else //if (value is char || value is string)
+				else if (value is char || value is StructureBrace)
 					sb.AppendFormat("{0}", value);
-				/*else
-				{
-					sb.AppendFormat("{0}", value);
-					if (i < Count - 1)
-						sb.Append(" ");
-				}*/
+				else
+					sb.AppendFormat("{0} ", value);
 			}
 
 			return sb;

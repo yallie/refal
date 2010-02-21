@@ -25,7 +25,7 @@ namespace Irony.Samples
 			Number.AddSuffix("u", TypeCode.UInt32);
 			Number.AddSuffix("l", TypeCode.Int64);
 			Number.AddSuffix("ul", TypeCode.UInt64);
-			Number.Options |= NumberOptions.AllowSign | NumberOptions.IntOnly;
+			Number.Options |= NumberOptions.IntOnly;
 
 			var CharLiteral = new StringLiteral("Char", "'", StringOptions.AllowsAllEscapes);
 			var StringLiteral = new StringLiteral("String", "\"", StringOptions.AllowsAllEscapes);

@@ -459,9 +459,15 @@ namespace Refal.Runtime
 			return PassiveExpression.Build(s.Substring(0, index));
 		}
 
+		[FunctionNames("Explode", "Symb")]
 		public PassiveExpression Explode(PassiveExpression expression)
 		{
-			return PassiveExpression.Build(expression.ToString().ToCharArray());
+			// convert expression to string and remove trailing space, if any
+			var sb = expression.ToStringBuilder(0);
+			if (sb.Length > 0 && sb[sb.Length - 1] == ' ')
+				sb.Length -= 1;
+
+			return PassiveExpression.Build(sb.ToString().ToCharArray());
 		}
 
 		public PassiveExpression Numb(PassiveExpression expression)
@@ -470,11 +476,6 @@ namespace Refal.Runtime
 				return PassiveExpression.Build();
 
 			return PassiveExpression.Build(ConvertBigIntegerToRefalNumber(ToBigInteger(expression.ToString())));
-		}
-
-		public PassiveExpression Symb(PassiveExpression expression)
-		{
-			return PassiveExpression.Build(expression.ToString().ToCharArray());
 		}
 
 		public PassiveExpression Chr(PassiveExpression expression)
