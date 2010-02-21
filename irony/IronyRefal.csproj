@@ -83,13 +83,14 @@
     <None Include="IronyAstBase.cd" />
     <None Include="IronyAstNodes.cd" />
     <None Include="RefalAstNodes.cd" />
-    <EmbeddedResource Include="Samples\arith.ref" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Samples\99-bottles-v1.ref" />
     <EmbeddedResource Include="Samples\99-bottles-v1.txt" />
     <EmbeddedResource Include="Samples\99-bottles-v2.ref" />
     <EmbeddedResource Include="Samples\99-bottles-v2.txt" />
+    <EmbeddedResource Include="Samples\arith.ref" />
+    <EmbeddedResource Include="Samples\arith.txt" />
     <EmbeddedResource Include="Samples\binary.ref" />
     <EmbeddedResource Include="Samples\binary.txt" />
     <EmbeddedResource Include="Samples\change-v1.ref" />
@@ -113,9 +114,6 @@
     <EmbeddedResource Include="Samples\xtras-bigint.txt" />
     <EmbeddedResource Include="Samples\xtras-factorial.ref" />
     <EmbeddedResource Include="Samples\xtras-factorial.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Samples\arith.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
