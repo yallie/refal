@@ -44,7 +44,7 @@ namespace Refal
 					var pnode = auxNode.ChildParseNodes.Where(n => n.Term != null).FirstOrDefault();
 					if (pnode != null)
 					{
-						FunctionName = context.Symbols.TextToSymbol(pnode.Term.Name);
+						FunctionName = SymbolTable.Symbols.TextToSymbol(pnode.Term.Name);
 						continue;
 					}
 

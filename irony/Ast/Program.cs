@@ -21,12 +21,6 @@ namespace Refal
 
 		public Function EntryPoint { get; private set; }
 
-		/// <summary>
-		/// EvaluationContext.Symbols != ParsingContext.Symbols
-		/// So trying to get value from EvaluationContext by giving key from ParsingContext results in an error :)
-		/// </summary>
-		private SymbolTable ParserSymbolTable { get; set; }
-
 		public Program()
 		{
 			Functions = new Dictionary<IronySymbol, Function>();
@@ -37,8 +31,6 @@ namespace Refal
 		public override void Init(ParsingContext context, ParseTreeNode parseNode)
 		{
 			base.Init(context, parseNode);
-
-			ParserSymbolTable = context.Symbols;
 
 			foreach (var node in parseNode.ChildNodes)
 			{
@@ -84,7 +76,7 @@ namespace Refal
 				context.ThrowError("No entry point defined (entry point is a function named «Go»)");
 
 			// load standard run-time library functions
-			var libraryFunctions = LibraryFunction.ExtractLibraryFunctions(ParserSymbolTable, context, new RefalLibrary(context));
+			var libraryFunctions = LibraryFunction.ExtractLibraryFunctions(context, new RefalLibrary(context));
 			foreach (LibraryFunction libFun in libraryFunctions)
 			{
 				context.SetValue(libFun.Name, libFun);

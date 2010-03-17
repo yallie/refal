@@ -43,7 +43,7 @@ namespace Refal.Runtime
 			context.PopFrame();
 		}
 
-		public static LibraryFunction[] ExtractLibraryFunctions(SymbolTable symbols, EvaluationContext context, object instance)
+		public static LibraryFunction[] ExtractLibraryFunctions(EvaluationContext context, object instance)
 		{
 			if (instance == null)
 				return new LibraryFunction[0];
@@ -60,7 +60,7 @@ namespace Refal.Runtime
 					var names = (fname == null) ? new string[] { method.Name } : fname.Names;
 					foreach (var strName in names)
 					{
-						IronySymbol name = symbols.TextToSymbol(strName);
+						IronySymbol name = SymbolTable.Symbols.TextToSymbol(strName);
 						name = context.LanguageCaseSensitive ? name : name.LowerSymbol;
 						list.Add(new LibraryFunction(name, fun));
 					}

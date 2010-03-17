@@ -2,12 +2,11 @@
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
+using Irony.Parsing;
 using Irony.Interpreter;
 
 namespace Refal
 {
-	using IronySymbol = Irony.Parsing.Symbol;
-
 	/// <summary>
 	/// Refal evaluation context should be able to store the last recognized pattern
 	/// </summary>
@@ -21,9 +20,9 @@ namespace Refal
 		/// <summary>
 		/// Convert string to Symbol using Evaluation Context's symbol table
 		/// </summary>
-		static IronySymbol GetLastPatternName(EvaluationContext context)
+		static Symbol GetLastPatternName(EvaluationContext context)
 		{
-			return context.Symbols.TextToSymbol(LastPatternSymbolName);
+			return SymbolTable.Symbols.TextToSymbol(LastPatternSymbolName);
 		}
 
 		/// <summary>

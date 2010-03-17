@@ -31,7 +31,9 @@ namespace Irony.Samples
 			var StringLiteral = new StringLiteral("String", "\"", StringOptions.AllowsAllEscapes);
 			var Identifier = new IdentifierTerminal("Identifier", "_-", "");
 
-			var LineComment = new CommentTerminal("LineComment", "*", "\n", "\r") { Priority = -1000 };
+			var LineComment = new CommentTerminal("LineComment", "*", "\n", "\r");
+			LineComment.ValidateToken += LineComment_ValidateToken;
+
 			var BlockComment = new CommentTerminal("BlockComment", "/*", "*/");
 			NonGrammarTerminals.Add(LineComment);
 			NonGrammarTerminals.Add(BlockComment);
@@ -113,6 +115,18 @@ namespace Irony.Samples
 
 			MarkTransient(Definition, PatternItem, ExpressionItem, SemicolonOpt, EntryOpt, Extern, CommaOrAmpersand, VarPrefix, VarIndex, RExpressionOrWhereOrWithClause);
 			LanguageFlags = LanguageFlags.CreateAst | LanguageFlags.CanRunSample | LanguageFlags.TailRecursive;
+		}
+
+		void LineComment_ValidateToken(object sender, ParsingEventArgs args)
+		{
+			// if "*" is allowed in the current parser state, suppress comments starting with "*"
+			var parserState = args.Context.CurrentParserState;
+			if (parserState.ExpectedTerminals.Contains(ToTerm("*")))
+			{
+				// rewind input stream and reject the token
+				args.Context.SetSourceLocation(args.Context.CurrentToken.Location);
+				args.Context.CurrentToken = null;
+			}
 		}
 	}
 }
